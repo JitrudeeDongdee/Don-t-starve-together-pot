@@ -1,0 +1,1873 @@
+[
+  {
+    "name": "butterflymuffin",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.butterflywings || names.moonbutterflywings) && ! tags.meat && tags.veggie && tags.veggie >= 0.5",
+    "card_def": [
+      [
+        "butterflywings",
+        1
+      ],
+      [
+        "carrot",
+        2
+      ],
+      [
+        "berries",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "frogglebunwich",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.froglegs || names.froglegs_cooked) && tags.veggie && tags.veggie >= 0.5",
+    "card_def": [
+      [
+        "froglegs",
+        1
+      ],
+      [
+        "red_cap",
+        2
+      ],
+      [
+        "carrot",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "taffy",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "GOODIES",
+    "stats": {
+      "health": -3,
+      "hunger": 25,
+      "sanity": 15,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.sweetener && tags.sweetener >= 3 && ! tags.meat",
+    "card_def": [
+      [
+        "honey",
+        3
+      ],
+      [
+        "berries",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "pumpkincookie",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 0,
+      "hunger": 37.5,
+      "sanity": 15,
+      "perishtime": 4800,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.pumpkin || names.pumpkin_cooked) && tags.sweetener && tags.sweetener >= 2",
+    "card_def": [
+      [
+        "pumpkin",
+        1
+      ],
+      [
+        "honey",
+        2
+      ],
+      [
+        "berries",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "stuffedeggplant",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 3,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": 40,
+      "temperatureduration": 5
+    },
+    "test": "(names.eggplant || names.eggplant_cooked) && tags.veggie && tags.veggie > 1",
+    "card_def": [
+      [
+        "eggplant",
+        1
+      ],
+      [
+        "potato",
+        1
+      ],
+      [
+        "onion",
+        1
+      ],
+      [
+        "garlic",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "fishsticks",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 40,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 4800,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.fish && names.twigs && (tags.inedible && tags.inedible <= 1)",
+    "card_def": [
+      [
+        "fishmeat_small",
+        3
+      ],
+      [
+        "twigs",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "honeynuggets",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 2,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.honey && tags.meat && tags.meat <= 1.5 && ! tags.inedible",
+    "card_def": [
+      [
+        "honey",
+        2
+      ],
+      [
+        "smallmeat",
+        2
+      ]
+    ]
+  },
+  {
+    "name": "honeyham",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 2,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 30,
+      "hunger": 75,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": 40,
+      "temperatureduration": 10
+    },
+    "test": "names.honey && tags.meat && tags.meat > 1.5 && ! tags.inedible",
+    "card_def": [
+      [
+        "honey",
+        2
+      ],
+      [
+        "meat",
+        2
+      ]
+    ]
+  },
+  {
+    "name": "dragonpie",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 40,
+      "hunger": 75,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": 40,
+      "temperatureduration": 10
+    },
+    "test": "(names.dragonfruit || names.dragonfruit_cooked) && ! tags.meat",
+    "card_def": [
+      [
+        "dragonfruit",
+        2
+      ],
+      [
+        "potato",
+        1
+      ],
+      [
+        "pepper",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "kabobs",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 5,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 3,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": 40,
+      "temperatureduration": 15
+    },
+    "test": "tags.meat && names.twigs && (! tags.monster || tags.monster <= 1) && (tags.inedible && tags.inedible <= 1)",
+    "card_def": [
+      [
+        "meat",
+        1
+      ],
+      [
+        "onion",
+        1
+      ],
+      [
+        "eggplant",
+        1
+      ],
+      [
+        "twigs",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "mandrakesoup",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 100,
+      "hunger": 150,
+      "sanity": 5,
+      "perishtime": 2880,
+      "cooktime": 3,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.mandrake",
+    "card_def": null
+  },
+  {
+    "name": "baconeggs",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 75,
+      "sanity": 5,
+      "perishtime": 9600,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.egg && tags.egg > 1 && tags.meat && tags.meat > 1 && ! tags.veggie",
+    "card_def": null
+  },
+  {
+    "name": "meatballs",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": -1,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 3,
+      "hunger": 62.5,
+      "sanity": 5,
+      "perishtime": 4800,
+      "cooktime": 0.75,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.meat && ! tags.inedible",
+    "card_def": null
+  },
+  {
+    "name": "bonestew",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 0,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 12,
+      "hunger": 150,
+      "sanity": 5,
+      "perishtime": 4800,
+      "cooktime": 0.75,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.meat && tags.meat >= 3 && ! tags.inedible",
+    "card_def": null
+  },
+  {
+    "name": "perogies",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 5,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 40,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 9600,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.egg && tags.meat && tags.veggie && tags.veggie >= 0.5 && ! tags.inedible",
+    "card_def": null
+  },
+  {
+    "name": "turkeydinner",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 75,
+      "sanity": 5,
+      "perishtime": 2880,
+      "cooktime": 3,
+      "temperature": 40,
+      "temperatureduration": 10
+    },
+    "test": "names.drumstick && names.drumstick > 1 && tags.meat && tags.meat > 1 && ((tags.veggie && tags.veggie >= 0.5) || tags.fruit)",
+    "card_def": [
+      [
+        "drumstick",
+        2
+      ],
+      [
+        "meat",
+        1
+      ],
+      [
+        "berries",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "ratatouille",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 0,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 3,
+      "hunger": 25,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "! tags.meat && tags.veggie && tags.veggie >= 0.5 && ! tags.inedible",
+    "card_def": null
+  },
+  {
+    "name": "jammypreserves",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 0,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 3,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.fruit && ! tags.meat && ! tags.veggie && ! tags.inedible",
+    "card_def": null
+  },
+  {
+    "name": "fruitmedley",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 0,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 20,
+      "hunger": 25,
+      "sanity": 5,
+      "perishtime": 2880,
+      "cooktime": 0.5,
+      "temperature": -40,
+      "temperatureduration": 5
+    },
+    "test": "tags.fruit && tags.fruit >= 3 && ! tags.meat && ! tags.veggie",
+    "card_def": null
+  },
+  {
+    "name": "fishtacos",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 2880,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.fish && (names.corn || names.corn_cooked || names.oceanfish_small_5_inv || names.oceanfish_medium_5_inv)",
+    "card_def": [
+      [
+        "fishmeat_small",
+        2
+      ],
+      [
+        "corn",
+        1
+      ],
+      [
+        "onion",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "waffles",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 60,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 2880,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.butter && (names.berries || names.berries_cooked || names.berries_juicy || names.berries_juicy_cooked) && tags.egg",
+    "card_def": null
+  },
+  {
+    "name": "monsterlasagna",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": -20,
+      "hunger": 37.5,
+      "sanity": -20,
+      "perishtime": 2880,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.monster && tags.monster >= 2 && ! tags.inedible",
+    "card_def": null
+  },
+  {
+    "name": "powcake",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": -3,
+      "hunger": 0,
+      "sanity": 0,
+      "perishtime": 9000000,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.twigs && names.honey && (names.corn || names.corn_cooked || names.oceanfish_small_5_inv || names.oceanfish_medium_5_inv)",
+    "card_def": [
+      [
+        "honey",
+        1
+      ],
+      [
+        "corn",
+        1
+      ],
+      [
+        "twigs",
+        2
+      ]
+    ]
+  },
+  {
+    "name": "unagi",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 20,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.cutlichen || names.kelp || names.kelp_cooked || names.kelp_dried) && (names.eel || names.eel_cooked || names.pondeel)",
+    "card_def": null
+  },
+  {
+    "name": "wetgoop",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": -10,
+    "weight": 1,
+    "foodtype": null,
+    "stats": {
+      "health": 0,
+      "hunger": 0,
+      "sanity": 0,
+      "perishtime": 2880,
+      "cooktime": 0.25,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "true",
+    "card_def": null
+  },
+  {
+    "name": "flowersalad",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 40,
+      "hunger": 12.5,
+      "sanity": 5,
+      "perishtime": 2880,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.cactus_flower && tags.veggie && tags.veggie >= 2 && ! tags.meat && ! tags.inedible && ! tags.egg && ! tags.sweetener && ! tags.fruit",
+    "card_def": null
+  },
+  {
+    "name": "icecream",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "GOODIES",
+    "stats": {
+      "health": 0,
+      "hunger": 25,
+      "sanity": 50,
+      "perishtime": 1440,
+      "cooktime": 0.5,
+      "temperature": -40,
+      "temperatureduration": 15
+    },
+    "test": "tags.frozen && tags.dairy && tags.sweetener && ! tags.meat && ! tags.veggie && ! tags.inedible && ! tags.egg",
+    "card_def": null
+  },
+  {
+    "name": "watermelonicle",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 3,
+      "hunger": 12.5,
+      "sanity": 20,
+      "perishtime": 1440,
+      "cooktime": 0.5,
+      "temperature": -40,
+      "temperatureduration": 10
+    },
+    "test": "names.watermelon && tags.frozen && names.twigs && ! tags.meat && ! tags.veggie && ! tags.egg",
+    "card_def": null
+  },
+  {
+    "name": "trailmix",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 30,
+      "hunger": 12.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.acorn || names.acorn_cooked) && tags.seed && tags.seed >= 1 && (names.berries || names.berries_cooked || names.berries_juicy || names.berries_juicy_cooked) && tags.fruit && tags.fruit >= 1 && ! tags.meat && ! tags.veggie && ! tags.egg && ! tags.dairy",
+    "card_def": [
+      [
+        "acorn_cooked",
+        2
+      ],
+      [
+        "berries",
+        2
+      ]
+    ]
+  },
+  {
+    "name": "hotchili",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 0,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": 40,
+      "temperatureduration": 15
+    },
+    "test": "tags.meat && tags.veggie && tags.meat >= 1.5 && tags.veggie >= 1.5",
+    "card_def": [
+      [
+        "meat",
+        2
+      ],
+      [
+        "tomato",
+        1
+      ],
+      [
+        "pepper",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "guacamole",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 0,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.mole && (names.rock_avocado_fruit_ripe || names.cactus_meat) && ! tags.fruit",
+    "card_def": [
+      [
+        "mole",
+        1
+      ],
+      [
+        "rock_avocado_fruit_ripe",
+        2
+      ],
+      [
+        "corn",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "jellybean",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 12,
+    "weight": 1,
+    "foodtype": "GOODIES",
+    "stats": {
+      "health": 2,
+      "hunger": 0,
+      "sanity": 5,
+      "perishtime": null,
+      "cooktime": 2.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.royal_jelly && ! tags.inedible && ! tags.monster",
+    "card_def": null
+  },
+  {
+    "name": "potatotornado",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 3,
+      "hunger": 37.5,
+      "sanity": 15,
+      "perishtime": 4800,
+      "cooktime": 0.75,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.potato || names.potato_cooked) && names.twigs && (! tags.monster || tags.monster <= 1) && ! tags.meat && (tags.inedible && tags.inedible <= 2)",
+    "card_def": null
+  },
+  {
+    "name": "mashedpotatoes",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 20,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 33,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "((names.potato && names.potato > 1) || (names.potato_cooked && names.potato_cooked > 1) || (names.potato && names.potato_cooked)) && (names.garlic || names.garlic_cooked) && ! tags.meat && ! tags.inedible",
+    "card_def": null
+  },
+  {
+    "name": "asparagussoup",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 20,
+      "hunger": 18.75,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.asparagus || names.asparagus_cooked) && tags.veggie && tags.veggie > 2 && ! tags.meat && ! tags.inedible",
+    "card_def": [
+      [
+        "asparagus",
+        2
+      ],
+      [
+        "potato",
+        1
+      ],
+      [
+        "onion",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "vegstinger",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 15,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 3,
+      "hunger": 25,
+      "sanity": 33,
+      "perishtime": 7200,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.asparagus || names.asparagus_cooked || names.tomato || names.tomato_cooked) && tags.veggie && tags.veggie > 2 && tags.frozen && ! tags.meat && ! tags.inedible && ! tags.egg",
+    "card_def": null
+  },
+  {
+    "name": "bananapop",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 20,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 20,
+      "hunger": 12.5,
+      "sanity": 33,
+      "perishtime": 1440,
+      "cooktime": 0.5,
+      "temperature": -40,
+      "temperatureduration": 10
+    },
+    "test": "(names.cave_banana || names.cave_banana_cooked) && tags.frozen && names.twigs && ! tags.meat && ! tags.fish",
+    "card_def": [
+      [
+        "cave_banana",
+        1
+      ],
+      [
+        "ice",
+        2
+      ],
+      [
+        "twigs",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "frozenbananadaiquiri",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 2,
+    "weight": 1,
+    "foodtype": "GOODIES",
+    "stats": {
+      "health": 30,
+      "hunger": 18.75,
+      "sanity": 15,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": -40,
+      "temperatureduration": 15
+    },
+    "test": "(names.cave_banana || names.cave_banana_cooked) && (tags.frozen && tags.frozen >= 1) && ! tags.meat && ! tags.fish",
+    "card_def": null
+  },
+  {
+    "name": "bananajuice",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 8,
+      "hunger": 25,
+      "sanity": 33,
+      "perishtime": 7200,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "((names.cave_banana || 0) + (names.cave_banana_cooked || 0) >= 2) && ! tags.meat && ! tags.fish && ! tags.monster",
+    "card_def": null
+  },
+  {
+    "name": "ceviche",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 20,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 25,
+      "sanity": 5,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": -40,
+      "temperatureduration": 10
+    },
+    "test": "tags.fish && tags.fish >= 2 && tags.frozen && ! tags.inedible && ! tags.egg",
+    "card_def": null
+  },
+  {
+    "name": "salsa",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 20,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 3,
+      "hunger": 25,
+      "sanity": 33,
+      "perishtime": 7200,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.tomato || names.tomato_cooked) && (names.onion || names.onion_cooked) && ! tags.meat && ! tags.inedible && ! tags.egg",
+    "card_def": null
+  },
+  {
+    "name": "pepperpopper",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 20,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 30,
+      "hunger": 25,
+      "sanity": -5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": 40,
+      "temperatureduration": 15
+    },
+    "test": "(names.pepper || names.pepper_cooked) && tags.meat && tags.meat <= 1.5 && ! tags.inedible",
+    "card_def": [
+      [
+        "pepper",
+        1
+      ],
+      [
+        "smallmeat",
+        2
+      ],
+      [
+        "potato",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "californiaroll",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 20,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 10,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "((names.kelp || 0) + (names.kelp_cooked || 0) + (names.kelp_dried || 0)) === 2 && (tags.fish && tags.fish >= 1)",
+    "card_def": [
+      [
+        "kelp",
+        2
+      ],
+      [
+        "fishmeat_small",
+        2
+      ]
+    ]
+  },
+  {
+    "name": "seafoodgumbo",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 40,
+      "hunger": 37.5,
+      "sanity": 20,
+      "perishtime": 4800,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.fish && tags.fish > 2",
+    "card_def": null
+  },
+  {
+    "name": "surfnturf",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 60,
+      "hunger": 37.5,
+      "sanity": 33,
+      "perishtime": 4800,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.meat && tags.meat >= 2.5 && tags.fish && tags.fish >= 1.5 && ! tags.frozen",
+    "card_def": null
+  },
+  {
+    "name": "lobsterbisque",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 60,
+      "hunger": 25,
+      "sanity": 10,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.wobster_sheller_land && tags.frozen",
+    "card_def": null
+  },
+  {
+    "name": "lobsterdinner",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 25,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 60,
+      "hunger": 37.5,
+      "sanity": 50,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.wobster_sheller_land && names.butter && (tags.meat && tags.meat >= 1.0) && (tags.fish && tags.fish >= 1.0) && ! tags.frozen",
+    "card_def": null
+  },
+  {
+    "name": "barnaclepita",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 25,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.barnacle || names.barnacle_cooked) && tags.veggie && tags.veggie >= 0.5",
+    "card_def": null
+  },
+  {
+    "name": "barnaclesushi",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 40,
+      "hunger": 37.5,
+      "sanity": 15,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.barnacle || names.barnacle_cooked) && (names.kelp || names.kelp_cooked) && tags.egg && tags.egg >= 1",
+    "card_def": [
+      [
+        "barnacle",
+        1
+      ],
+      [
+        "kelp",
+        2
+      ],
+      [
+        "bird_egg",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "barnaclinguine",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 30,
+      "hunger": 75,
+      "sanity": 20,
+      "perishtime": 2880,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "((names.barnacle || 0) + (names.barnacle_cooked || 0) >= 2 ) && tags.veggie && tags.veggie >= 2",
+    "card_def": null
+  },
+  {
+    "name": "barnaclestuffedfishhead",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 26,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 75,
+      "sanity": 0,
+      "perishtime": 1440,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.barnacle || names.barnacle_cooked) && tags.fish && tags.fish >= 1.25",
+    "card_def": [
+      [
+        "barnacle",
+        1
+      ],
+      [
+        "fishmeat_small",
+        2
+      ],
+      [
+        "potato",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "leafloaf",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 25,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 8,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 9600,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "((names.plantmeat || 0) + (names.plantmeat_cooked || 0) >= 2 )",
+    "card_def": null
+  },
+  {
+    "name": "leafymeatburger",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 26,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 30,
+      "hunger": 37.5,
+      "sanity": 33,
+      "perishtime": 2880,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.plantmeat || names.plantmeat_cooked) && (names.onion || names.onion_cooked) && tags.veggie && tags.veggie >= 2",
+    "card_def": null
+  },
+  {
+    "name": "leafymeatsouffle",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 50,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 0,
+      "hunger": 37.5,
+      "sanity": 50,
+      "perishtime": 2880,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "((names.plantmeat || 0) + (names.plantmeat_cooked || 0) >= 2 ) && tags.sweetener && tags.sweetener >= 2",
+    "card_def": null
+  },
+  {
+    "name": "meatysalad",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 25,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 40,
+      "hunger": 75,
+      "sanity": 5,
+      "perishtime": 2880,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.plantmeat || names.plantmeat_cooked) && tags.veggie && tags.veggie >= 3",
+    "card_def": [
+      [
+        "plantmeat",
+        1
+      ],
+      [
+        "tomato",
+        2
+      ],
+      [
+        "carrot",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "shroomcake",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "GOODIES",
+    "stats": {
+      "health": 0,
+      "hunger": 25,
+      "sanity": 10,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.moon_cap && names.red_cap && names.blue_cap && names.green_cap",
+    "card_def": null
+  },
+  {
+    "name": "sweettea",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "GOODIES",
+    "stats": {
+      "health": 3,
+      "hunger": 0,
+      "sanity": 15,
+      "perishtime": 1440,
+      "cooktime": 1,
+      "temperature": 40,
+      "temperatureduration": 5
+    },
+    "test": "names.forgetmelots && tags.sweetener && tags.frozen && ! tags.monster && ! tags.veggie && ! tags.meat && ! tags.fish && ! tags.egg && ! tags.fat && ! tags.dairy && ! tags.inedible",
+    "card_def": [
+      [
+        "forgetmelots",
+        1
+      ],
+      [
+        "honey",
+        1
+      ],
+      [
+        "ice",
+        2
+      ]
+    ]
+  },
+  {
+    "name": "koalefig_trunk",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 40,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 60,
+      "hunger": 150,
+      "sanity": 15,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.trunk_summer || names.trunk_cooked || names.trunk_winter) && (names.fig || names.fig_cooked)",
+    "card_def": null
+  },
+  {
+    "name": "figatoni",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "VEGGIE",
+    "stats": {
+      "health": 30,
+      "hunger": 56.25,
+      "sanity": 15,
+      "perishtime": 2880,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.fig || names.fig_cooked) && tags.veggie && tags.veggie >= 2 && ! tags.meat",
+    "card_def": null
+  },
+  {
+    "name": "figkabab",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 10,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": 40,
+      "temperatureduration": 15
+    },
+    "test": "(names.fig || names.fig_cooked) && names.twigs && tags.meat && tags.meat >= 1 && (! tags.monster || tags.monster <= 1)",
+    "card_def": [
+      [
+        "fig",
+        1
+      ],
+      [
+        "twigs",
+        1
+      ],
+      [
+        "smallmeat",
+        2
+      ]
+    ]
+  },
+  {
+    "name": "frognewton",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 25,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": 40,
+      "temperatureduration": 15
+    },
+    "test": "(names.fig || names.fig_cooked) && (names.froglegs || names.froglegs_cooked)",
+    "card_def": null
+  },
+  {
+    "name": "bunnystew",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": 40,
+      "temperatureduration": 5
+    },
+    "test": "(tags.meat && tags.meat < 1) && (tags.frozen && tags.frozen >= 2) && (! tags.inedible)",
+    "card_def": [
+      [
+        "smallmeat",
+        1
+      ],
+      [
+        "ice",
+        2
+      ],
+      [
+        "tomato",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "justeggs",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 0,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 3,
+      "hunger": 50,
+      "sanity": 5,
+      "perishtime": 4800,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.egg && tags.egg >= 3",
+    "card_def": null
+  },
+  {
+    "name": "veggieomlet",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 1,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 20,
+      "hunger": 37.5,
+      "sanity": 5,
+      "perishtime": 9600,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.egg && tags.egg >= 1 && tags.veggie && tags.veggie >= 1 && ! tags.meat && ! tags.dairy",
+    "card_def": null
+  },
+  {
+    "name": "talleggs",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 10,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": 60,
+      "hunger": 150,
+      "sanity": 5,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.tallbirdegg && tags.veggie && tags.veggie >= 1",
+    "card_def": null
+  },
+  {
+    "name": "beefalofeed",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": -5,
+    "weight": 1,
+    "foodtype": "ROUGHAGE",
+    "stats": {
+      "health": 15,
+      "hunger": 100,
+      "sanity": 0,
+      "perishtime": 9600,
+      "cooktime": 0.5,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.inedible && ! tags.monster && ! tags.meat && ! tags.fish && ! tags.egg && ! tags.fat && ! tags.dairy && ! tags.magic",
+    "card_def": [
+      [
+        "twigs",
+        3
+      ],
+      [
+        "acorn",
+        1
+      ]
+    ]
+  },
+  {
+    "name": "beefalotreat",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": -4,
+    "weight": 1,
+    "foodtype": "ROUGHAGE",
+    "stats": {
+      "health": 75,
+      "hunger": 25,
+      "sanity": 0,
+      "perishtime": 9600,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "tags.inedible && tags.seed && names.forgetmelots && ! tags.monster && ! tags.meat && ! tags.fish && ! tags.egg && ! tags.fat && ! tags.dairy && ! tags.magic",
+    "card_def": null
+  },
+  {
+    "name": "shroombait",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 30,
+    "weight": 1,
+    "foodtype": "MEAT",
+    "stats": {
+      "health": -20,
+      "hunger": 18.75,
+      "sanity": -15,
+      "perishtime": 7200,
+      "cooktime": 1,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "((names.moon_cap || 0) >= 2 ) && names.monstermeat",
+    "card_def": null
+  },
+  {
+    "name": "batnosehat",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 55,
+    "weight": 1,
+    "foodtype": null,
+    "stats": {
+      "health": 0,
+      "hunger": 3.90625,
+      "sanity": 0,
+      "perishtime": 7200,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "names.batnose && names.kelp && (tags.dairy && tags.dairy >= 1)",
+    "card_def": null
+  },
+  {
+    "name": "dustmeringue",
+    "cookers": [
+      "cookpot",
+      "portablecookpot",
+      "archive_cookpot"
+    ],
+    "priority": 100,
+    "weight": 1,
+    "foodtype": "ELEMENTAL",
+    "stats": {
+      "health": 0,
+      "hunger": 12.5,
+      "sanity": 0,
+      "perishtime": null,
+      "cooktime": 2,
+      "temperature": null,
+      "temperatureduration": null
+    },
+    "test": "(names.refined_dust)",
+    "card_def": null
+  }
+]
