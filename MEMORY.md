@@ -27,3 +27,18 @@
   correct: ใช้ native value setter + `dispatchEvent(new Event("input",{bubbles:true}))` ผ่าน javascript_tool.
 - **อ่าน DOM ทันทีหลัง .click() ใน javascript_tool ได้ค่าเก่า** — React 18 batch render ไม่ทัน.
   correct: verify ผลด้วย screenshot แยก call ไม่ใช่อ่าน DOM ใน call เดียวกับ click.
+- **parser เงื่อนไขสูตร drop clause เงียบๆ 35/70 สูตร** (เช่น Dragonpie ไม่โชว์ว่าบังคับแก้วมังกร).
+  root cause 2 ชั้น: (1) `splitTopLevel(part,"||")` ถูกเรียกโดยไม่ strip วงเล็บก่อน → `(A||B)` ไม่ถูก
+  split แล้ว parseAtom คืน null → clause หายไปเฉยๆ (2) `stripOuterParens` เช็คแค่ "จำนวนวงเล็บเท่ากัน"
+  ทำให้ `(A) && (B)` ถูกตัดวงเล็บนอกผิด → depth เพี้ยน → 2 กลุ่ม OR ถูกยุบรวมเป็นกลุ่มเดียว (unagi).
+  correct: parser ต้อง (ก) เดิน expression แบบ recursive ไม่ใช่ 1 ชั้น (ข) strip วงเล็บเฉพาะเมื่อ
+  วงเล็บตัวแรก "คู่กับ" ตัวสุดท้ายจริง (ค) มี `scripts/validate_rules.mjs` เทียบ chip กับ names.* ใน
+  test ทุกสูตรกัน regress — **อย่าเชื่อ UI ว่าถูกเพราะมันแสดงผลได้ ต้องมี test เทียบกับ source จริง**
+- **อย่า derive "เงื่อนไขสูตร" จาก card_def** — card_def คือ *ตัวอย่าง* combo เดียว การเอา tag รวมของมัน
+  มาโชว์ใต้หัวข้อ "How to make" ทำให้กลายเป็นข้อมูลผิด (Dragonpie ขึ้น "Fruit 2, Veggie 2" ทั้งที่จริง
+  บังคับแค่แก้วมังกร + ห้ามเนื้อ). correct: อ่านจาก `recipe.test` เท่านั้น.
+- **flag ในไฟล์เกมไม่ได้แปลว่าไอเทมมีอยู่จริง** — `cancook`/`candry` ของ `AddIngredientValues`
+  บอกแค่ว่าตาราง cooking tag ควรมี row นั้น ไม่ได้แปลว่าปรุง/ตากได้จริง → เราสร้างวัตถุดิบผี 6 ตัว
+  (honey_cooked ฯลฯ). correct: ยืนยันการมีอยู่ของไอเทมกับ `prefabs/*.lua` (component `cookable`/
+  `dryable` + ชื่อ product + Prefab ที่ register จริง) และทำ **positive control** เสมอ (เช็คว่า
+  meats/veggies เจอ cookable จริง) ก่อนสรุปว่า "ไม่เจอ = ไม่มี"
