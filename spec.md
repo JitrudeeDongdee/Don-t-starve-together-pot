@@ -226,6 +226,31 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
 - **ItemIcon ตัดกรอบซ้อนชั้นในออก:** หลังเปลี่ยน square เป็น default พบกรอบซ้อนสองชั้น
   (`.item-icon-square` + border ที่ `<img>` ด้านใน) จึงเอา border ด้านในออกให้เหลือกรอบนอกชั้นเดียว —
   verified: build ✅
+- **Recipe detail Required / Forbidden เป็นไอคอนล้วน:** ปรับ `RuleCard` ให้สอง section นี้ซ่อนไม่ให้แสดง
+  ข้อความของ tag/ingredient เหลือเฉพาะไอคอนในกรอบ; ส่วน `One of these` ยังแสดงข้อความเหมือนเดิม —
+  verified: build ✅
+- **Recipe detail ซ่อน Side Effects ถ้าไม่มีผลจริง:** แสดง section `Side Effects` เฉพาะเมื่อ
+  `temperature` ทำให้เกิดผลลัพธ์จริง (ไม่ใช่ `None/ไม่มี`) — verified: build ✅
+- **Example cook แสดงได้หลายแบบและไม่มีลูกศร:** จากเดิมโชว์ตัวอย่างเดียวพร้อมลูกศร เปลี่ยนเป็น
+  รายการคอมโบตัวอย่างสูงสุด 6 แถว โดยเริ่มจาก `card_def` แล้วลองแทนวัตถุดิบใกล้เคียงที่ยังปรุงเมนูเดิม
+  ได้จริงผ่าน `engine.getCandidates`; ตัดลูกศรและผลลัพธ์ท้ายแถวออก — verified: build ✅
+- **ItemIcon variants ชัดเป็น 3 แบบ:** `plain` = มีพื้นหลังแต่ไม่มีกรอบ, `square` = มีพื้นหลังและ
+  กรอบดำ, `bare` = ไม่มีพื้นหลัง/ไม่มีกรอบ. ปรับจุดที่ไม่ควรมีพื้นหลังซ้อน (เช่น IngredientPicker,
+  RecipeBrowser, บางส่วนใน CookPot, รูปหลักใน RecipeDetail) ให้ใช้ `bare` ชัดเจน — verified: build ✅
+- **ItemIcon เพิ่ม variant `forbidden`:** เพิ่มกรอบสีแดงและเส้นคาดทแยงเป็นลุคห้ามใช้ที่ตัว
+  `ItemIcon` โดยตรง และผูก `RuleCard` ฝั่ง Forbidden ให้ใช้ variant นี้แทนการวาดเส้นทับจาก wrapper —
+  verified: build ✅
+- **ItemIcon forbidden ปรับเป็นโทนดำ + เส้นคาดกลับทิศ:** ปรับ `variant="forbidden"` ให้ใช้กรอบดำ
+  แบบเดียวกับไอคอนปกติ และให้เส้นคาดทแยงพาดจากมุมขวาบนไปมุมซ้ายล่างจริง
+  (`translate(-50%, -50%) rotate(-45deg)` + ขยายความกว้างเส้น) —
+  verified: build ✅
+- **Required Ingredients parser แม่นขึ้น:** ปรับ `RecipeDetail` ให้ parse เงื่อนไข `recipe.test`
+  ได้ครอบคลุมขึ้นสำหรับ `names.x > 1`, `tags.x > 1`, รูปแบบรวมชื่อหลาย variant ที่มีตัวเปรียบเทียบ
+  และตัด required tag/name ซ้ำที่เกิดจากเงื่อนไขคู่กัน เช่น `tags.veggie` + `tags.veggie >= 0.5`
+  ให้เหลือไอคอนเดียวต่อชนิด — verified: build ✅
+- **แยก RecipeDetail เป็นไฟล์ย่อย:** ลดความยาว `src/components/RecipeDetail.tsx` โดยย้าย divider,
+  rule card, example cook renderer, และ utility/parsing logic ไปไว้ใน
+  `src/components/recipe-detail/` เพื่อให้อ่าน/แก้ง่ายขึ้นโดยไม่เปลี่ยนพฤติกรรม — verified: build ✅
 - **Tab เมนูทั้งหมด (tab 2) เต็มจอ:** เมื่อเข้าแท็บ browser ให้ `.app` ขยายเต็มความกว้าง viewport
   (`.app.app-browser { max-width: none; width: 100%; }`) และลิสต์เมนูใช้ความสูงที่เหลือทั้งหมด
   (`.recipe-browser-list` แบบ flex+overflow) — verified: typecheck ✅, build ✅
@@ -255,6 +280,29 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
 - **Kitchen layout ตอนหม้อว่าง:** ถ้ายังไม่มีวัตถุดิบในหม้อ (`filled.length === 0`)
   ให้ `IngredientPicker` ขยายกินพื้นที่หลัก และ panel หม้อย่อลงเหลือเฉพาะส่วนที่จำเป็น เพื่อลดพื้นที่ว่าง —
   verified: typecheck ✅, build ✅
+- **กรอบวัตถุดิบใน IngredientPicker เป็นขอบนอก:** ย้ายกรอบดำจาก `ItemIcon` ด้านในไปไว้ที่
+  `button.tile` โดยตรง และตัดกรอบชั้นในของ `.item-icon-square` ออกเฉพาะในกริดวัตถุดิบ;
+  hover ใช้ `outline` สีทองที่ขอบนอกแทน — verified: typecheck ✅, build ✅
+- **CookPot / RecipeBrowser คุม border ได้ด้วย prop:** เพิ่ม `showBorder?: boolean`
+  ให้ทั้งสองคอมโพเนนต์ และเพิ่มคลาส `.panel-borderless` เพื่อปิดกรอบ/outline/shadow เฉพาะจุดที่เรียกใช้;
+  ปัจจุบัน `App.tsx` ส่ง `showBorder={false}` ให้ทั้ง `CookPot` และ `RecipeBrowser`; และโหมดนี้
+  ปิด border ของ element ย่อยในคอมโพเนนต์ด้วย (slot / suggest row / recipe row / icon frame) —
+  ยังไม่ rerun verify ตาม preference ล่าสุด: ค่อยตรวจตอน push
+- **CookPot แบบ no-border คงพื้นหลัง/กรอบเดิม:** ปรับ `CookPot` ให้ใช้คลาส `panel-no-border`
+  เมื่อ `showBorder={false}` ซึ่งซ่อนเส้น border ด้วย `border-color: transparent` แต่ยังคง background,
+  outline, spacing และ shadow เดิมไว้; ส่วน `RecipeBrowser` ยังใช้ `panel-borderless` แบบโล่งเต็ม —
+  ยังไม่ rerun verify ตาม preference ล่าสุด: ค่อยตรวจตอน push
+- **SEO พื้นฐานเพิ่มแล้ว:** `index.html` มี title + meta description + robots meta + canonical +
+  OG/Twitter text meta, หน้า app มี `h1` แบบ `sr-only`, และเพิ่ม `public/robots.txt` /
+  `public/sitemap.xml` สำหรับ URL `https://jitrudeedongdee.github.io/Don-t-starve-together-pot/` —
+  ยังไม่ rerun verify ตาม preference ล่าสุด: ค่อยตรวจตอน push
+- **Vite รองรับ GitHub Pages path แล้ว:** ตั้ง `base: '/Don-t-starve-together-pot/'` ใน
+  `vite.config.ts` เพื่อให้ asset/build path ตรงกับ subpath ของ GitHub Pages repo นี้ —
+  ยังไม่ rerun verify ตาม preference ล่าสุด: ค่อยตรวจตอน push
+- **GitHub Pages auto deploy workflow เพิ่มแล้ว:** สร้าง `.github/workflows/deploy.yml`
+  ให้ build ด้วย `npm ci` + `npm run build` แล้ว deploy ไป Pages เมื่อมี push เข้า `main`
+  (และรันมือได้ผ่าน `workflow_dispatch`) — ยังไม่ rerun verify ตาม preference ล่าสุด:
+  ค่อยตรวจตอน push
 - **จัดหัว UI ประหยัดพื้นที่ (คำขอ 2026-07-18):** ถอด h2 "🍲 Crock Pot" + "🥕 Ingredients"
   ออก, รวม tab (ชิดซ้าย) + ปุ่มภาษา (ชิดขวา) ไว้แถวเดียว (`.app-header` flex space-between) —
   verified screenshot. RecipeBrowser ยังคง h2 "📖 All Recipes (N)" (ไม่ได้ถูกขอให้เอาออก)

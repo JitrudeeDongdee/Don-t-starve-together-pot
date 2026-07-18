@@ -6,7 +6,7 @@ interface Props {
   size?: number;
   /** What to show when there is no art: 'placeholder' = "?" box, 'name' = the item name. */
   fallback?: "placeholder" | "name";
-  variant?: "plain" | "square";
+  variant?: "plain" | "square" | "bare" | "forbidden";
 }
 
 /**
@@ -18,23 +18,28 @@ export default function ItemIcon({
   prefab,
   size = 36,
   fallback = "placeholder",
-  variant = "square",
+  variant = "plain",
 }: Props) {
   const src = iconOf(prefab);
   const [failed, setFailed] = useState(false);
   const label = displayName(prefab);
   const hasArt = Boolean(src && !failed);
+  const frameClass =
+    variant === "square"
+      ? "item-icon-square"
+      : variant === "forbidden"
+        ? "item-icon-forbidden"
+        : "item-icon-plain";
 
-  if (variant === "square") {
+  if (variant !== "bare") {
     return (
       <span
-        className="item-icon-square"
+        className={frameClass}
         title={label}
         aria-label={label}
-        style={{ width: size, height: size, }}
+        style={{ width: size, height: size }}
       >
-        {
-        hasArt ? (
+        {hasArt ? (
           <img
             src={`${import.meta.env.BASE_URL}${src}`}
             alt={label}
@@ -44,11 +49,9 @@ export default function ItemIcon({
             onError={() => setFailed(true)}
             style={{ imageRendering: "auto", objectFit: "contain" }}
           />
-        ) : 
-        fallback === "name" ? (
+        ) : fallback === "name" ? (
           <span className="item-icon-square-name">{label}</span>
-        ) : 
-        (
+        ) : (
           <span className="item-icon-square-ph" aria-hidden="true">
             ?
           </span>
@@ -74,7 +77,7 @@ export default function ItemIcon({
   if (fallback === "name") {
     return (
       <span
-        className="icon-name"
+        className="icon-name icon-name-bare"
         style={{ width: size, height: size }}
         title={label}
       >
@@ -85,7 +88,7 @@ export default function ItemIcon({
 
   return (
     <span
-      className="icon-ph"
+      className="icon-ph icon-ph-bare"
       role="img"
       aria-label={label}
       title={label}

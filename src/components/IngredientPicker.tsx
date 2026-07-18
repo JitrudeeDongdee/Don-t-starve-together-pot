@@ -61,7 +61,7 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
             title={`${displayName(n, locale)} — ${CATEGORY_LABEL[locale][filterBucket(n)]}`}
             onClick={() => onAdd(n)}
           >
-            <ItemIcon prefab={n} size={44} fallback="name" />
+            <ItemIcon prefab={n} size={44} fallback="name" variant="bare" />
           </button>
         ))}
       </div>

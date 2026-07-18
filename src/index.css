@@ -37,6 +37,18 @@ body {
   min-height: 100vh;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .app {
   max-width: 1080px;
   height: 100dvh;
@@ -113,6 +125,30 @@ body {
   border-radius: 14px;
   padding: 1.1rem 1.2rem;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+}
+.panel.panel-borderless {
+  border: none;
+  outline: none;
+  outline-offset: 0;
+  box-shadow: none;
+}
+.panel.panel-no-border {
+  border-color: transparent;
+}
+.panel.panel-borderless .slot,
+.panel.panel-borderless .suggest-item,
+.panel.panel-borderless .recipe-row {
+  border: none;
+  box-shadow: none;
+}
+.panel.panel-borderless .slot.filled {
+  background: transparent;
+}
+.panel.panel-borderless .item-icon-square {
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 .content > .panel,
 .layout > .panel {
@@ -215,19 +251,50 @@ body {
   overflow: hidden;
   word-break: break-word;
 }
-.item-icon-square {
+.icon-name-bare,
+.icon-ph-bare {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.item-icon-square,
+.item-icon-plain,
+.item-icon-forbidden {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 4px;
   border-radius: 8px;
   background: var(--paper-inset);
-  border: 4px solid #000;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.22);
   overflow: hidden;
   flex: none;
 }
-.item-icon-square img {
+.item-icon-square {
+  border: 4px solid #000;
+}
+.item-icon-plain {
+  border: none;
+}
+.item-icon-forbidden {
+  position: relative;
+  border: 4px solid #000;
+}
+.item-icon-forbidden::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% + 18px);
+  border-top: 3px solid #000;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+.item-icon-square img,
+.item-icon-plain img,
+.item-icon-forbidden img {
   filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.35));
 }
 .item-icon-square-name,
@@ -289,13 +356,23 @@ body {
   aspect-ratio: 1; border-radius: 8px; padding: 4px; cursor: pointer;
   background: var(--paper-inset);
   display: flex; align-items: center; justify-content: center;
-  border: 2px solid var(--line);
+  border: 3px solid #422b17;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.22);
   transition: transform 0.08s;
 }
-.tile:hover { transform: translateY(-2px); border-color: var(--gold-bright); }
+.tile:hover {
+  transform: translateY(-2px);
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 1px;
+}
 .tile:disabled { filter: grayscale(0.5) opacity(0.5); cursor: not-allowed; }
 .tile img { filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.35)); }
+.tile .item-icon-square {
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
 
 /* ---------- suggest & recipe rows ---------- */
 .suggest-item, .recipe-row {
@@ -406,15 +483,13 @@ body {
   color: var(--ink);
   box-shadow: 0 2px 3px rgba(0,0,0,0.2);
 }
-.cook-example {
+.cook-example-list {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
+  flex-direction: column;
+  gap: 0.45rem;
   margin: 0.35rem 0 0.15rem;
-  flex-wrap: wrap;
 }
-.cook-example-slots {
+.cook-example-row {
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -423,23 +498,6 @@ body {
 }
 .cook-example-slot {
   display: inline-flex;
-}
-.cook-example-arrow {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--gold);
-}
-.cook-example-result {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-}
-.cook-example-name {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--ink);
-  text-align: center;
 }
 .cond { margin: 0.35rem 0 0; padding-left: 1.2rem; color: var(--ink); }
 .cond li { margin: 0.18rem 0; }
@@ -491,16 +549,6 @@ body {
   color: var(--danger);
   text-decoration: line-through;
 }
-.rule-chip.forbidden .rule-icon-wrap::after {
-  content: '';
-  position: absolute;
-  left: -2px;
-  right: -2px;
-  top: 50%;
-  border-top: 2px solid var(--danger);
-  transform: rotate(-22deg);
-}
-
 .contact-modal { max-width: 520px; }
 .contact-wrap { display: flex; flex-direction: column; gap: 0.35rem; }
 .contact-avatar {

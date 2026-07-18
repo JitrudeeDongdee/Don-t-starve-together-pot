@@ -30,6 +30,7 @@ interface Props {
   suggestion: Suggestion | null;
   onRemove: (i: number) => void;
   onSelectRecipe: (name: string) => void;
+  showBorder?: boolean;
 }
 
 function MiniStats({ name }: { name: string }) {
@@ -44,7 +45,13 @@ function IngredientStats({ name }: { name: string }) {
   return <StatMeters stats={stats} size="sm" />;
 }
 
-export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }: Props) {
+export default function CookPot({
+  slots,
+  suggestion,
+  onRemove,
+  onSelectRecipe,
+  showBorder = true,
+}: Props) {
   const { locale, t } = useLocale();
   const filled = slots.filter((s): s is string => Boolean(s));
   const potData = filled.length > 0 ? engine.getIngredientData(filled) : null;
@@ -56,7 +63,7 @@ export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }:
     : [];
 
   return (
-    <div className="panel pot-wrap">
+    <div className={`panel pot-wrap${showBorder ? '' : ' panel-no-border'}`}>
       <div className="pot">
         {slots.map((s, i) => (
           <div
@@ -65,7 +72,7 @@ export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }:
             title={s ? `${displayName(s, locale)} — ${t.removeHint}` : `${t.emptySlot} ${i + 1}`}
             onClick={() => s && onRemove(i)}
           >
-            {s ? <ItemIcon prefab={s} size={54} fallback="name" /> : '+'}
+            {s ? <ItemIcon variant='plain'  prefab={s} size={54} fallback="name" /> : '+'}
           </div>
         ))}
       </div>
@@ -76,7 +83,7 @@ export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }:
             {suggestion.exact?.map((c) => (
               <button key={c.name} className="suggest-item" onClick={() => onSelectRecipe(c.name)}>
                 <span className="suggest-name">
-                  <ItemIcon prefab={c.name} size={28} />
+                  <ItemIcon variant='plain' prefab={c.name} size={28} />
                   {displayName(c.name, locale)}
                 </span>
                 <MiniStats name={c.name} />
@@ -86,7 +93,7 @@ export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }:
             {suggestion.reach?.map((r) => (
               <button key={r.name} className="suggest-item" onClick={() => onSelectRecipe(r.name)}>
                 <span className="suggest-name">
-                  <ItemIcon prefab={r.name} size={28} />
+                  <ItemIcon variant='plain' prefab={r.name} size={28} />
                   {displayName(r.name, locale)}
                 </span>
                 <MiniStats name={r.name} />
@@ -99,7 +106,7 @@ export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }:
                 {nameEntries.map(([name, count]) => (
                   <div key={`pot-ing-${name}`} className="suggest-item suggest-static-item">
                     <span className="suggest-name">
-                      <ItemIcon prefab={name} size={24} fallback="name" />
+                      <ItemIcon prefab={name} size={24} fallback="name" variant="bare" />
                       {displayName(name, locale)}
                       {count > 1 && <b className="pot-ing-count">×{count}</b>}
                     </span>
@@ -117,7 +124,7 @@ export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }:
                     style={{ borderColor: TAG_COLOR[tag] ?? 'var(--line)' }}
                   >
                     <span className="suggest-name">
-                      <ItemIcon prefab={TAG_ICON_PREFAB[tag] ?? tag} size={24} fallback="name" />
+                      <ItemIcon prefab={TAG_ICON_PREFAB[tag] ?? tag} size={24} fallback="name" variant="bare" />
                       {TAG_SHORT[locale][tag] ?? tag}
                     </span>
                     <span className="pct pot-summary-val">

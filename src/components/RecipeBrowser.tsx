@@ -6,7 +6,12 @@ import ItemIcon from './ItemIcon';
 import SearchBox from './SearchBox';
 import StatMeters from './StatMeters';
 
-export default function RecipeBrowser({ onSelect }: { onSelect: (name: string) => void }) {
+interface Props {
+  onSelect: (name: string) => void;
+  showBorder?: boolean;
+}
+
+export default function RecipeBrowser({ onSelect, showBorder = true }: Props) {
   const { locale, t } = useLocale();
   const [q, setQ] = useState('');
   const list = useMemo(() => {
@@ -17,14 +22,14 @@ export default function RecipeBrowser({ onSelect }: { onSelect: (name: string) =
   }, [q, locale]);
 
   return (
-    <div className="panel">
+    <div className={`panel${showBorder ? '' : ' panel-borderless'}`}>
       <h2>📖 {t.allRecipes} ({list.length})</h2>
       <SearchBox value={q} onChange={setQ} placeholder={t.searchRecipe} />
       <div className="recipe-browser-list">
         {list.map((r) => (
           <button key={r.name} className="recipe-row" onClick={() => onSelect(r.name)}>
             <span className="suggest-name">
-              <ItemIcon prefab={r.name} size={32} />
+              <ItemIcon prefab={r.name} size={32} variant="bare" />
               {displayName(r.name, locale)}
             </span>
             <StatMeters stats={r.stats} size="sm" />

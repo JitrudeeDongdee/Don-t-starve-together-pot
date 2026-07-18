@@ -88,6 +88,11 @@ export default function App() {
       </header>
 
       <main className="content">
+        <h1 className="sr-only">
+          {locale === 'th'
+            ? 'เครื่องจำลองสูตรหม้อปรุงอาหาร Don’t Starve Together'
+            : 'Don’t Starve Together Crock Pot Simulator'}
+        </h1>
         {tab === 'kitchen' ? (
           <div className={`layout${filled.length === 0 ? ' layout-empty' : ''}`}>
             <CookPot
@@ -95,11 +100,12 @@ export default function App() {
               suggestion={suggestion}
               onRemove={removeSlot}
               onSelectRecipe={openDetail}
+              showBorder={false}
             />
             <IngredientPicker potFull={ready} onAdd={addIngredient} />
           </div>
         ) : (
-          <RecipeBrowser onSelect={openDetail} />
+          <RecipeBrowser onSelect={openDetail} showBorder={false} />
         )}
       </main>
 
