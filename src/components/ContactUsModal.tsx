@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocale } from '../i18n';
+import { recordVisit, type VisitCount } from '../visits';
 
 interface GithubProfile {
   avatar_url: string;
@@ -32,6 +33,17 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
   const [profile, setProfile] = useState<GithubProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [visits, setVisits] = useState<VisitCount | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    recordVisit().then((v) => {
+      if (active) setVisits(v);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -72,6 +84,15 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
         <button className="close-x" onClick={onClose}>✕</button>
         <h2 className="dish-title">{t.contactInfo}</h2>
         <div className="flourish"><span>✉</span></div>
+
+        {visits && (
+          <p className="visit-counter">
+            <b>{t.totalVisits}:</b> {visits.value.toLocaleString()}
+            {visits.source === 'snapshot' && (
+              <span className="visit-stale"> ({t.visitsOffline} {visits.snapshotAt})</span>
+            )}
+          </p>
+        )}
 
         {loading && <p className="contact-line">{t.loadingContact}</p>}
         {error && <p className="contact-line contact-error">{error}</p>}

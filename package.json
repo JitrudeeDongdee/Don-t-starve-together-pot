@@ -10,6 +10,7 @@
     "validate-rules": "node scripts/validate_rules.mjs",
     "validate-examples": "node scripts/validate_examples.mjs",
     "cook-examples": "node scripts/cook_examples.mjs",
+    "snapshot-visits": "node scripts/snapshot_visits.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
