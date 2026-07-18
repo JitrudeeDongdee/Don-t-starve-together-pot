@@ -58,8 +58,11 @@ body {
   flex-direction: column;
   gap: 0.6rem;
 }
+/* Single-column recipe list, so keep the column narrow enough to read in one
+   glance — a full-width row makes the eye sweep from the name to the
+   far-right stats. */
 .app.app-browser {
-  max-width: none;
+  max-width: 860px;
   width: 100%;
 }
 
@@ -85,7 +88,19 @@ body {
 .lang-toggle:hover, .contact-toggle:hover { border-color: var(--gold-bright); }
 
 /* ---------- book tabs ---------- */
-.tabs { display: flex; gap: 0.35rem; }
+/* Equal-width tabs regardless of label length or language. Grid (not flex) on
+   purpose: every auto column shares one sizing function, so both tabs resolve
+   to the SAME width — with flex + min-width, a label longer than the floor
+   would grow only its own tab and break the pairing. */
+.tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(8.5rem, 1fr);
+  gap: 0.35rem;
+}
+.tabs .tab {
+  text-align: center;
+}
 .tab {
   background: #392a1a; color: #b7a276;
   border: 2px solid var(--frame); border-bottom: none;
@@ -393,6 +408,7 @@ body {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  padding-right: 4px;
 }
 .pct { font-weight: 800; color: var(--gold); font-size: 1.05rem; }
 .badge {
