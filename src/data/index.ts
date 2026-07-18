@@ -1,11 +1,16 @@
 // Typed data loader — Vite imports the extracted JSON directly.
 import ingredientsJson from './ingredients.json';
 import recipesJson from './recipes.json';
+import ingredientStatsJson from './ingredient_stats.json';
 import { createEngine } from '../engine/cooking';
 import type { IngredientDB, Recipe } from '../engine/types';
 
 export const db = ingredientsJson as IngredientDB;
 export const recipes = recipesJson as Recipe[];
+export const ingredientStats = ingredientStatsJson as Record<
+  string,
+  { health: number | null; hunger: number | null; sanity: number | null } | null
+>;
 export const engine = createEngine(db, recipes);
 
 /** Sorted list of all cookable prefab names (for the ingredient picker). */

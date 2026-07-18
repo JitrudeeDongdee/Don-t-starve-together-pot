@@ -6,9 +6,12 @@ import IngredientPicker from './components/IngredientPicker';
 import CookPot, { type Suggestion } from './components/CookPot';
 import RecipeBrowser from './components/RecipeBrowser';
 import RecipeDetail from './components/RecipeDetail';
+import ContactUsModal from './components/ContactUsModal';
 
 const COOKER = 'cookpot';
 const EMPTY: (string | null)[] = [null, null, null, null];
+const CONTACT_EMAIL = 'jitrudee9723@gmail.com';
+const CONTACT_LINKEDIN = 'https://www.linkedin.com/in/jitreudee-doungdee-a034972a6/';
 
 type Tab = 'kitchen' | 'browser';
 
@@ -17,6 +20,7 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('kitchen');
   const [slots, setSlots] = useState<(string | null)[]>(EMPTY);
   const [detail, setDetail] = useState<string | null>(null);
+  const [showContact, setShowContact] = useState(false);
 
   useEffect(() => initAnalytics(), []);
 
@@ -58,36 +62,56 @@ export default function App() {
   const detailRecipe = detail ? recipeByName.get(detail) ?? null : null;
 
   return (
-    <div className="app">
+    <div className={`app${tab === 'browser' ? ' app-browser' : ''}`}>
       <header className="app-header">
         <nav className="tabs">
           <button className={`tab${tab === 'kitchen' ? ' active' : ''}`} onClick={() => setTab('kitchen')}>{t.kitchen}</button>
           <button className={`tab${tab === 'browser' ? ' active' : ''}`} onClick={() => setTab('browser')}>{t.allRecipes}</button>
         </nav>
-        <button
-          className="lang-toggle"
-          onClick={() => setLocale(locale === 'th' ? 'en' : 'th')}
-          title={locale === 'th' ? 'Switch to English' : 'เปลี่ยนเป็นภาษาไทย'}
-        >
-          🌐 {locale === 'th' ? 'EN' : 'ไทย'}
-        </button>
+        <div className="header-actions">
+          <button
+            className="contact-toggle"
+            onClick={() => setShowContact(true)}
+            title={t.contactUs}
+            aria-label={t.contactUs}
+          >
+            ✉
+          </button>
+          <button
+            className="lang-toggle"
+            onClick={() => setLocale(locale === 'th' ? 'en' : 'th')}
+            title={locale === 'th' ? 'Switch to English' : 'เปลี่ยนเป็นภาษาไทย'}
+          >
+            🌐 {locale === 'th' ? 'EN' : 'ไทย'}
+          </button>
+        </div>
       </header>
 
-      {tab === 'kitchen' ? (
-        <div className="layout">
-          <CookPot
-            slots={slots}
-            suggestion={suggestion}
-            onRemove={removeSlot}
-            onSelectRecipe={openDetail}
-          />
-          <IngredientPicker potFull={ready} onAdd={addIngredient} />
-        </div>
-      ) : (
-        <RecipeBrowser onSelect={openDetail} />
-      )}
+      <main className="content">
+        {tab === 'kitchen' ? (
+          <div className={`layout${filled.length === 0 ? ' layout-empty' : ''}`}>
+            <CookPot
+              slots={slots}
+              suggestion={suggestion}
+              onRemove={removeSlot}
+              onSelectRecipe={openDetail}
+            />
+            <IngredientPicker potFull={ready} onAdd={addIngredient} />
+          </div>
+        ) : (
+          <RecipeBrowser onSelect={openDetail} />
+        )}
+      </main>
 
       {detailRecipe && <RecipeDetail recipe={detailRecipe} onClose={() => setDetail(null)} />}
+      {showContact && (
+        <ContactUsModal
+          username="JitrudeeDongdee"
+          publicEmail={CONTACT_EMAIL}
+          linkedInUrl={CONTACT_LINKEDIN}
+          onClose={() => setShowContact(false)}
+        />
+      )}
     </div>
   );
 }

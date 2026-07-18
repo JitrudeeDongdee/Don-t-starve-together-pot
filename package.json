@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "extract": "node scripts/extract.mjs",
+    "ingredient-stats": "node scripts/ingredient_stats.mjs",
     "validate": "node scripts/validate.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",

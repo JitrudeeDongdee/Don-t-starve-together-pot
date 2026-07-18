@@ -20,7 +20,7 @@ export default function RecipeBrowser({ onSelect }: { onSelect: (name: string) =
     <div className="panel">
       <h2>📖 {t.allRecipes} ({list.length})</h2>
       <SearchBox value={q} onChange={setQ} placeholder={t.searchRecipe} />
-      <div style={{ maxHeight: 560, overflowY: 'auto' }}>
+      <div className="recipe-browser-list">
         {list.map((r) => (
           <button key={r.name} className="recipe-row" onClick={() => onSelect(r.name)}>
             <span className="suggest-name">

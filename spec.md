@@ -190,6 +190,65 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
 - **fallback รูปที่ดึงไม่ได้ (ItemIcon):** ถ้าเป็น **ingredient** ให้แสดง "ชื่อวัตถุดิบ" ในกรอบแทนรูป
   (ใน IngredientPicker / ช่องหม้อ / card_def ใน RecipeDetail); ส่วนกรณีอื่นยังใช้ placeholder "?"
   ตามเดิม — verified: typecheck ✅, validate 27/27 ✅, build ✅
+- **ล็อกไม่ให้เลื่อนจอแนวตั้ง:** ตั้ง `html/body/#root` เป็น `overflow: hidden` และปรับ `.app/.content/.layout`
+  ให้เป็น fixed viewport + scroll เฉพาะภายใน panel/list (suggestion/grid/browser list) —
+  verified: build ✅, หน้าไม่เกิด page vertical scrollbar
+- **เพิ่ม Contact us ข้างปุ่มภาษา:** ปุ่ม `✉ Contact us` ใน header เปิด modal แล้วดึงข้อมูลจาก
+  `https://api.github.com/users/JitrudeeDongdee` แสดง avatar + profile/contact fields
+  (GitHub, name, bio, location, company, email, website, X) พร้อม loading/error state — verified: typecheck ✅, build ✅
+- **Contact us แสดงอีเมล+LinkedIn แบบกำหนดตรง:** เพิ่ม `publicEmail` และ `linkedInUrl` ใน
+  `ContactUsModal` และส่งค่าจาก `App.tsx` (`jitrudee9723@gmail.com`,
+  `https://www.linkedin.com/in/jitreudee-doungdee-a034972a6/`) เพื่อให้แสดงได้แน่นอนแม้ GitHub API
+  คืน `email=null` — verified: build ✅
+- **Contact us เพิ่มข้อความใต้รูปแบบสองภาษา + ป้ายสไตล์เกม:** เพิ่ม i18n key `contactProjectNote`
+  (TH/EN) และแสดงใต้ avatar ใน `ContactUsModal` ด้วยคลาส `.contact-note-badge` (พื้น parchment,
+  กรอบเข้ม, เงา inset) ให้ฟีลป้ายในเกม — verified: build ✅
+- **ปุ่ม Contact us ใน header เป็นไอคอนล้วน:** ปรับปุ่มจาก `✉ Contact us` ให้เหลือ `✉` อย่างเดียว
+  ตามคำขอ โดยคง `title`/`aria-label` เป็นข้อความแปลภาษาเพื่อ accessibility — verified: build ✅
+- **Recipe detail ปรับการ์ดวัตถุดิบ + Forbidden section:** ใน `How to make` และ rule chip ที่เป็น
+  ingredient จริง เปลี่ยนมาใช้ `ItemIcon` แบบ `variant="square"` เป็นคอมโพเนนต์กลาง ทำให้ถ้ามีรูป
+  จะแสดงเป็นช่องสี่เหลี่ยมจัตุรัสโดยไม่โชว์ชื่อ; ถ้าไม่มีรูปค่อย fallback เป็นชื่อในช่องเดิม.
+  ส่วนหัวข้อ Forbidden เปลี่ยนจาก `🚫 Forbidden` เป็นเส้นคั่นพร้อมข้อความกลาง (`Divider`) —
+  verified: build ✅
+- **Recipe detail Required section ใช้ divider:** เปลี่ยนหัวข้อ `✅ Required` ให้เป็นเส้นคั่นแนวนอน
+  พร้อมข้อความกลาง (`Divider`) เพื่อให้สไตล์ตรงกับ How to make / Forbidden — verified: build ✅
+- **How to make มีข้อความสรุป tag ของสูตรตัวอย่าง:** เหนือการ์ดวัตถุดิบของ `card_def` แสดงสรุปแบบข้อความ
+  จาก tag รวมของสูตรตัวอย่าง เช่น `Meat 2, Sweet 1` โดยคำนวณผ่าน `engine.getIngredientData`; การ์ด
+  วัตถุดิบด้านล่างยังเป็นสี่เหลี่ยมไอคอนล้วน ไม่แสดงข้อความข้างการ์ด — verified: build ✅
+- **ItemIcon square เพิ่มกรอบดำหนา:** ปรับ `.item-icon-square` จากกรอบเดิมเป็น `4px solid #000`
+  เพื่อให้ช่องไอคอนสี่เหลี่ยมเด่นขึ้นใน Recipe detail / จุดที่ reuse variant นี้ — verified: build ✅
+- **ItemIcon square art เพิ่ม border ด้านใน:** เพิ่มคลาส `item-icon-square-art` ให้ `<img>` ภายใน
+  `ItemIcon` แบบ `variant="square"` และใส่ `border: 2px solid #000` + `border-radius: 6px`
+  เพื่อให้ตัวรูปด้านในมีกรอบดำอีกชั้น — verified: build ✅
+- **Tab เมนูทั้งหมด (tab 2) เต็มจอ:** เมื่อเข้าแท็บ browser ให้ `.app` ขยายเต็มความกว้าง viewport
+  (`.app.app-browser { max-width: none; width: 100%; }`) และลิสต์เมนูใช้ความสูงที่เหลือทั้งหมด
+  (`.recipe-browser-list` แบบ flex+overflow) — verified: typecheck ✅, build ✅
+- **Recipe detail ปรับ “วิธีทำ” เป็นภาพนำ:** เอา section Type/Spoils/Cooking Time ออก,
+  เพิ่ม visual rule cards แยก Required / One-of / Forbidden (Forbidden มีขีดทับบนไอคอน+ข้อความ)
+  โดย parse จาก `recipe.test` + ใช้ไอคอนแทน tag สำคัญ และคง card_def แบบรูปเป็นตัวอย่างสูตร —
+  verified: typecheck ✅, validate 27/27 ✅, build ✅
+- **หน้า Pot เพิ่มข้อมูลในหม้อ + status master:** ใต้ช่องหม้อแสดง
+  1) รายการวัตถุดิบที่ใส่จริงพร้อมจำนวน (`Ingredients in pot`)
+  2) ค่า tag รวม (`Master status`) จาก `engine.getIngredientData` เช่น Meat/Fruit/Monster ...
+  เพื่อให้อ่านเงื่อนไขสูตรง่ายขึ้นแบบเรียลไทม์ — verified: typecheck ✅, validate 27/27 ✅, build ✅
+- **ปรับหน้าตา pot meta ให้เหมือนเมนูแนะนำ:** รายการ `Ingredients in pot` และ `Master status`
+  แสดงเป็นแถวสไตล์เดียวกับ `.suggest-item` (ซ้ายไอคอน+ชื่อ, ขวาค่าจำนวน) แทน chip เดิม —
+  verified: typecheck ✅, build ✅
+- **ย้ายข้อมูลในหม้อลง Suggest list โดยตรง:** แสดง section `Ingredients in pot` และ `Master status`
+  ไว้ส่วนบนของ `suggest-list` ก่อนรายการเมนูที่เป็นไปได้ (ตามคำขอ) แทนการแสดงเป็นบล็อกแยก —
+  verified: typecheck ✅, build ✅
+- **Ingredients in pot ใช้ StatMeters:** เปลี่ยนค่าท้ายแถวจาก `×จำนวน` เป็น
+  ค่า `health/hunger/sanity` ของ “วัตถุดิบรายชิ้น” ด้วย `StatMeters.tsx` (ถ้ามีข้อมูล),
+  และคง `×จำนวน` ไว้เฉพาะกรณีซ้ำ. เพิ่ม pipeline เบื้องต้น `scripts/ingredient_stats.mjs`
+  อ่านไฟล์ prefab โดยตรงจาก game scripts แล้วสร้าง `src/data/ingredient_stats.json`
+  (**coverage ปัจจุบัน 26/124; ที่เหลือแสดง `—` ชั่วคราว**) —
+  verified: typecheck ✅, validate 27/27 ✅, build ✅
+- **Recipe detail มีตัวอย่างการ cook:** หาก recipe มี `card_def` ให้แสดงบล็อก
+  `Example cook` เป็น 4 วัตถุดิบ → ผลลัพธ์เมนู เพื่อเห็นภาพการใส่ลงหม้อจริงนอกเหนือจาก rule cards —
+  verified: typecheck ✅, validate 27/27 ✅, build ✅
+- **Kitchen layout ตอนหม้อว่าง:** ถ้ายังไม่มีวัตถุดิบในหม้อ (`filled.length === 0`)
+  ให้ `IngredientPicker` ขยายกินพื้นที่หลัก และ panel หม้อย่อลงเหลือเฉพาะส่วนที่จำเป็น เพื่อลดพื้นที่ว่าง —
+  verified: typecheck ✅, build ✅
 - **จัดหัว UI ประหยัดพื้นที่ (คำขอ 2026-07-18):** ถอด h2 "🍲 Crock Pot" + "🥕 Ingredients"
   ออก, รวม tab (ชิดซ้าย) + ปุ่มภาษา (ชิดขวา) ไว้แถวเดียว (`.app-header` flex space-between) —
   verified screenshot. RecipeBrowser ยังคง h2 "📖 All Recipes (N)" (ไม่ได้ถูกขอให้เอาออก)
@@ -207,3 +266,7 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
 - deploy จริง (Netlify/Vercel/GitHub Pages) — ยังไม่เลือก
 - ocean fish (v2), portablecookpot/Warly + spiced (v2), แปลชื่อไทย (ถ้าเปลี่ยนใจ)
 - แยก unit test เป็น vitest (ตอนนี้ verify ด้วย scripts/validate.mjs)
+- **แผนฟีเจอร์ภาคเกม (ยังไม่ implement):** เพิ่มฟิลด์ `games` ต่อ recipe เช่น
+  `["dst","ds","sw"]` ผ่าน data pipeline ที่อ่านจากหลายแหล่ง (DST scripts + DS/SW recipe tables),
+  จากนั้นแสดง badge ใน detail ว่าเมนูนี้ทำได้ในภาคไหน; ต้องออกแบบ mapping key ที่ชื่อไม่ตรงกัน
+  ระหว่างเกมก่อน (phase แยกต่างหาก)

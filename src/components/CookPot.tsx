@@ -1,9 +1,24 @@
-import { recipeByName } from '../data';
+import { engine, ingredientStats, recipeByName } from '../data';
 import type { CookChance, Recipe } from '../engine/types';
-import { displayName } from '../format';
+import { displayName, TAG_COLOR, TAG_SHORT } from '../format';
 import { useLocale } from '../i18n';
 import ItemIcon from './ItemIcon';
 import StatMeters from './StatMeters';
+
+const TAG_ICON_PREFAB: Record<string, string> = {
+  meat: 'meat',
+  fish: 'fish',
+  veggie: 'carrot',
+  fruit: 'berries',
+  egg: 'egg',
+  sweetener: 'honey',
+  dairy: 'butter',
+  fat: 'butter',
+  monster: 'monstermeat',
+  inedible: 'twigs',
+  magic: 'nightmarefuel',
+  frozen: 'ice',
+};
 
 export interface Suggestion {
   exact?: CookChance[];
@@ -23,8 +38,22 @@ function MiniStats({ name }: { name: string }) {
   return <StatMeters stats={r.stats} size="sm" />;
 }
 
+function IngredientStats({ name }: { name: string }) {
+  const stats = ingredientStats[name];
+  if (!stats) return <span className="pot-summary-val">—</span>;
+  return <StatMeters stats={stats} size="sm" />;
+}
+
 export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }: Props) {
   const { locale, t } = useLocale();
+  const filled = slots.filter((s): s is string => Boolean(s));
+  const potData = filled.length > 0 ? engine.getIngredientData(filled) : null;
+  const nameEntries = potData ? Object.entries(potData.names).sort((a, b) => b[1] - a[1]) : [];
+  const tagEntries = potData
+    ? Object.entries(potData.tags)
+      .filter(([tag, value]) => value > 0 && tag !== 'precook')
+      .sort((a, b) => b[1] - a[1])
+    : [];
 
   return (
     <div className="panel pot-wrap">
@@ -63,6 +92,41 @@ export default function CookPot({ slots, suggestion, onRemove, onSelectRecipe }:
                 <MiniStats name={r.name} />
               </button>
             ))}
+
+            {potData && (
+              <>
+                <div className="suggest-group-title">{t.ingredientsInPot}</div>
+                {nameEntries.map(([name, count]) => (
+                  <div key={`pot-ing-${name}`} className="suggest-item suggest-static-item">
+                    <span className="suggest-name">
+                      <ItemIcon prefab={name} size={24} fallback="name" />
+                      {displayName(name, locale)}
+                      {count > 1 && <b className="pot-ing-count">×{count}</b>}
+                    </span>
+                    <span className="pot-ing-stats">
+                      <IngredientStats name={name} />
+                    </span>
+                  </div>
+                ))}
+
+                <div className="suggest-group-title">{t.statusMaster}</div>
+                {tagEntries.map(([tag, value]) => (
+                  <div
+                    key={`pot-tag-${tag}`}
+                    className="suggest-item suggest-static-item"
+                    style={{ borderColor: TAG_COLOR[tag] ?? 'var(--line)' }}
+                  >
+                    <span className="suggest-name">
+                      <ItemIcon prefab={TAG_ICON_PREFAB[tag] ?? tag} size={24} fallback="name" />
+                      {TAG_SHORT[locale][tag] ?? tag}
+                    </span>
+                    <span className="pct pot-summary-val">
+                      {Number.isInteger(value) ? value : value.toFixed(1)}
+                    </span>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       )}
