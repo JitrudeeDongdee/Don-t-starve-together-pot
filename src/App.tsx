@@ -1,59 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
-import { engine, fillersFor, recipeByName } from './data';
-import { rankSuggestions } from './engine/rankSuggestions';
+import { useEffect, useState } from 'react';
+import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { recipeByName } from './data';
 import { initAnalytics, track } from './analytics';
 import { useLocale } from './i18n';
-import IngredientPicker from './components/IngredientPicker';
-import CookPot, { type Suggestion } from './components/CookPot';
-import RecipeBrowser from './components/RecipeBrowser';
+import KitchenPage from './pages/KitchenPage';
+import RecipesPage from './pages/RecipesPage';
 import RecipeDetail from './components/RecipeDetail';
 import ContactUsModal from './components/ContactUsModal';
 
-const COOKER = 'cookpot';
-const EMPTY: (string | null)[] = [null, null, null, null];
 const CONTACT_EMAIL = 'jitrudee9723@gmail.com';
 const CONTACT_LINKEDIN = 'https://www.linkedin.com/in/jitreudee-doungdee-a034972a6/';
 
-type Tab = 'kitchen' | 'browser';
-
 export default function App() {
   const { locale, t, setLocale } = useLocale();
-  const [tab, setTab] = useState<Tab>('kitchen');
-  const [slots, setSlots] = useState<(string | null)[]>(EMPTY);
+  const location = useLocation();
   const [detail, setDetail] = useState<string | null>(null);
   const [showContact, setShowContact] = useState(false);
 
   useEffect(() => initAnalytics(), []);
-
-  const filled = slots.filter((s): s is string => Boolean(s));
-  const ready = filled.length === 4;
-
-  // live suggestions from the first ingredient onward:
-  // full pot -> exact winning group with chances; partial -> reachable dishes
-  const suggestion = useMemo<Suggestion | null>(() => {
-    if (filled.length === 0) return null;
-    if (ready) return { exact: engine.chances(COOKER, filled).chances };
-    const reachable = engine
-      .reachable(COOKER, filled, fillersFor(4 - filled.length))
-      .filter((r) => r.name !== 'wetgoop');
-    // dishes that specifically require what's already in the pot come first
-    return { reach: rankSuggestions(reachable, filled) };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slots]);
-
-  const addIngredient = (prefab: string) => {
-    setSlots((s) => {
-      const idx = s.findIndex((x) => x === null);
-      if (idx === -1) return s;
-      const next = [...s];
-      next[idx] = prefab;
-      return next;
-    });
-  };
-
-  const removeSlot = (i: number) => {
-    setSlots((s) => s.map((x, k) => (k === i ? null : x)));
-  };
 
   const openDetail = (name: string) => {
     setDetail(name);
@@ -61,13 +25,18 @@ export default function App() {
   };
 
   const detailRecipe = detail ? recipeByName.get(detail) ?? null : null;
+  const isBrowser = location.pathname.startsWith('/recipes');
 
   return (
-    <div className={`app${tab === 'browser' ? ' app-browser' : ''}`}>
+    <div className={`app${isBrowser ? ' app-browser' : ''}`}>
       <header className="app-header">
         <nav className="tabs">
-          <button className={`tab${tab === 'kitchen' ? ' active' : ''}`} onClick={() => setTab('kitchen')}>{t.kitchen}</button>
-          <button className={`tab${tab === 'browser' ? ' active' : ''}`} onClick={() => setTab('browser')}>{t.allRecipes}</button>
+          <NavLink to="/" end className={({ isActive }) => `tab${isActive ? ' active' : ''}`}>
+            {t.kitchen}
+          </NavLink>
+          <NavLink to="/recipes" className={({ isActive }) => `tab${isActive ? ' active' : ''}`}>
+            {t.allRecipes}
+          </NavLink>
         </nav>
         <div className="header-actions">
           <button
@@ -89,25 +58,12 @@ export default function App() {
       </header>
 
       <main className="content">
-        <h1 className="sr-only">
-          {locale === 'th'
-            ? 'เครื่องจำลองสูตรหม้อปรุงอาหาร Don’t Starve Together'
-            : 'Don’t Starve Together Crock Pot Simulator'}
-        </h1>
-        {tab === 'kitchen' ? (
-          <div className={`layout${filled.length === 0 ? ' layout-empty' : ''}`}>
-            <CookPot
-              slots={slots}
-              suggestion={suggestion}
-              onRemove={removeSlot}
-              onSelectRecipe={openDetail}
-              showBorder={false}
-            />
-            <IngredientPicker potFull={ready} onAdd={addIngredient} />
-          </div>
-        ) : (
-          <RecipeBrowser onSelect={openDetail} showBorder={false} />
-        )}
+        <Routes>
+          <Route path="/" element={<KitchenPage onSelectRecipe={openDetail} />} />
+          <Route path="/recipes" element={<RecipesPage onSelectRecipe={openDetail} />} />
+          {/* unknown paths fall back to the main tool rather than a dead end */}
+          <Route path="*" element={<KitchenPage onSelectRecipe={openDetail} />} />
+        </Routes>
       </main>
 
       {detailRecipe && <RecipeDetail recipe={detailRecipe} onClose={() => setDetail(null)} />}

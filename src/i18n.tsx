@@ -1,6 +1,6 @@
 // Tiny i18n: locale context + UI strings (TH default, EN toggle).
 // Item/dish names stay English by decision (see spec.md).
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type Locale = 'th' | 'en';
 
@@ -133,12 +133,34 @@ const LocaleCtx = createContext<{ locale: Locale; t: Strings; setLocale: (l: Loc
   setLocale: () => {},
 });
 
+const DEFAULT_LOCALE: Locale = 'th';
+
+/** localStorage is unavailable during prerender and in some privacy modes. */
+function readStoredLocale(): Locale | null {
+  try {
+    const stored = localStorage.getItem('locale');
+    return stored === 'th' || stored === 'en' ? stored : null;
+  } catch {
+    return null;
+  }
+}
+
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>(
-    () => (localStorage.getItem('locale') as Locale) || 'th',
-  );
+  // Start from the default so server-rendered and first client render match,
+  // then adopt the stored preference once mounted.
+  const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
+
+  useEffect(() => {
+    const stored = readStoredLocale();
+    if (stored) setLocale(stored);
+  }, []);
+
   const set = (l: Locale) => {
-    localStorage.setItem('locale', l);
+    try {
+      localStorage.setItem('locale', l);
+    } catch {
+      // preference just won't persist
+    }
     setLocale(l);
   };
   return (
