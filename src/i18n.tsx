@@ -63,6 +63,10 @@ const STRINGS = {
     statusMaster: 'สถานะรวม',
     ingredientsInPot: 'วัตถุดิบในหม้อ',
     cookExample: 'ตัวอย่างการปรุง',
+    farming: 'ปลูกผัก',
+    comingSoonTitle: 'กำลังพัฒนา',
+    comingSoonBody: 'ระบบปลูกผักยังทำไม่เสร็จ กำลังทยอยเพิ่มข้อมูลพืช ฤดูกาล และธาตุอาหารในดิน',
+    backToKitchen: 'กลับไปหน้าครัว',
   },
   en: {
     subtitle: 'Don’t Starve Together crock pot simulator — data straight from the game scripts',
@@ -122,6 +126,10 @@ const STRINGS = {
     statusMaster: 'Master status',
     ingredientsInPot: 'Ingredients in pot',
     cookExample: 'Example cook',
+    farming: 'Farming',
+    comingSoonTitle: 'Work in progress',
+    comingSoonBody: 'The farming section is not finished yet. Crops, seasons and soil nutrients are still being added.',
+    backToKitchen: 'Back to the kitchen',
   },
 };
 
@@ -133,7 +141,7 @@ const LocaleCtx = createContext<{ locale: Locale; t: Strings; setLocale: (l: Loc
   setLocale: () => {},
 });
 
-const DEFAULT_LOCALE: Locale = 'th';
+const DEFAULT_LOCALE: Locale = 'en';
 
 /** localStorage is unavailable during prerender and in some privacy modes. */
 function readStoredLocale(): Locale | null {

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { recipeByName } from './data';
 import { initAnalytics, track } from './analytics';
 import { useLocale } from './i18n';
+import NavBar from './components/NavBar';
 import KitchenPage from './pages/KitchenPage';
 import RecipesPage from './pages/RecipesPage';
+import FarmingPage from './pages/FarmingPage';
 import RecipeDetail from './components/RecipeDetail';
 import ContactUsModal from './components/ContactUsModal';
 
@@ -29,42 +31,39 @@ export default function App() {
 
   return (
     <div className={`app${isBrowser ? ' app-browser' : ''}`}>
-      <header className="app-header">
-        <nav className="tabs">
-          <NavLink to="/" end className={({ isActive }) => `tab${isActive ? ' active' : ''}`}>
-            {t.kitchen}
-          </NavLink>
-          <NavLink to="/recipes" className={({ isActive }) => `tab${isActive ? ' active' : ''}`}>
-            {t.allRecipes}
-          </NavLink>
-        </nav>
-        <div className="header-actions">
-          <button
-            className="contact-toggle"
-            onClick={() => setShowContact(true)}
-            title={t.contactUs}
-            aria-label={t.contactUs}
-          >
-            ✉
-          </button>
-          <button
-            className="lang-toggle"
-            onClick={() => setLocale(locale === 'th' ? 'en' : 'th')}
-            title={locale === 'th' ? 'Switch to English' : 'เปลี่ยนเป็นภาษาไทย'}
-          >
-            🌐 {locale === 'th' ? 'EN' : 'ไทย'}
-          </button>
-        </div>
-      </header>
+      <NavBar />
 
-      <main className="content">
-        <Routes>
-          <Route path="/" element={<KitchenPage onSelectRecipe={openDetail} />} />
-          <Route path="/recipes" element={<RecipesPage onSelectRecipe={openDetail} />} />
-          {/* unknown paths fall back to the main tool rather than a dead end */}
-          <Route path="*" element={<KitchenPage onSelectRecipe={openDetail} />} />
-        </Routes>
-      </main>
+      <div className="app-body">
+        <header className="app-header">
+          <div className="header-actions">
+            <button
+              className="contact-toggle"
+              onClick={() => setShowContact(true)}
+              title={t.contactUs}
+              aria-label={t.contactUs}
+            >
+              ✉
+            </button>
+            <button
+              className="lang-toggle"
+              onClick={() => setLocale(locale === 'th' ? 'en' : 'th')}
+              title={locale === 'th' ? 'Switch to English' : 'เปลี่ยนเป็นภาษาไทย'}
+            >
+              🌐 {locale === 'th' ? 'EN' : 'ไทย'}
+            </button>
+          </div>
+        </header>
+
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<KitchenPage onSelectRecipe={openDetail} />} />
+            <Route path="/recipes" element={<RecipesPage onSelectRecipe={openDetail} />} />
+            <Route path="/farming" element={<FarmingPage />} />
+            {/* unknown paths fall back to the main tool rather than a dead end */}
+            <Route path="*" element={<KitchenPage onSelectRecipe={openDetail} />} />
+          </Routes>
+        </main>
+      </div>
 
       {detailRecipe && <RecipeDetail recipe={detailRecipe} onClose={() => setDetail(null)} />}
       {showContact && (

@@ -86,7 +86,16 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
         <h2 className="dish-title">{t.contactInfo}</h2>
         <div className="flourish"><span>✉</span></div>
 
-        {loading && <p className="contact-line">{t.loadingContact}</p>}
+        {loading && (
+          <div className="contact-wrap" aria-busy="true" aria-label={t.loadingContact}>
+            <div className="skeleton skeleton-avatar" />
+            <div className="skeleton skeleton-note" />
+            <div className="skeleton skeleton-line" style={{ width: '62%' }} />
+            <div className="skeleton skeleton-line" style={{ width: '48%' }} />
+            <div className="skeleton skeleton-line" style={{ width: '70%' }} />
+            <div className="skeleton skeleton-line" style={{ width: '55%' }} />
+          </div>
+        )}
         {error && <p className="contact-line contact-error">{error}</p>}
 
         {hasContactInfo && (

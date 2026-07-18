@@ -58,6 +58,17 @@ body {
   flex-direction: column;
   gap: 0.6rem;
 }
+.app-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+@media (min-width: 768px) {
+  .app { flex-direction: row; }
+}
 /* Single-column recipe list, so keep the column narrow enough to read in one
    glance — a full-width row makes the eye sweep from the name to the
    far-right stats. */
@@ -68,7 +79,7 @@ body {
 
 /* ---------- header: tabs (left) + language toggle (right), one row ---------- */
 .app-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
+  display: flex; align-items: flex-end; justify-content: flex-end;
   gap: 0.5rem;
   flex: 0 0 auto;
 }
@@ -87,28 +98,53 @@ body {
 }
 .lang-toggle:hover, .contact-toggle:hover { border-color: var(--gold-bright); }
 
-/* ---------- book tabs ---------- */
-/* Equal-width tabs regardless of label length or language. Grid (not flex) on
-   purpose: every auto column shares one sizing function, so both tabs resolve
-   to the SAME width — with flex + min-width, a label longer than the floor
-   would grow only its own tab and break the pairing. */
-.tabs {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(8.5rem, 1fr);
+/* ---------- nav: side rail on desktop, top bar on mobile ---------- */
+.nav {
+  display: flex;
   gap: 0.35rem;
+  flex: 0 0 auto;
 }
-.tabs .tab {
-  text-align: center;
-}
-.tab {
-  background: #392a1a; color: #b7a276;
-  border: 2px solid var(--frame); border-bottom: none;
-  border-radius: 12px 12px 0 0;
-  padding: 0.55rem 1.4rem; cursor: pointer; font-size: 1.05rem; font-weight: 700;
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.9rem;
+  border: 2px solid var(--frame);
+  border-radius: 10px;
+  background: #392a1a;
+  color: #b7a276;
   font-family: inherit;
+  font-size: 1.02rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
 }
-.tab.active { background: var(--paper); color: var(--ink); }
+.nav-item:hover { border-color: var(--gold-bright); }
+.nav-item.active { background: var(--paper); color: var(--ink); border-color: var(--frame); }
+.nav-icon { font-size: 1.1rem; line-height: 1; }
+
+/* mobile / narrow: horizontal bar across the top, equal-width items */
+@media (max-width: 767px) {
+  .nav {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: 100%;
+  }
+  .nav-label { font-size: 0.92rem; }
+}
+
+/* desktop: vertical rail down the left, labels left-aligned */
+@media (min-width: 768px) {
+  .nav {
+    flex-direction: column;
+    width: 12rem;
+    align-self: stretch;
+  }
+  .nav-item { justify-content: flex-start; }
+}
 
 /* ---------- parchment panels ---------- */
 .content {
@@ -647,4 +683,57 @@ body {
   font-size: 0.8rem;
   color: var(--ink-dim);
   font-weight: 400;
+}
+
+/* ---------- work-in-progress page ---------- */
+.wip-panel { text-align: center; align-items: center; justify-content: center; }
+.wip-title { font-size: 1.5rem; margin: 0; color: var(--ink); }
+.wip-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: #2a1c0c;
+  border: 2px solid #6f4620;
+  border-radius: 20px;
+  padding: 0.25rem 1rem;
+  font-weight: 800;
+  margin-bottom: 0.6rem;
+}
+.wip-body {
+  max-width: 32rem;
+  margin: 0 auto 1.2rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.wip-back {
+  color: var(--gold); font-weight: 700; text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+.wip-back:hover { border-bottom-color: var(--gold); }
+
+/* ---------- skeleton loading (contact modal) ---------- */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.skeleton {
+  background: var(--paper-inset);
+  border-radius: 6px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+.skeleton-avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  margin: 0 auto 0.8rem;
+}
+.skeleton-line { height: 0.95rem; margin: 0 auto 0.55rem; }
+.skeleton-note { height: 2.4rem; border-radius: 10px; margin-bottom: 0.9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
+/* Narrow screens: let the four pot slots shrink to fit instead of sitting
+   1px inside the panel, which clipped on anything under ~375px. */
+@media (max-width: 767px) {
+  .pot { width: 100%; }
+  .slot { width: auto; flex: 1 1 0; min-width: 0; max-width: 76px; }
 }

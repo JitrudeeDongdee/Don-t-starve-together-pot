@@ -32,6 +32,14 @@ export const ROUTES: RouteMeta[] = [
     heading: "All Don't Starve Together Crock Pot Recipes",
     headingTh: 'สูตรอาหารหม้อปรุง Don’t Starve Together ทั้งหมด',
   },
+  {
+    path: '/farming',
+    title: "Farming Guide | Don't Starve Together Crops",
+    description:
+      "Don't Starve Together farming guide — crops, seasons, soil nutrients and giant crop requirements. Currently in development.",
+    heading: "Don't Starve Together Farming Guide",
+    headingTh: 'คู่มือปลูกผัก Don’t Starve Together',
+  },
 ];
 
 export const canonicalFor = (path: string) =>
