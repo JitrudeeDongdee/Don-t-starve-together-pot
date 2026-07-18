@@ -543,6 +543,21 @@ body {
   position: relative;
   display: inline-flex;
 }
+/* minimum-amount badge on a rule chip, e.g. Veggie ≥1.5 */
+.rule-amount {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(#e5cf9d, #cfb379);
+  border: 2px solid var(--line);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
 .rule-text {
   line-height: 1.1;
 }

@@ -32,10 +32,16 @@ export default function RecipeRuleCard({
   const { locale } = useLocale();
   const prefab =
     chip.type === "name" ? chip.key : (TAG_ICON_PREFAB[chip.key] ?? chip.key);
-  const title =
+  const label =
     chip.type === "name"
       ? displayName(chip.key, locale)
-      : `${TAG_SHORT[locale][chip.key] ?? chip.key}`;
+      : (TAG_SHORT[locale][chip.key] ?? chip.key);
+  const bounds = [
+    chip.min != null ? `${chip.minExclusive ? ">" : "≥"}${chip.min}` : null,
+    chip.max != null ? `≤${chip.max}` : null,
+  ].filter(Boolean);
+  const amount = bounds.length ? bounds.join(" ") : null;
+  const title = amount ? `${label} ${amount}` : label;
 
   return (
     <div className={`rule-chip${iconOnly ? " icon-only" : ""}`} title={title}>
@@ -46,10 +52,9 @@ export default function RecipeRuleCard({
           fallback="name"
           variant={forbidden ? "forbidden" : "square"}
         />
+        {amount && !forbidden && <span className="rule-amount">{amount}</span>}
       </span>
-      {!iconOnly && (
-        <span className="rule-text">{TAG_SHORT[locale][chip.key] ?? chip.key}</span>
-      )}
+      {!iconOnly && <span className="rule-text">{label}</span>}
     </div>
   );
 }
