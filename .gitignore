@@ -5,3 +5,4 @@ dist
 .env.local
 *.tsbuildinfo
 .claude/
+scripts/lua/prefabs/

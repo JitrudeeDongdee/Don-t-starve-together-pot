@@ -220,6 +220,12 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
 - **ItemIcon square art เพิ่ม border ด้านใน:** เพิ่มคลาส `item-icon-square-art` ให้ `<img>` ภายใน
   `ItemIcon` แบบ `variant="square"` และใส่ `border: 2px solid #000` + `border-radius: 6px`
   เพื่อให้ตัวรูปด้านในมีกรอบดำอีกชั้น — verified: build ✅
+- **ItemIcon ใช้ square เป็นค่า default:** เปลี่ยน `ItemIcon` ให้ `variant="square"` เป็นค่าเริ่มต้น
+  และคืน `className="item-icon-square"` ให้ wrapper ทำให้หน้าที่เรียก `ItemIcon` โดยไม่ระบุ variant
+  (เช่น IngredientPicker/CookPot/RecipeBrowser) ได้กรอบ border ตาม default ใหม่ — verified: build ✅
+- **ItemIcon ตัดกรอบซ้อนชั้นในออก:** หลังเปลี่ยน square เป็น default พบกรอบซ้อนสองชั้น
+  (`.item-icon-square` + border ที่ `<img>` ด้านใน) จึงเอา border ด้านในออกให้เหลือกรอบนอกชั้นเดียว —
+  verified: build ✅
 - **Tab เมนูทั้งหมด (tab 2) เต็มจอ:** เมื่อเข้าแท็บ browser ให้ `.app` ขยายเต็มความกว้าง viewport
   (`.app.app-browser { max-width: none; width: 100%; }`) และลิสต์เมนูใช้ความสูงที่เหลือทั้งหมด
   (`.recipe-browser-list` แบบ flex+overflow) — verified: typecheck ✅, build ✅

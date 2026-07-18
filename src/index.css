@@ -230,10 +230,6 @@ body {
 .item-icon-square img {
   filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.35));
 }
-.item-icon-square-art {
-  border: 2px solid #000;
-  border-radius: 6px;
-}
 .item-icon-square-name,
 .item-icon-square-ph {
   display: inline-flex;

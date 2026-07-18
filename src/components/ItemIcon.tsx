@@ -18,7 +18,7 @@ export default function ItemIcon({
   prefab,
   size = 36,
   fallback = "placeholder",
-  variant = "plain",
+  variant = "square",
 }: Props) {
   const src = iconOf(prefab);
   const [failed, setFailed] = useState(false);
@@ -28,7 +28,7 @@ export default function ItemIcon({
   if (variant === "square") {
     return (
       <span
-        // className="item-icon-square"
+        className="item-icon-square"
         title={label}
         aria-label={label}
         style={{ width: size, height: size, }}
@@ -36,7 +36,6 @@ export default function ItemIcon({
         {
         hasArt ? (
           <img
-            className="item-icon-square-art"
             src={`${import.meta.env.BASE_URL}${src}`}
             alt={label}
             width={Math.round(size * 0.78)}
