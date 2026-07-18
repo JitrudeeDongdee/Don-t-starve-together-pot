@@ -425,6 +425,32 @@ engine 27/27 · rules 70/70 · build ผ่าน
 **Verify:** examples ครบ **70/70** เมนู · 208 combo ผ่านหมด · engine 27/27 · rules 70/70 · build ผ่าน
 **commands ใหม่:** `npm run cook-examples`, `npm run validate-examples`
 
+### M9 — ยอดเข้าชมสะสมในหน้า Contact (2026-07-18)
+**ข้อจำกัดที่ต้องรู้:** GA4 ที่ต่อไว้ **อ่านกลับมาแสดงบนหน้าเว็บไม่ได้** — จาก browser เป็น
+write-only ส่วน Data API ที่อ่านตัวเลขได้ต้องมี service account + เซิร์ฟเวอร์ ซึ่ง static site
+บน GitHub Pages ไม่มี → ต้องใช้บริการนับแยก
+
+**สำรวจตัวเลือก (ทดสอบจริงด้วย curl):** Abacus ใช้ได้ (`/hit` เพิ่มเลข, `/get` อ่านเฉยๆ,
+ไม่ต้องสมัคร) · CountAPI ตายแล้ว (เชื่อมต่อไม่ได้) · GoatCounter ต้องสมัครก่อน
+→ **เลือก Abacus** + เก็บ snapshot ในโปรเจคกันบริการปิด
+
+**ทำ:**
+- `src/visits.ts` — `recordVisit()` ยิง `/hit` ตอนเปิด modal, cache promise กัน StrictMode
+  double-mount ทำให้เลขเฟ้อ; ถ้ายิงไม่สำเร็จ fallback เป็น `src/data/visits_snapshot.json`
+  พร้อมป้ายวันที่ ("as of ...")
+- `scripts/snapshot_visits.mjs` (`npm run snapshot-visits`) — ใช้ `/get` (อ่านอย่างเดียว
+  ไม่ทำให้เลขเพิ่ม) เขียนทับ snapshot; **ปฏิเสธถ้าค่าใหม่น้อยกว่าค่าเดิม** กันเคาน์เตอร์ถูกรีเซ็ต
+  แล้วประวัติหาย; ถ้าเจอ 404 (ยังไม่มีคนเข้า) ก็ปล่อยไฟล์เดิมไว้
+- แสดงใน ContactUsModal + i18n TH/EN
+- นับ **ทุกครั้งที่เปิด** (ตามที่เลือก) ไม่ dedupe ต่อเบราว์เซอร์
+
+**Verify (in-browser):** เปิดครั้งแรก → "Total visits: 1" · reload → **2** (นับเพิ่มจริง, CORS ผ่าน) ·
+`npm run snapshot-visits` → 0 → 2 · จำลองบริการล่ม (ชี้ API ไปโฮสต์ที่ไม่มีจริง) →
+"Total visits: 2 (as of 2026-07-18)" **ไม่พังและไม่กลับเป็น 0** · build ผ่าน
+
+**ข้อควรรู้:** namespace ของ Abacus เป็น public ใครรู้ก็ยิงเพิ่มเลขได้ → ตัวเลขนี้เป็น
+"ตัวนับคร่าวๆ" ไม่ใช่ analytics ที่เชื่อถือได้ 100%; ad blocker บางตัวอาจบล็อก (จะตกไป fallback)
+
 ### ค้างไว้ (ถัดไป)
 - ใส่ GA4 Measurement ID จริงตอน deploy (สร้าง property → ใส่ `VITE_GA_ID` ใน .env.local/hosting)
 - deploy จริง (Netlify/Vercel/GitHub Pages) — ยังไม่เลือก
