@@ -72,7 +72,7 @@ export default function CookPot({
             title={s ? `${displayName(s, locale)} — ${t.removeHint}` : `${t.emptySlot} ${i + 1}`}
             onClick={() => s && onRemove(i)}
           >
-            {s ? <ItemIcon variant='plain'  prefab={s} size={54} fallback="name" /> : '+'}
+            {s ? <ItemIcon variant='bare'  prefab={s} size={54} fallback="name" /> : '+'}
           </div>
         ))}
       </div>
@@ -83,7 +83,7 @@ export default function CookPot({
             {suggestion.exact?.map((c) => (
               <button key={c.name} className="suggest-item" onClick={() => onSelectRecipe(c.name)}>
                 <span className="suggest-name">
-                  <ItemIcon variant='plain' prefab={c.name} size={28} />
+                  <ItemIcon variant='bare' prefab={c.name} size={28} />
                   {displayName(c.name, locale)}
                 </span>
                 <MiniStats name={c.name} />
@@ -93,7 +93,7 @@ export default function CookPot({
             {suggestion.reach?.map((r) => (
               <button key={r.name} className="suggest-item" onClick={() => onSelectRecipe(r.name)}>
                 <span className="suggest-name">
-                  <ItemIcon variant='plain' prefab={r.name} size={28} />
+                  <ItemIcon variant='bare' prefab={r.name} size={28} />
                   {displayName(r.name, locale)}
                 </span>
                 <MiniStats name={r.name} />

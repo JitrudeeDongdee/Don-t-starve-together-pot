@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocale } from '../i18n';
+import { recordVisit, type VisitCount } from '../visits';
 
 interface GithubProfile {
   avatar_url: string;
@@ -32,6 +33,18 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
   const [profile, setProfile] = useState<GithubProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [visits, setVisits] = useState<VisitCount | null>(null);
+  const [avatarFailed, setAvatarFailed] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    recordVisit().then((v) => {
+      if (active) setVisits(v);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -78,7 +91,21 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
 
         {hasContactInfo && (
           <div className="contact-wrap">
-            {profile && <img className="contact-avatar" src={profile.avatar_url} alt={profile.login} width={96} height={96} />}
+            {profile &&
+              (profile.avatar_url && !avatarFailed ? (
+                <img
+                  className="contact-avatar"
+                  src={profile.avatar_url}
+                  alt={profile.login}
+                  width={96}
+                  height={96}
+                  onError={() => setAvatarFailed(true)}
+                />
+              ) : (
+                <div className="contact-avatar contact-avatar-placeholder" aria-label={profile.login}>
+                  {(profile.name ?? profile.login).charAt(0).toUpperCase()}
+                </div>
+              ))}
             {profile && <p className="contact-note-badge">{t.contactProjectNote}</p>}
             {profile && <div className="contact-line"><b>GitHub:</b> <a href={profile.html_url} target="_blank" rel="noreferrer">{profile.login}</a></div>}
             {profile?.name && <div className="contact-line"><b>Name:</b> {profile.name}</div>}
@@ -94,6 +121,15 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
               </div>
             )}
           </div>
+        )}
+
+        {visits && (
+          <p className="visit-counter">
+            <b>{t.totalVisits}:</b> {visits.value.toLocaleString()}
+            {visits.source === 'snapshot' && (
+              <span className="visit-stale"> ({t.visitsOffline} {visits.snapshotAt})</span>
+            )}
+          </p>
         )}
       </div>
     </div>

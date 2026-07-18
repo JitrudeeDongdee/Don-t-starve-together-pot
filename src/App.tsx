@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { engine, fillersFor, recipeByName } from './data';
+import { rankSuggestions } from './engine/rankSuggestions';
 import { initAnalytics, track } from './analytics';
 import { useLocale } from './i18n';
 import IngredientPicker from './components/IngredientPicker';
@@ -32,11 +33,11 @@ export default function App() {
   const suggestion = useMemo<Suggestion | null>(() => {
     if (filled.length === 0) return null;
     if (ready) return { exact: engine.chances(COOKER, filled).chances };
-    return {
-      reach: engine
-        .reachable(COOKER, filled, fillersFor(4 - filled.length))
-        .filter((r) => r.name !== 'wetgoop'),
-    };
+    const reachable = engine
+      .reachable(COOKER, filled, fillersFor(4 - filled.length))
+      .filter((r) => r.name !== 'wetgoop');
+    // dishes that specifically require what's already in the pot come first
+    return { reach: rankSuggestions(reachable, filled) };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slots]);
 

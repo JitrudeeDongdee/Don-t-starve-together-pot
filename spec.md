@@ -321,6 +321,136 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
   meat×2+berries+carrot → chips Meat 2/Veggie 1/Fruit 0.5 + Meatballs 100%;
   reachable(1 ชิ้น) ~73ms; validate 27/27 ยังผ่าน
 
+### M5 — แก้บั๊ก RecipeRuleCard แสดงเงื่อนไขผิด (2026-07-18)
+**อาการ:** Dragonpie โชว์ "How to make: Fruit 2, Veggie 2" และไม่มี Required เลย ทั้งที่สูตรจริง
+บังคับ Dragon Fruit + ห้ามเนื้อ.
+
+**root cause 3 จุด** (ทั้งหมดอยู่ในชั้นแสดงผล ไม่ใช่ engine — engine ถูกมาตลอด):
+1. `splitTopLevel(andPart,"||")` ไม่ strip วงเล็บก่อน → `(names.dragonfruit || ...)` ไม่ถูก split,
+   parseAtom คืน null, clause ถูก `continue` ทิ้งเงียบๆ → **กระทบ 35/70 สูตร**
+2. `stripOuterParens` เช็คแค่จำนวนวงเล็บสมดุล → `(A) && (B)` โดนตัดวงเล็บนอกผิด ทำให้ depth เพี้ยน
+   → 2 กลุ่ม OR ยุบเป็นกลุ่มเดียว (unagi โชว์ "cutlichen/kelp/eel/pondeel" รวมกัน ซึ่งผิด)
+3. `howToSummary` derive จาก `card_def` (ตัวอย่าง combo) ไม่ใช่จาก `recipe.test` → บรรยายเงื่อนไขผิด
+
+**แก้:**
+- แยก parser เป็นโมดูล pure `src/components/recipe-detail/ruleParser.ts` (ไม่ import app/data
+  เพื่อให้เทสด้วย node ตรงๆ ได้) — เดิน expression แบบ recursive, strip วงเล็บเฉพาะเมื่อวงเล็บแรก
+  คู่กับตัวสุดท้ายจริง, รองรับ compound OR member เช่น `((tags.veggie && >=0.5) || tags.fruit)`
+- RuleChip เก็บ `min` / `minExclusive` (`>` vs `>=`) / `max` → การ์ดโชว์ `≥0.5`, `>1`, `≤1` ได้ถูก
+  (เดิม `drumstick > 1` แสดงเป็น `≥1` ซึ่งน้อยกว่าจริง)
+- clause แบบ `(!tags.monster || tags.monster <= 1)` = เพดาน ไม่ใช่ข้อบังคับ → ไม่ขึ้น Required
+- `howToSummary` อ่านจาก `recipe.test` แทน card_def
+- เพิ่ม `scripts/validate_rules.mjs` (`npm run validate-rules`) เทียบ chip ที่ได้กับ `names.*`
+  ในสูตรจริงทุกตัว กัน regress
+
+**Verify:** `validate-rules` → 70/70 ไม่มี clause หาย; UI: Dragonpie = Required "Dragon Fruit"
++ Forbidden meat + How to make "Dragon Fruit"; Unagi = 2 กลุ่มแยก [Lichen/Kelp] [Eel/Pondeel];
+engine validation ยัง 27/27; build ผ่าน
+
+### M6 — UX: ความกว้าง browser, tab เท่ากัน, suggestion เรียงตาม Required (2026-07-18)
+**1. RecipeBrowser ยืดเต็มจอ** — `.app.app-browser { max-width: none }` ทำให้แถวกว้าง ~1900px
+ชื่อซ้ายสุด/สถานะขวาสุด ต้องกวาดสายตาไกล.
+→ แก้: cap `max-width: 860px` **คงไว้ 1 คอลัมน์** (ลองทำ grid หลายคอลัมน์แล้ว แต่ผู้ใช้เลือก 1 คอลัมน์)
+→ verified @1800px: appWidth 860, rowWidth **786px** (เดิม ~1900), columns = 1
+
+**2. tab กว้างเท่ากันเสมอ** — ใช้ **grid** ไม่ใช่ flex:
+`.tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(8.5rem, 1fr) }`
+เหตุผล: auto column ทุกคอลัมน์ใช้ sizing function เดียวกัน → กว้างเท่ากันเสมอ. ถ้าใช้
+`flex: 1 1 0` + `min-width` label ที่ยาวเกิน floor จะดันเฉพาะแท็บตัวเอง แล้วไม่เท่ากันอีก
+→ verified: TH 136/136, EN 136/136 และ **stress test label ยาว 34 ตัวอักษร → 244/244**
+(แบบ flex เดิมจะได้ 136/244)
+
+**3. suggestion เรียงเมนูที่ Required ตรงกับของในหม้อขึ้นก่อน**
+- ปัญหา: `engine.reachable()` เรียงตาม priority ของเกม → เมนูที่ "บังคับ" ของในหม้อจริงๆ จมอยู่ล่าง
+- เพิ่ม `src/engine/rankSuggestions.ts` (pure, รันด้วย node ได้): นับว่าหม้อ satisfy
+  "หน่วยความต้องการที่เป็นชื่อไอเทม" ของสูตรกี่อัน (oneOf group นับเป็น 1 หน่วย เข้าเงื่อนไขถ้ามีสักตัว)
+  แล้วเรียง hits ↓ → missing ↑ → priority ↓ → ชื่อ
+- **Verified:**
+  | ในหม้อ | เดิม (5 อันดับแรก) | ใหม่ |
+  |---|---|---|
+  | honey | leafymeatsouffle, surfnturf… | **honeyham, honeynuggets**, powcake… |
+  | dragonfruit | leafymeatsouffle, surfnturf… | **dragonpie**, surfnturf… |
+  | butterflywings | leafymeatsouffle… | **butterflymuffin**… |
+  | twigs+meat | surfnturf, leafloaf… | **fishsticks, kabobs**… |
+  ยืนยันใน UI: ใส่ Honey → top5 = Honey Ham, Honey Nuggets, Powdercake, Ice Cream, Monster Lasagna
+
+### M7 — ลบ ingredient variant ที่ไม่มีอยู่จริงในเกม (2026-07-18)
+**อาการ:** IngredientPicker มี "Honey (Cooked)" ฯลฯ ซึ่งเกมไม่มีไอเทมนี้ (ชื่อ fallback เพราะ
+ไม่มีใน names.json)
+
+**root cause:** extractor ตีความ flag `cancook`/`candry` ของ `AddIngredientValues` ใน cooking.lua
+ว่า "มี variant นี้เป็นไอเทมจริง" แต่ flag พวกนี้แค่บอกว่า **ตาราง cooking tag ควรมี row นั้น**
+ไม่ได้แปลว่าไอเทมมีอยู่ — Klei ตั้ง flag ไว้เผื่อ ทำให้เราสร้างวัตถุดิบผีขึ้นมา 6 ตัว
+
+**ตรวจกับ prefab จริง (`prefabs/*.lua`) — มี positive control (meats/veggies เจอ cookable จริง):**
+| variant ผี | หลักฐาน |
+|---|---|
+| honey_cooked | `honey.lua` ไม่มี component `cookable` |
+| honeycomb_cooked | `honeycomb.lua` ไม่มี `cookable` |
+| royal_jelly_cooked | `royal_jelly.lua` ไม่มี `cookable` |
+| cutlichen_cooked | `cutlichen.lua` ไม่มี `cookable` |
+| pondeel_cooked | `pondfish.lua`: pondeel ปรุงได้ **`eel_cooked`** |
+| batnose_dried | `meats.lua`: batnose ตากได้ **`smallmeat_dried`**; register แค่ batnose/batnose_cooked |
+
+**แก้:** `PHANTOM_VARIANTS` ใน `scripts/extract.mjs` (พร้อม comment อ้างหลักฐานรายตัว) กรองตอน
+generate → แก้ที่ต้นทางข้อมูล ไม่ใช่ซ่อนที่ UI
+
+**Verify:** ไม่มีสูตรไหนอ้างถึงทั้ง 6 ตัว (เช็คก่อนลบ) · ingredients 124 → **118** · ของจริงอยู่ครบ
+(honey/royal_jelly/cutlichen/pondeel/batnose/batnose_cooked/smallmeat_dried/eel_cooked) ·
+UI: ค้น "honey" ได้ 2 รายการ (ไม่มี Cooked แล้ว), ไม่เหลือ tile ที่ชื่อ fallback "(Cooked)/(Dried)" ·
+engine 27/27 · rules 70/70 · build ผ่าน
+
+### M8 — Example cook: precompute + ตรวจ phantom ซ้ำ (2026-07-18)
+**A. honey_cooked ตกค้าง** — `src/data/ingredient_stats.json` ถูก generate ก่อนลบ phantom เลยยังมี
+124 keys และหลุดเข้า bundle. แก้: รัน `npm run ingredient-stats` ใหม่ →
+ตรวจครบทุกไฟล์แล้ว: ingredients/ingredient_stats **118 keys**, names/icons 190, card_def, bundle
+— ไม่เหลือ phantom สักตัว ✓  *(บทเรียน: ลบข้อมูลต้นทางแล้วต้อง regenerate ไฟล์ที่ derive ทั้งหมด)*
+
+**B. Example cook**
+- ปัญหาเดิม: **43/70 เมนูไม่มี card_def → ไม่แสดงตัวอย่างเลย**; ที่มีก็ค้นตอน runtime
+- วัดแล้วพบว่า "แสดงทุกสูตรที่เป็นไปได้" ไม่เวิร์ค: combo ทั้งหมด 1,088,430 แบบ,
+  มัธยฐาน **2,677 combo/เมนู** (meatballs 318,630) → ตกลงเอา **3 ตัวอย่าง**
+- ย้ายไป precompute ตอน build: `scripts/cook_examples.mjs` → `src/data/cook_examples.json`
+  (runtime ค้นไม่ไหว — shroomcake มี combo ที่ใช้ได้ **แค่ 1 แบบ** จาก 1.09M)
+- **raw/cooked ยุบเป็นแบบเดียว**: ไล่เฉพาะตัวแทน 1 ตัวต่อ base (118 → 70 ตัว)
+  + มี guard ว่าไม่มีสูตรไหนบังคับเฉพาะรูปสุก/แห้ง
+- **การเลือกตัวอย่าง** ลองมา 3 แบบ: (1) วัตถุดิบต่างกันน้อยสุด → ได้ "บาร์นาเคิล×4" ไร้ประโยชน์
+  (2) versatility → ได้ "Birchnut+Nightberry+Asparagus" ซ้ำทุกเมนู
+  (3) **ให้น้ำหนักตามวัตถุดิบที่เกมใช้ใน card_def เอง** (Honey/Twigs/Berries/Potato/Meat/Morsel…)
+  → ได้ผลตรงกับที่ผู้เล่นทำจริง: Honey Ham = Honey×2+Meat×2, Meaty Stew = Meat×2+Morsel×2
+- card_def ของเกม (ถ้ามี) ถูกวางเป็นตัวอย่างแรกเสมอ
+- เพิ่ม `scripts/validate_examples.mjs` — ตรวจว่าทุก combo ปรุงออกมาเป็นเมนูนั้นจริง,
+  ไม่มีวัตถุดิบผี, ไม่มี raw/cooked ซ้ำ
+
+**Verify:** examples ครบ **70/70** เมนู · 208 combo ผ่านหมด · engine 27/27 · rules 70/70 · build ผ่าน
+**commands ใหม่:** `npm run cook-examples`, `npm run validate-examples`
+
+### M9 — ยอดเข้าชมสะสมในหน้า Contact (2026-07-18)
+**ข้อจำกัดที่ต้องรู้:** GA4 ที่ต่อไว้ **อ่านกลับมาแสดงบนหน้าเว็บไม่ได้** — จาก browser เป็น
+write-only ส่วน Data API ที่อ่านตัวเลขได้ต้องมี service account + เซิร์ฟเวอร์ ซึ่ง static site
+บน GitHub Pages ไม่มี → ต้องใช้บริการนับแยก
+
+**สำรวจตัวเลือก (ทดสอบจริงด้วย curl):** Abacus ใช้ได้ (`/hit` เพิ่มเลข, `/get` อ่านเฉยๆ,
+ไม่ต้องสมัคร) · CountAPI ตายแล้ว (เชื่อมต่อไม่ได้) · GoatCounter ต้องสมัครก่อน
+→ **เลือก Abacus** + เก็บ snapshot ในโปรเจคกันบริการปิด
+
+**ทำ:**
+- `src/visits.ts` — `recordVisit()` ยิง `/hit` ตอนเปิด modal, cache promise กัน StrictMode
+  double-mount ทำให้เลขเฟ้อ; ถ้ายิงไม่สำเร็จ fallback เป็น `src/data/visits_snapshot.json`
+  พร้อมป้ายวันที่ ("as of ...")
+- `scripts/snapshot_visits.mjs` (`npm run snapshot-visits`) — ใช้ `/get` (อ่านอย่างเดียว
+  ไม่ทำให้เลขเพิ่ม) เขียนทับ snapshot; **ปฏิเสธถ้าค่าใหม่น้อยกว่าค่าเดิม** กันเคาน์เตอร์ถูกรีเซ็ต
+  แล้วประวัติหาย; ถ้าเจอ 404 (ยังไม่มีคนเข้า) ก็ปล่อยไฟล์เดิมไว้
+- แสดงใน ContactUsModal + i18n TH/EN
+- นับ **ทุกครั้งที่เปิด** (ตามที่เลือก) ไม่ dedupe ต่อเบราว์เซอร์
+
+**Verify (in-browser):** เปิดครั้งแรก → "Total visits: 1" · reload → **2** (นับเพิ่มจริง, CORS ผ่าน) ·
+`npm run snapshot-visits` → 0 → 2 · จำลองบริการล่ม (ชี้ API ไปโฮสต์ที่ไม่มีจริง) →
+"Total visits: 2 (as of 2026-07-18)" **ไม่พังและไม่กลับเป็น 0** · build ผ่าน
+
+**ข้อควรรู้:** namespace ของ Abacus เป็น public ใครรู้ก็ยิงเพิ่มเลขได้ → ตัวเลขนี้เป็น
+"ตัวนับคร่าวๆ" ไม่ใช่ analytics ที่เชื่อถือได้ 100%; ad blocker บางตัวอาจบล็อก (จะตกไป fallback)
+
 ### ค้างไว้ (ถัดไป)
 - ใส่ GA4 Measurement ID จริงตอน deploy (สร้าง property → ใส่ `VITE_GA_ID` ใน .env.local/hosting)
 - deploy จริง (Netlify/Vercel/GitHub Pages) — ยังไม่เลือก

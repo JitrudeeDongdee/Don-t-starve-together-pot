@@ -99,32 +99,14 @@
         "sweetener": 1
       }
     },
-    "honey_cooked": {
-      "tags": {
-        "sweetener": 1,
-        "precook": 1
-      }
-    },
     "honeycomb": {
       "tags": {
         "sweetener": 1
       }
     },
-    "honeycomb_cooked": {
-      "tags": {
-        "sweetener": 1,
-        "precook": 1
-      }
-    },
     "royal_jelly": {
       "tags": {
         "sweetener": 3
-      }
-    },
-    "royal_jelly_cooked": {
-      "tags": {
-        "sweetener": 3,
-        "precook": 1
       }
     },
     "carrot": {
@@ -174,12 +156,6 @@
     "cutlichen": {
       "tags": {
         "veggie": 1
-      }
-    },
-    "cutlichen_cooked": {
-      "tags": {
-        "veggie": 1,
-        "precook": 1
       }
     },
     "asparagus": {
@@ -390,12 +366,6 @@
         "precook": 1
       }
     },
-    "batnose_dried": {
-      "tags": {
-        "meat": 0.5,
-        "dried": 1
-      }
-    },
     "eel": {
       "tags": {
         "meat": 0.5,
@@ -426,13 +396,6 @@
       "tags": {
         "meat": 0.5,
         "fish": 1
-      }
-    },
-    "pondeel_cooked": {
-      "tags": {
-        "meat": 0.5,
-        "fish": 1,
-        "precook": 1
       }
     },
     "pondfish": {
