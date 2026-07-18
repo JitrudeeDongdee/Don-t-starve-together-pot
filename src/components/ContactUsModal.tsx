@@ -34,6 +34,7 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [visits, setVisits] = useState<VisitCount | null>(null);
+  const [avatarFailed, setAvatarFailed] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -85,21 +86,26 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
         <h2 className="dish-title">{t.contactInfo}</h2>
         <div className="flourish"><span>✉</span></div>
 
-        {visits && (
-          <p className="visit-counter">
-            <b>{t.totalVisits}:</b> {visits.value.toLocaleString()}
-            {visits.source === 'snapshot' && (
-              <span className="visit-stale"> ({t.visitsOffline} {visits.snapshotAt})</span>
-            )}
-          </p>
-        )}
-
         {loading && <p className="contact-line">{t.loadingContact}</p>}
         {error && <p className="contact-line contact-error">{error}</p>}
 
         {hasContactInfo && (
           <div className="contact-wrap">
-            {profile && <img className="contact-avatar" src={profile.avatar_url} alt={profile.login} width={96} height={96} />}
+            {profile &&
+              (profile.avatar_url && !avatarFailed ? (
+                <img
+                  className="contact-avatar"
+                  src={profile.avatar_url}
+                  alt={profile.login}
+                  width={96}
+                  height={96}
+                  onError={() => setAvatarFailed(true)}
+                />
+              ) : (
+                <div className="contact-avatar contact-avatar-placeholder" aria-label={profile.login}>
+                  {(profile.name ?? profile.login).charAt(0).toUpperCase()}
+                </div>
+              ))}
             {profile && <p className="contact-note-badge">{t.contactProjectNote}</p>}
             {profile && <div className="contact-line"><b>GitHub:</b> <a href={profile.html_url} target="_blank" rel="noreferrer">{profile.login}</a></div>}
             {profile?.name && <div className="contact-line"><b>Name:</b> {profile.name}</div>}
@@ -115,6 +121,15 @@ export default function ContactUsModal({ username, onClose, publicEmail, linkedI
               </div>
             )}
           </div>
+        )}
+
+        {visits && (
+          <p className="visit-counter">
+            <b>{t.totalVisits}:</b> {visits.value.toLocaleString()}
+            {visits.source === 'snapshot' && (
+              <span className="visit-stale"> ({t.visitsOffline} {visits.snapshotAt})</span>
+            )}
+          </p>
         )}
       </div>
     </div>
