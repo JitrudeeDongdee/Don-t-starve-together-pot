@@ -157,6 +157,10 @@ body {
   display: flex;
   flex-direction: column;
 }
+.recipe-browser-panel {
+  width: min(100%, 760px);
+  margin-inline: auto;
+}
 .panel h2 { margin: 0 0 0.75rem; font-size: 1.25rem; color: var(--ink); }
 .panel h3 { margin: 0.5rem 0; font-size: 1.02rem; color: var(--ink-dim); }
 

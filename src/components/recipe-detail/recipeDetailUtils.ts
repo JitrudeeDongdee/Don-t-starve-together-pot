@@ -10,7 +10,12 @@ export interface RuleChip {
   key: string;
 }
 
-const normalizeNameKey = (name: string) => name.replace(/_(cooked|dried)$/, "");
+export const normalizeNameKey = (name: string) => name.replace(/_(cooked|dried)$/, "");
+
+function representativePrefab(name: string): string {
+  const normalized = normalizeNameKey(name);
+  return db.ingredients[normalized] ? normalized : name;
+}
 
 export function sideEffect(
   temperature: number | null,
@@ -173,7 +178,10 @@ function positiveTags(prefab: string): string[] {
 }
 
 export function comboKey(combo: string[]): string {
-  return [...combo].sort().join("|");
+  return combo
+    .map((name) => normalizeNameKey(name))
+    .sort()
+    .join("|");
 }
 
 function sameRecipe(recipe: Recipe, combo: string[]): boolean {
@@ -186,12 +194,17 @@ function sameRecipe(recipe: Recipe, combo: string[]): boolean {
 function replacementPool(prefab: string): string[] {
   const tags = positiveTags(prefab);
   if (tags.length === 0) return [];
-  return ingredientNames
-    .filter(
-      (name) =>
-        name !== prefab && positiveTags(name).some((tag) => tags.includes(tag)),
-    )
-    .slice(0, 12);
+  const pool = new Map<string, string>();
+  for (const name of ingredientNames) {
+    const normalized = normalizeNameKey(name);
+    if (normalized === normalizeNameKey(prefab)) continue;
+    if (!positiveTags(name).some((tag) => tags.includes(tag))) continue;
+    const representative = representativePrefab(name);
+    if (!pool.has(normalized) || representative === normalized) {
+      pool.set(normalized, representative);
+    }
+  }
+  return [...pool.values()].slice(0, 12);
 }
 
 export function cookExamples(recipe: Recipe): string[][] {
