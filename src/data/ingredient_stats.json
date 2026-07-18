@@ -1,0 +1,230 @@
+{
+  "pomegranate": null,
+  "pomegranate_cooked": null,
+  "dragonfruit": null,
+  "dragonfruit_cooked": null,
+  "cave_banana": null,
+  "cave_banana_cooked": null,
+  "wormlight": {
+    "health": 11,
+    "hunger": 25,
+    "sanity": -10
+  },
+  "wormlight_lesser": {
+    "health": 3,
+    "hunger": 12.5,
+    "sanity": -10
+  },
+  "berries": null,
+  "berries_cooked": null,
+  "berries_juicy": null,
+  "berries_juicy_cooked": null,
+  "fig": null,
+  "fig_cooked": null,
+  "durian": null,
+  "durian_cooked": null,
+  "honey": {
+    "health": 3,
+    "hunger": 9.375,
+    "sanity": null
+  },
+  "honey_cooked": {
+    "health": 3,
+    "hunger": 9.375,
+    "sanity": null
+  },
+  "honeycomb": null,
+  "honeycomb_cooked": null,
+  "royal_jelly": {
+    "health": 40,
+    "hunger": 12.5,
+    "sanity": 15
+  },
+  "royal_jelly_cooked": {
+    "health": 40,
+    "hunger": 12.5,
+    "sanity": 15
+  },
+  "carrot": null,
+  "carrot_cooked": null,
+  "corn": null,
+  "corn_cooked": null,
+  "pumpkin": null,
+  "pumpkin_cooked": null,
+  "eggplant": null,
+  "eggplant_cooked": null,
+  "cutlichen": {
+    "health": 3,
+    "hunger": 12.5,
+    "sanity": -5
+  },
+  "cutlichen_cooked": {
+    "health": 3,
+    "hunger": 12.5,
+    "sanity": -5
+  },
+  "asparagus": null,
+  "asparagus_cooked": null,
+  "onion": null,
+  "onion_cooked": null,
+  "garlic": null,
+  "garlic_cooked": null,
+  "tomato": null,
+  "tomato_cooked": null,
+  "potato": null,
+  "potato_cooked": null,
+  "pepper": null,
+  "pepper_cooked": null,
+  "red_cap": null,
+  "red_cap_cooked": null,
+  "green_cap": null,
+  "green_cap_cooked": null,
+  "blue_cap": null,
+  "blue_cap_cooked": null,
+  "moon_cap": null,
+  "moon_cap_cooked": null,
+  "meat": null,
+  "meat_cooked": null,
+  "meat_dried": null,
+  "monstermeat": null,
+  "monstermeat_cooked": null,
+  "monstermeat_dried": null,
+  "froglegs": {
+    "health": 0,
+    "hunger": 12.5,
+    "sanity": -10
+  },
+  "froglegs_cooked": {
+    "health": 1,
+    "hunger": 12.5,
+    "sanity": null
+  },
+  "drumstick": null,
+  "drumstick_cooked": null,
+  "batwing": null,
+  "batwing_cooked": null,
+  "smallmeat": null,
+  "smallmeat_cooked": null,
+  "smallmeat_dried": null,
+  "batnose": null,
+  "batnose_cooked": null,
+  "batnose_dried": null,
+  "eel": null,
+  "eel_cooked": null,
+  "fish": null,
+  "fish_cooked": null,
+  "pondeel": null,
+  "pondeel_cooked": null,
+  "pondfish": null,
+  "fishmeat_small": null,
+  "fishmeat_small_cooked": null,
+  "fishmeat": null,
+  "fishmeat_cooked": null,
+  "kelp": null,
+  "kelp_cooked": null,
+  "kelp_dried": null,
+  "mandrake": null,
+  "mandrake_cooked": null,
+  "egg": null,
+  "egg_cooked": null,
+  "tallbirdegg": null,
+  "tallbirdegg_cooked": {
+    "health": 0,
+    "hunger": 37.5,
+    "sanity": null
+  },
+  "bird_egg": {
+    "health": 0,
+    "hunger": 9.375,
+    "sanity": 0
+  },
+  "bird_egg_cooked": {
+    "health": 0,
+    "hunger": 12.5,
+    "sanity": null
+  },
+  "butterflywings": {
+    "health": 8,
+    "hunger": 9.375,
+    "sanity": null
+  },
+  "moonbutterflywings": {
+    "health": 8,
+    "hunger": 9.375,
+    "sanity": 15
+  },
+  "butter": {
+    "health": 40,
+    "hunger": 25,
+    "sanity": null
+  },
+  "twigs": {
+    "health": 0.5,
+    "hunger": 9.375,
+    "sanity": null
+  },
+  "lightninggoathorn": null,
+  "ice": null,
+  "mole": null,
+  "cactus_meat": null,
+  "cactus_meat_cooked": null,
+  "rock_avocado_fruit_ripe": null,
+  "rock_avocado_fruit_ripe_cooked": null,
+  "watermelon": null,
+  "watermelon_cooked": null,
+  "cactus_flower": null,
+  "acorn": {
+    "health": 1,
+    "hunger": 9.375,
+    "sanity": null
+  },
+  "acorn_cooked": {
+    "health": 1,
+    "hunger": 9.375,
+    "sanity": null
+  },
+  "goatmilk": {
+    "health": 3,
+    "hunger": 12.5,
+    "sanity": 10
+  },
+  "milkywhites": {
+    "health": 8,
+    "hunger": 12.5,
+    "sanity": -20
+  },
+  "nightmarefuel": null,
+  "boneshard": null,
+  "wobster_sheller_land": null,
+  "barnacle": null,
+  "barnacle_cooked": null,
+  "plantmeat": null,
+  "plantmeat_cooked": null,
+  "refined_dust": {
+    "health": null,
+    "hunger": 1,
+    "sanity": null
+  },
+  "forgetmelots": {
+    "health": 0,
+    "hunger": 0,
+    "sanity": 1
+  },
+  "trunk_summer": {
+    "health": 30,
+    "hunger": 37.5,
+    "sanity": null
+  },
+  "trunk_winter": {
+    "health": 30,
+    "hunger": 37.5,
+    "sanity": null
+  },
+  "trunk_cooked": {
+    "health": 40,
+    "hunger": 75,
+    "sanity": null
+  },
+  "ancientfruit_nightvision": null,
+  "ancientfruit_nightvision_cooked": null
+}

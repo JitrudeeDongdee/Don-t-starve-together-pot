@@ -1,0 +1,703 @@
+{
+  "aliases": {
+    "cookedsmallmeat": "smallmeat_cooked",
+    "cookedmonstermeat": "monstermeat_cooked",
+    "cookedmeat": "meat_cooked"
+  },
+  "ingredients": {
+    "pomegranate": {
+      "tags": {
+        "fruit": 1
+      }
+    },
+    "pomegranate_cooked": {
+      "tags": {
+        "fruit": 1,
+        "precook": 1
+      }
+    },
+    "dragonfruit": {
+      "tags": {
+        "fruit": 1
+      }
+    },
+    "dragonfruit_cooked": {
+      "tags": {
+        "fruit": 1,
+        "precook": 1
+      }
+    },
+    "cave_banana": {
+      "tags": {
+        "fruit": 1
+      }
+    },
+    "cave_banana_cooked": {
+      "tags": {
+        "fruit": 1,
+        "precook": 1
+      }
+    },
+    "wormlight": {
+      "tags": {
+        "fruit": 1
+      }
+    },
+    "wormlight_lesser": {
+      "tags": {
+        "fruit": 0.5
+      }
+    },
+    "berries": {
+      "tags": {
+        "fruit": 0.5
+      }
+    },
+    "berries_cooked": {
+      "tags": {
+        "fruit": 0.5,
+        "precook": 1
+      }
+    },
+    "berries_juicy": {
+      "tags": {
+        "fruit": 0.5
+      }
+    },
+    "berries_juicy_cooked": {
+      "tags": {
+        "fruit": 0.5,
+        "precook": 1
+      }
+    },
+    "fig": {
+      "tags": {
+        "fruit": 0.5
+      }
+    },
+    "fig_cooked": {
+      "tags": {
+        "fruit": 0.5,
+        "precook": 1
+      }
+    },
+    "durian": {
+      "tags": {
+        "fruit": 1,
+        "monster": 1
+      }
+    },
+    "durian_cooked": {
+      "tags": {
+        "fruit": 1,
+        "monster": 1,
+        "precook": 1
+      }
+    },
+    "honey": {
+      "tags": {
+        "sweetener": 1
+      }
+    },
+    "honey_cooked": {
+      "tags": {
+        "sweetener": 1,
+        "precook": 1
+      }
+    },
+    "honeycomb": {
+      "tags": {
+        "sweetener": 1
+      }
+    },
+    "honeycomb_cooked": {
+      "tags": {
+        "sweetener": 1,
+        "precook": 1
+      }
+    },
+    "royal_jelly": {
+      "tags": {
+        "sweetener": 3
+      }
+    },
+    "royal_jelly_cooked": {
+      "tags": {
+        "sweetener": 3,
+        "precook": 1
+      }
+    },
+    "carrot": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "carrot_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "corn": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "corn_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "pumpkin": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "pumpkin_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "eggplant": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "eggplant_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "cutlichen": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "cutlichen_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "asparagus": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "asparagus_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "onion": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "onion_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "garlic": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "garlic_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "tomato": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "tomato_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "potato": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "potato_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "pepper": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "pepper_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "red_cap": {
+      "tags": {
+        "veggie": 0.5
+      }
+    },
+    "red_cap_cooked": {
+      "tags": {
+        "veggie": 0.5,
+        "precook": 1
+      }
+    },
+    "green_cap": {
+      "tags": {
+        "veggie": 0.5
+      }
+    },
+    "green_cap_cooked": {
+      "tags": {
+        "veggie": 0.5,
+        "precook": 1
+      }
+    },
+    "blue_cap": {
+      "tags": {
+        "veggie": 0.5
+      }
+    },
+    "blue_cap_cooked": {
+      "tags": {
+        "veggie": 0.5,
+        "precook": 1
+      }
+    },
+    "moon_cap": {
+      "tags": {
+        "veggie": 0.5
+      }
+    },
+    "moon_cap_cooked": {
+      "tags": {
+        "veggie": 0.5,
+        "precook": 1
+      }
+    },
+    "meat": {
+      "tags": {
+        "meat": 1
+      }
+    },
+    "meat_cooked": {
+      "tags": {
+        "meat": 1,
+        "precook": 1
+      }
+    },
+    "meat_dried": {
+      "tags": {
+        "meat": 1,
+        "dried": 1
+      }
+    },
+    "monstermeat": {
+      "tags": {
+        "meat": 1,
+        "monster": 1
+      }
+    },
+    "monstermeat_cooked": {
+      "tags": {
+        "meat": 1,
+        "monster": 1,
+        "precook": 1
+      }
+    },
+    "monstermeat_dried": {
+      "tags": {
+        "meat": 1,
+        "monster": 1,
+        "dried": 1
+      }
+    },
+    "froglegs": {
+      "tags": {
+        "meat": 0.5
+      }
+    },
+    "froglegs_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "precook": 1
+      }
+    },
+    "drumstick": {
+      "tags": {
+        "meat": 0.5
+      }
+    },
+    "drumstick_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "precook": 1
+      }
+    },
+    "batwing": {
+      "tags": {
+        "meat": 0.5
+      }
+    },
+    "batwing_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "precook": 1
+      }
+    },
+    "smallmeat": {
+      "tags": {
+        "meat": 0.5
+      }
+    },
+    "smallmeat_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "precook": 1
+      }
+    },
+    "smallmeat_dried": {
+      "tags": {
+        "meat": 0.5,
+        "dried": 1
+      }
+    },
+    "batnose": {
+      "tags": {
+        "meat": 0.5
+      }
+    },
+    "batnose_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "precook": 1
+      }
+    },
+    "batnose_dried": {
+      "tags": {
+        "meat": 0.5,
+        "dried": 1
+      }
+    },
+    "eel": {
+      "tags": {
+        "meat": 0.5,
+        "fish": 1
+      }
+    },
+    "eel_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "fish": 1,
+        "precook": 1
+      }
+    },
+    "fish": {
+      "tags": {
+        "meat": 1,
+        "fish": 1
+      }
+    },
+    "fish_cooked": {
+      "tags": {
+        "meat": 1,
+        "fish": 1,
+        "precook": 1
+      }
+    },
+    "pondeel": {
+      "tags": {
+        "meat": 0.5,
+        "fish": 1
+      }
+    },
+    "pondeel_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "fish": 1,
+        "precook": 1
+      }
+    },
+    "pondfish": {
+      "tags": {
+        "meat": 0.5,
+        "fish": 0.5
+      }
+    },
+    "fishmeat_small": {
+      "tags": {
+        "meat": 0.5,
+        "fish": 0.5
+      }
+    },
+    "fishmeat_small_cooked": {
+      "tags": {
+        "meat": 0.5,
+        "fish": 0.5,
+        "precook": 1
+      }
+    },
+    "fishmeat": {
+      "tags": {
+        "meat": 1,
+        "fish": 1
+      }
+    },
+    "fishmeat_cooked": {
+      "tags": {
+        "meat": 1,
+        "fish": 1,
+        "precook": 1
+      }
+    },
+    "kelp": {
+      "tags": {
+        "veggie": 0.5
+      }
+    },
+    "kelp_cooked": {
+      "tags": {
+        "veggie": 0.5,
+        "precook": 1
+      }
+    },
+    "kelp_dried": {
+      "tags": {
+        "veggie": 0.5,
+        "dried": 1
+      }
+    },
+    "mandrake": {
+      "tags": {
+        "veggie": 1,
+        "magic": 1
+      }
+    },
+    "mandrake_cooked": {
+      "tags": {
+        "veggie": 1,
+        "magic": 1,
+        "precook": 1
+      }
+    },
+    "egg": {
+      "tags": {
+        "egg": 1
+      }
+    },
+    "egg_cooked": {
+      "tags": {
+        "egg": 1,
+        "precook": 1
+      }
+    },
+    "tallbirdegg": {
+      "tags": {
+        "egg": 4
+      }
+    },
+    "tallbirdegg_cooked": {
+      "tags": {
+        "egg": 4,
+        "precook": 1
+      }
+    },
+    "bird_egg": {
+      "tags": {
+        "egg": 1
+      }
+    },
+    "bird_egg_cooked": {
+      "tags": {
+        "egg": 1,
+        "precook": 1
+      }
+    },
+    "butterflywings": {
+      "tags": {
+        "decoration": 2
+      }
+    },
+    "moonbutterflywings": {
+      "tags": {
+        "decoration": 2
+      }
+    },
+    "butter": {
+      "tags": {
+        "fat": 1,
+        "dairy": 1
+      }
+    },
+    "twigs": {
+      "tags": {
+        "inedible": 1
+      }
+    },
+    "lightninggoathorn": {
+      "tags": {
+        "inedible": 1
+      }
+    },
+    "ice": {
+      "tags": {
+        "frozen": 1
+      }
+    },
+    "mole": {
+      "tags": {
+        "meat": 0.5
+      }
+    },
+    "cactus_meat": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "cactus_meat_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "rock_avocado_fruit_ripe": {
+      "tags": {
+        "veggie": 1
+      }
+    },
+    "rock_avocado_fruit_ripe_cooked": {
+      "tags": {
+        "veggie": 1,
+        "precook": 1
+      }
+    },
+    "watermelon": {
+      "tags": {
+        "fruit": 1
+      }
+    },
+    "watermelon_cooked": {
+      "tags": {
+        "fruit": 1,
+        "precook": 1
+      }
+    },
+    "cactus_flower": {
+      "tags": {
+        "veggie": 0.5
+      }
+    },
+    "acorn": {
+      "tags": {
+        "seed": 1
+      }
+    },
+    "acorn_cooked": {
+      "tags": {
+        "seed": 1
+      }
+    },
+    "goatmilk": {
+      "tags": {
+        "dairy": 1
+      }
+    },
+    "milkywhites": {
+      "tags": {
+        "dairy": 1
+      }
+    },
+    "nightmarefuel": {
+      "tags": {
+        "inedible": 1,
+        "magic": 1
+      }
+    },
+    "boneshard": {
+      "tags": {
+        "inedible": 1
+      }
+    },
+    "wobster_sheller_land": {
+      "tags": {
+        "meat": 1,
+        "fish": 1
+      }
+    },
+    "barnacle": {
+      "tags": {
+        "meat": 0.25,
+        "fish": 0.25
+      }
+    },
+    "barnacle_cooked": {
+      "tags": {
+        "meat": 0.25,
+        "fish": 0.25
+      }
+    },
+    "plantmeat": {
+      "tags": {
+        "meat": 1
+      }
+    },
+    "plantmeat_cooked": {
+      "tags": {
+        "meat": 1
+      }
+    },
+    "refined_dust": {
+      "tags": {
+        "decoration": 2
+      }
+    },
+    "forgetmelots": {
+      "tags": {
+        "decoration": 1
+      }
+    },
+    "trunk_summer": {
+      "tags": {
+        "meat": 1
+      }
+    },
+    "trunk_winter": {
+      "tags": {
+        "meat": 1
+      }
+    },
+    "trunk_cooked": {
+      "tags": {
+        "meat": 1
+      }
+    },
+    "ancientfruit_nightvision": {
+      "tags": {
+        "fruit": 1
+      }
+    },
+    "ancientfruit_nightvision_cooked": {
+      "tags": {
+        "fruit": 1,
+        "precook": 1
+      }
+    }
+  }
+}
