@@ -1,7 +1,7 @@
 import { displayName } from "../../format";
 import type { Locale } from "../../i18n";
 import ItemIcon from "../ItemIcon";
-import { comboKey } from "./recipeDetailUtils";
+import { comboKey, normalizeNameKey } from "./recipeDetailUtils";
 
 interface Props {
   combos: string[][];
@@ -13,7 +13,9 @@ export default function RecipeCookExamples({ combos, locale }: Props) {
     <div className="cook-example-list">
       {combos.map((combo, comboIndex) => (
         <div className="cook-example-row" key={comboKey(combo) || comboIndex}>
-          {combo.map((name, i) => (
+          {combo.map((rawName, i) => {
+            const name = normalizeNameKey(rawName);
+            return (
             <span
               key={`${comboIndex}-${name}-${i}`}
               className="cook-example-slot"
@@ -26,7 +28,8 @@ export default function RecipeCookExamples({ combos, locale }: Props) {
                 variant="square"
               />
             </span>
-          ))}
+            );
+          })}
         </div>
       ))}
     </div>

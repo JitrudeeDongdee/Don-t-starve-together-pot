@@ -251,6 +251,12 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
 - **แยก RecipeDetail เป็นไฟล์ย่อย:** ลดความยาว `src/components/RecipeDetail.tsx` โดยย้าย divider,
   rule card, example cook renderer, และ utility/parsing logic ไปไว้ใน
   `src/components/recipe-detail/` เพื่อให้อ่าน/แก้ง่ายขึ้นโดยไม่เปลี่ยนพฤติกรรม — verified: build ✅
+- **RecipeBrowser จำกัดความกว้างบน desktop:** เพิ่มคลาส `recipe-browser-panel` ให้แท็บเมนูทั้งหมด
+  และตั้งความกว้าง `min(100%, 760px)` พร้อมจัดกึ่งกลาง เพื่อไม่ให้บรรทัดอ่านยาวเต็มจอบน desktop —
+  verified: build ✅
+- **Example cook หลากหลายขึ้นและรวมดิบ/สุกเป็นตัวเดียว:** ปรับ utility ให้ dedupe ตัวอย่างด้วยชื่อฐาน
+  (`_cooked`/`_dried` นับเป็น ingredient เดียวกันใน example key) และเวลา render จะแสดงชื่อ/ไอคอนจาก
+  base ingredient เดียวกัน ทำให้ตัวอย่างไม่ซ้ำกันเพียงเพราะต่างกันแค่ดิบ/สุก — verified: build ✅
 - **Tab เมนูทั้งหมด (tab 2) เต็มจอ:** เมื่อเข้าแท็บ browser ให้ `.app` ขยายเต็มความกว้าง viewport
   (`.app.app-browser { max-width: none; width: 100%; }`) และลิสต์เมนูใช้ความสูงที่เหลือทั้งหมด
   (`.recipe-browser-list` แบบ flex+overflow) — verified: typecheck ✅, build ✅
