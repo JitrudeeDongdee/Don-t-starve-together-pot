@@ -28,19 +28,8 @@
     "hunger": 9.375,
     "sanity": null
   },
-  "honey_cooked": {
-    "health": 3,
-    "hunger": 9.375,
-    "sanity": null
-  },
   "honeycomb": null,
-  "honeycomb_cooked": null,
   "royal_jelly": {
-    "health": 40,
-    "hunger": 12.5,
-    "sanity": 15
-  },
-  "royal_jelly_cooked": {
     "health": 40,
     "hunger": 12.5,
     "sanity": 15
@@ -54,11 +43,6 @@
   "eggplant": null,
   "eggplant_cooked": null,
   "cutlichen": {
-    "health": 3,
-    "hunger": 12.5,
-    "sanity": -5
-  },
-  "cutlichen_cooked": {
     "health": 3,
     "hunger": 12.5,
     "sanity": -5
@@ -108,13 +92,11 @@
   "smallmeat_dried": null,
   "batnose": null,
   "batnose_cooked": null,
-  "batnose_dried": null,
   "eel": null,
   "eel_cooked": null,
   "fish": null,
   "fish_cooked": null,
   "pondeel": null,
-  "pondeel_cooked": null,
   "pondfish": null,
   "fishmeat_small": null,
   "fishmeat_small_cooked": null,

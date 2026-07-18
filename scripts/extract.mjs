@@ -19,6 +19,31 @@ const read = (f) => readFileSync(join(LUA, f), 'utf8');
 // ---------------------------------------------------------------------------
 // 1. Ingredients (from cooking.lua AddIngredientValues)
 // ---------------------------------------------------------------------------
+
+/**
+ * `_cooked` / `_dried` variants that cooking.lua's cancook/candry flags imply
+ * but that DO NOT exist as obtainable items. Klei sets those flags liberally —
+ * they only decide which rows land in the cooking-tag table, not whether the
+ * item is real — so taking them at face value invents ingredients.
+ *
+ * Verified against the game's own prefab sources (prefabs/*.lua):
+ *   honey_cooked        honey.lua        — no `cookable` component
+ *   honeycomb_cooked    honeycomb.lua    — no `cookable` component
+ *   royal_jelly_cooked  royal_jelly.lua  — no `cookable` component
+ *   cutlichen_cooked    cutlichen.lua    — no `cookable` component
+ *   pondeel_cooked      pondfish.lua     — pondeel cooks into `eel_cooked`
+ *   batnose_dried       meats.lua        — batnose dries into `smallmeat_dried`
+ *                                          (only batnose / batnose_cooked are registered)
+ * None of these are referenced by any recipe test, so dropping them is safe.
+ */
+const PHANTOM_VARIANTS = new Set([
+  'honey_cooked',
+  'honeycomb_cooked',
+  'royal_jelly_cooked',
+  'cutlichen_cooked',
+  'pondeel_cooked',
+  'batnose_dried',
+]);
 function parseIngredients() {
   // strip Lua line comments so commented-out calls (e.g. `-- AddIngredientValues({"seeds"}...)`)
   // are not parsed as real ingredients.
@@ -47,6 +72,7 @@ function parseIngredients() {
 
   const ingredients = {};
   const add = (name, tags, extra = {}) => {
+    if (PHANTOM_VARIANTS.has(name)) return; // not a real item — see note above
     ingredients[name] = { tags: { ...tags, ...extra } };
   };
 
