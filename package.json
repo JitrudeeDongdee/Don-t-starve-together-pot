@@ -15,7 +15,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b --noEmit"
+    "typecheck": "tsc -b --noEmit",
+    "validate-random": "node scripts/validate_random_examples.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
