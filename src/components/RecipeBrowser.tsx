@@ -36,7 +36,7 @@ export default function RecipeBrowser({ onSelect, showBorder = true }: Props) {
 
   return (
     <div className={`panel recipe-browser-panel${showBorder ? '' : ' panel-borderless'}`}>
-      <h2><Icon name="book" size={18} /> {t.allRecipes} ({list.length})</h2>
+      {/* <h2><Icon name="book" size={18} /> {t.allRecipes} ({list.length})</h2> */}
       <div className="picker-toolbar">
         <SearchBox value={q} onChange={setQ} placeholder={t.searchRecipe} />
         <button
