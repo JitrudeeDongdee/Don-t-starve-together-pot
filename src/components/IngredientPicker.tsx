@@ -30,13 +30,17 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
 
   const list = useMemo(() => {
     const query = q.trim().toLowerCase();
-    return ingredientNames.filter((n) => {
-      if (cat === 'fav') {
-        if (!isFav('ingredient', n)) return false;
-      } else if (cat !== 'all' && filterBucket(n) !== cat) return false;
-      if (!query) return true;
-      return n.includes(query) || displayName(n, locale).toLowerCase().includes(query);
-    });
+    return ingredientNames
+      .filter((n) => {
+        if (cat === 'fav') {
+          if (!isFav('ingredient', n)) return false;
+        } else if (cat !== 'all' && filterBucket(n) !== cat) return false;
+        if (!query) return true;
+        return n.includes(query) || displayName(n, locale).toLowerCase().includes(query);
+      })
+      // starred items float to the front; Array.sort is stable, so everything
+      // else keeps the alphabetical order it already had
+      .sort((a, b) => Number(isFav('ingredient', b)) - Number(isFav('ingredient', a)));
   }, [q, cat, locale, isFav]);
 
   return (

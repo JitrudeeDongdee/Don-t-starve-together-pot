@@ -569,6 +569,9 @@ body {
   margin-left: 0.35rem;
 }
 
+/* pairs with .close-x on the opposite corner of the modal header */
+.fav-in-detail { float: left; padding: 2px; }
+
 .cat-chip-fav { display: inline-flex; align-items: center; gap: 0.25rem; }
 .empty-note {
   margin: 0.4rem 0 0.6rem; color: var(--ink-dim);
