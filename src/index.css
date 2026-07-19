@@ -164,7 +164,16 @@ body {
   .nav-menu { transition: none; }
 }
 
-.nav-tail { display: contents; }
+/* contact + language sink to the bottom, away from the sections — the drawer
+   and the rail are both full-height flex columns, so one rule covers both */
+.nav-tail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 2px solid var(--frame-light);
+}
 
 .nav-item {
   display: flex;
@@ -242,15 +251,6 @@ body {
     flex: 1 1 auto;
   }
   .nav-item { font-size: 1.02rem; padding: 0.55rem 0.9rem; }
-  /* contact + language sink to the bottom of the rail, away from the sections */
-  .nav-tail {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-top: auto;
-    padding-top: 0.5rem;
-    border-top: 2px solid var(--frame);
-  }
 }
 
 /* ---------- parchment panels ---------- */
