@@ -12,8 +12,9 @@
     "cook-examples": "node scripts/cook_examples.mjs",
     "snapshot-visits": "node scripts/snapshot_visits.mjs",
     "sitemap": "node scripts/generate_sitemap.mjs",
+    "prerender": "node scripts/prerender.mjs",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run sitemap && tsc -b && vite build && npm run prerender",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "validate-random": "node scripts/validate_random_examples.mjs"

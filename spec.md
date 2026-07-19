@@ -333,6 +333,24 @@ findRecipesByIngredients(partialSlots): Recipe[] // reverse search (ฟีเจ
   เมื่อ `showBorder={false}` ซึ่งซ่อนเส้น border ด้วย `border-color: transparent` แต่ยังคง background,
   outline, spacing และ shadow เดิมไว้; ส่วน `RecipeBrowser` ยังใช้ `panel-borderless` แบบโล่งเต็ม —
   ยังไม่ rerun verify ตาม preference ล่าสุด: ค่อยตรวจตอน push
+- **SEO รอบสอง — prerender + noindex stub (2026-07-19):** จาก SEO audit เต็มรูปแบบ:
+  1) เพิ่ม `scripts/prerender.mjs` เขียน `dist/<route>/index.html` ต่อ route พร้อม
+     title/description/canonical/OG ของตัวเอง (อ่าน `ROUTES` จาก `src/routes.ts` เหมือน sitemap)
+     — แก้ปัญหา social crawler (FB/LINE/X) ที่ไม่รัน JS ได้ meta หน้าแรกทุกลิงก์
+  2) `build` เรียก `sitemap` ก่อน และ `prerender` หลัง vite build (เดิม sitemap ต้องรันมือ → ค้าง)
+  3) เพิ่ม `indexable?: boolean` ใน `RouteMeta` + `indexableRoutes()`; `/farming` ตั้ง
+     `indexable: false` → ได้ `noindex,follow` ตอน prerender และหลุดจาก sitemap (thin content)
+  4) เพิ่ม JSON-LD `WebApplication` ใน `index.html`
+  5) ย้าย webfont จาก `@import` ใน `index.css` ไป `<link>` + `preconnect` (render-blocking)
+  6) `<html lang>` sync ตาม locale ใน `LocaleProvider` (เดิม hardcode ไม่ตรงเนื้อหา)
+  7) `deploy.yml`: bump Node 20→22 (scripts import `.ts` ต้องใช้ type stripping) + ส่ง
+     `VITE_GA_ID` secret เข้า build (เดิม GA ไม่เคยยิงบน production เลย)
+  — verified: build ✅ (sitemap 2 urls, prerender 3 pages), typecheck ✅,
+  `/farming` = `noindex,follow` ✅, `/recipes` = `index,follow` ✅, browser: ไม่มี console error,
+  font โหลดติด, `lang` เปลี่ยนตาม locale ✅
+- **ค้างอยู่ (ยังไม่ทำ):** `/recipes/:slug` ให้เมนู 180+ จานมี URL จริง (โอกาส SEO ใหญ่สุด แต่เป็น
+  งาน feature ไม่ใช่การแก้ tag), OG image 1200×630 (ตอนนี้ logo 64×64 เล็กเกินกว่า FB/X จะแสดง),
+  หน้า 404 จริงแทน catch-all ที่คืน KitchenPage (soft-404), hreflang แบบแยก URL ต่อภาษา
 - **SEO พื้นฐานเพิ่มแล้ว:** `index.html` มี title + meta description + robots meta + canonical +
   OG/Twitter text meta, หน้า app มี `h1` แบบ `sr-only`, และเพิ่ม `public/robots.txt` /
   `public/sitemap.xml` สำหรับ URL `https://jitrudeedongdee.github.io/Don-t-starve-together-pot/` —

@@ -4,6 +4,7 @@ import { rollCookExamples } from "../engine/randomExample";
 import type { Recipe } from "../engine/types";
 import { displayName } from "../format";
 import { useLocale } from "../i18n";
+import FavButton from "./FavButton";
 import Icon from "./Icon";
 import ItemIcon from "./ItemIcon";
 import StatMeters from "./StatMeters";
@@ -55,6 +56,7 @@ export default function RecipeDetail({
         <button className="close-x" onClick={onClose} aria-label="close">
           <Icon name="close" size={18} />
         </button>
+        <FavButton kind="recipe" id={recipe.name} size={22} className="fav-in-detail" />
         <h2 className="dish-title">{displayName(recipe.name, locale)}</h2>
         <div className="flourish">
           <Icon name="flourish" size={20} />

@@ -66,6 +66,10 @@ const STRINGS = {
     ingredientsInPot: 'วัตถุดิบในหม้อ',
     cookExample: 'ตัวอย่างการปรุง',
     reroll: 'สุ่มใหม่',
+    favorite: 'เพิ่มรายการโปรด',
+    unfavorite: 'เอาออกจากรายการโปรด',
+    favoritesOnly: 'รายการโปรด',
+    noFavorites: 'ยังไม่มีรายการโปรด — กดรูปดาวเพื่อเพิ่ม',
     farming: 'ปลูกผัก',
     comingSoonTitle: 'กำลังพัฒนา',
     comingSoonBody: 'ระบบปลูกผักยังทำไม่เสร็จ กำลังทยอยเพิ่มข้อมูลพืช ฤดูกาล และธาตุอาหารในดิน',
@@ -132,6 +136,10 @@ const STRINGS = {
     ingredientsInPot: 'Ingredients in pot',
     cookExample: 'Example cook',
     reroll: 'Re-roll',
+    favorite: 'Add to favorites',
+    unfavorite: 'Remove from favorites',
+    favoritesOnly: 'Favorites',
+    noFavorites: 'No favorites yet — tap a star to add one',
     farming: 'Farming',
     comingSoonTitle: 'Work in progress',
     comingSoonBody: 'The farming section is not finished yet. Crops, seasons and soil nutrients are still being added.',
@@ -168,6 +176,12 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     const stored = readStoredLocale();
     if (stored) setLocale(stored);
   }, []);
+
+  // Keep <html lang> honest: index.html ships lang="th" for the default, and
+  // screen readers and translation tools read this attribute, not our context.
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   const set = (l: Locale) => {
     try {
