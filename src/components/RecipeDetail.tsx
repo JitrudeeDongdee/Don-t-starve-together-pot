@@ -1,6 +1,7 @@
 import type { Recipe } from "../engine/types";
 import { displayName } from "../format";
 import { useLocale } from "../i18n";
+import Icon from "./Icon";
 import ItemIcon from "./ItemIcon";
 import StatMeters from "./StatMeters";
 import RecipeCookExamples from "./recipe-detail/RecipeCookExamples";
@@ -34,12 +35,12 @@ export default function RecipeDetail({
   return (
     <div className="overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <button className="close-x" onClick={onClose}>
-          ✕
+        <button className="close-x" onClick={onClose} aria-label="close">
+          <Icon name="close" size={18} />
         </button>
         <h2 className="dish-title">{displayName(recipe.name, locale)}</h2>
         <div className="flourish">
-          <span>❧</span>
+          <Icon name="flourish" size={20} />
         </div>
 
         <div className="dish-header">
@@ -104,7 +105,7 @@ export default function RecipeDetail({
 
         {rules.oneOf.length > 0 && (
           <>
-            <div className="rule-title">🔀 {t.oneOfIngredients}</div>
+            <div className="rule-title"><Icon name="shuffle" size={16} /> {t.oneOfIngredients}</div>
             <div className="rule-groups">
               {rules.oneOf.map((group, i) => (
                 <div className="rule-list rule-group" key={`oneof-${i}`}>
