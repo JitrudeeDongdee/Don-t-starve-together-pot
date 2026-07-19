@@ -9,6 +9,7 @@ import {
   type Category,
 } from '../format';
 import { useLocale } from '../i18n';
+import Icon from './Icon';
 import ItemIcon from './ItemIcon';
 import SearchBox from './SearchBox';
 
@@ -21,6 +22,8 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
   const { locale, t } = useLocale();
   const [q, setQ] = useState('');
   const [cat, setCat] = useState<Category | 'all'>('all');
+  // phone only: the chip row costs three lines, so it hides behind this toggle
+  const [filterOpen, setFilterOpen] = useState(false);
 
   const list = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -33,8 +36,20 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
 
   return (
     <div className="panel">
-      <SearchBox value={q} onChange={setQ} placeholder={t.searchIngredient} />
-      <div className="cat-filter">
+      <div className="picker-toolbar">
+        <SearchBox value={q} onChange={setQ} placeholder={t.searchIngredient} />
+        <button
+          className={`filter-toggle${cat !== 'all' ? ' filtered' : ''}`}
+          onClick={() => setFilterOpen((v) => !v)}
+          aria-expanded={filterOpen}
+          aria-controls="cat-filter"
+          title={t.category}
+          aria-label={t.category}
+        >
+          <Icon name="filter" size={20} />
+        </button>
+      </div>
+      <div id="cat-filter" className={`cat-filter${filterOpen ? ' open' : ''}`}>
         <button
           className={`cat-chip${cat === 'all' ? ' active' : ''}`}
           onClick={() => setCat('all')}
