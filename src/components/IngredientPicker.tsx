@@ -91,7 +91,7 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
             >
               <ItemIcon prefab={n} size={44} fallback="name" variant="bare" />
             </button>
-            <FavButton kind="ingredient" id={n} size={14} className="fav-on-tile" />
+            <FavButton kind="ingredient" id={n} size={18} className="fav-on-tile" />
           </div>
         ))}
       </div>

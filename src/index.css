@@ -559,10 +559,15 @@ body {
   .fav-on-tile:not(.on) { opacity: 0.5; }
 }
 
-.recipe-row-wrap { display: flex; align-items: center; gap: 0.25rem; }
+.recipe-row-wrap { display: flex; align-items: center; gap: 0.5rem; }
 .recipe-row-wrap > .recipe-row { flex: 1 1 auto; min-width: 0; }
-/* the row carries the gap between rows, so the star must not stretch it */
-.recipe-row-wrap > .fav-btn { align-self: center; margin-bottom: 0.4rem; }
+/* the row carries the gap between rows, so the star must not stretch it.
+   The left inset keeps it off the panel frame instead of hugging the border. */
+.recipe-row-wrap > .fav-btn {
+  align-self: center;
+  margin-bottom: 0.4rem;
+  margin-left: 0.35rem;
+}
 
 .cat-chip-fav { display: inline-flex; align-items: center; gap: 0.25rem; }
 .empty-note {

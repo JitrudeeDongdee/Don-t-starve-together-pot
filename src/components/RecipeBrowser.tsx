@@ -53,7 +53,7 @@ export default function RecipeBrowser({ onSelect, showBorder = true }: Props) {
       <div className="recipe-browser-list">
         {list.map((r) => (
           <div className="recipe-row-wrap" key={r.name}>
-            <FavButton kind="recipe" id={r.name} />
+            <FavButton kind="recipe" id={r.name} size={22} />
             <button className="recipe-row" onClick={() => onSelect(r.name)}>
               <span className="suggest-name">
                 <ItemIcon prefab={r.name} size={32} variant="bare" />
