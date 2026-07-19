@@ -25,7 +25,13 @@ export default function RecipeBrowser({ onSelect, showBorder = true }: Props) {
     return recipes
       .filter((r) => !favOnly || isFav('recipe', r.name))
       .filter((r) => !query || r.name.includes(query) || displayName(r.name, locale).toLowerCase().includes(query))
-      .sort((a, b) => displayName(a.name, locale).localeCompare(displayName(b.name, locale)));
+      .sort((a, b) => {
+        // starred dishes float to the top, alphabetical within each group
+        const fa = isFav('recipe', a.name);
+        const fb = isFav('recipe', b.name);
+        if (fa !== fb) return fa ? -1 : 1;
+        return displayName(a.name, locale).localeCompare(displayName(b.name, locale));
+      });
   }, [q, locale, favOnly, isFav]);
 
   return (
@@ -47,6 +53,7 @@ export default function RecipeBrowser({ onSelect, showBorder = true }: Props) {
       <div className="recipe-browser-list">
         {list.map((r) => (
           <div className="recipe-row-wrap" key={r.name}>
+            <FavButton kind="recipe" id={r.name} />
             <button className="recipe-row" onClick={() => onSelect(r.name)}>
               <span className="suggest-name">
                 <ItemIcon prefab={r.name} size={32} variant="bare" />
@@ -54,7 +61,6 @@ export default function RecipeBrowser({ onSelect, showBorder = true }: Props) {
               </span>
               <StatMeters stats={r.stats} size="sm" />
             </button>
-            <FavButton kind="recipe" id={r.name} />
           </div>
         ))}
       </div>
