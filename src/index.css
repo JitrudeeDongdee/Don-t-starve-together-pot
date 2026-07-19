@@ -314,12 +314,10 @@ body {
    full-width row makes the eye sweep from the name to the far-right stats.
    Capping the PANEL (not the app shell) is what keeps the shell the same width
    on both Cook tabs, so switching tabs no longer resizes the nav and header. */
-.recipe-browser-panel {
-  /* `.content > .panel` sets `flex: 1 1 0`, which beats a `width` declaration —
-     the cap has to be a max-width or the panel just grows to fill the row. */
-  max-width: 760px;
-  margin-inline: auto;
-}
+/* Fills the content area like every other panel, so both Cook tabs are the same
+   width. The reason it used to be capped — the eye sweeping from the dish name
+   to far-right stats — is handled by pinning the meters to a fixed column
+   instead (see .suggest-item > .suggest-name), which holds at any width. */
 .panel h2 { margin: 0 0 0.75rem; font-size: 1.25rem; color: var(--ink); }
 .panel h3 { margin: 0.5rem 0; font-size: 1.02rem; color: var(--ink-dim); }
 
