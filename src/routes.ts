@@ -42,5 +42,12 @@ export const ROUTES: RouteMeta[] = [
   },
 ];
 
+/** Pages that live under the "Cook" section, in tab order. */
+export const COOK_PATHS = ['/', '/recipes'] as const;
+
+/** True for any Cook page — used to keep the Cook rail item lit on /recipes. */
+export const isCookPath = (pathname: string) =>
+  pathname === '/' || pathname.startsWith('/recipes');
+
 export const canonicalFor = (path: string) =>
   `${SITE_ORIGIN}${BASE_PATH}${path.replace(/^\//, '')}`;

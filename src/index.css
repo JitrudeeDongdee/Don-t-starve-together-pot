@@ -77,73 +77,180 @@ body {
   width: 100%;
 }
 
-/* ---------- header: tabs (left) + language toggle (right), one row ---------- */
+/* ---------- header: Cook sub-tabs (Cook pages only) ---------- */
 .app-header {
-  display: flex; align-items: flex-end; justify-content: flex-end;
+  display: flex; align-items: flex-end; justify-content: flex-start;
   gap: 0.5rem;
   flex: 0 0 auto;
 }
 
-.header-actions {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.4rem;
+/* inline SVG icons (emoji are banned — see spec.md) sit on the text baseline */
+.icon { flex: 0 0 auto; vertical-align: -0.15em; }
+
+/* ---------- logo ---------- */
+.logo { display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; }
+.logo-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--logo-size, 34px); height: var(--logo-size, 34px);
+  color: #d8c091;
+}
+.logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+.logo-word {
+  color: #e8d9b5; font-weight: 700; font-size: 1.15rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.lang-toggle, .contact-toggle {
-  background: var(--frame); color: #e8d9b5;
-  border: 2px solid var(--frame-light); border-radius: 10px;
-  padding: 0.4rem 0.8rem; cursor: pointer; font-size: 0.95rem; font-weight: 700;
-  font-family: inherit; margin-bottom: 0.35rem;
-}
-.lang-toggle:hover, .contact-toggle:hover { border-color: var(--gold-bright); }
-
-/* ---------- nav: side rail on desktop, top bar on mobile ---------- */
+/* ---------- nav (mobile-first): brand + burger bar, menu collapses ---------- */
 .nav {
   display: flex;
+  flex-direction: column;
   gap: 0.35rem;
+  width: 100%;
   flex: 0 0 auto;
 }
+
+/* the gold plank the whole app hangs off of, on phones */
+.nav-bar {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold) 100%);
+  border: 3px solid var(--frame);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+.nav-bar .logo-word { color: #2a1c0e; }
+.nav-bar .logo-mark { color: #2a1c0e; }
+
+.nav-burger {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  background: rgba(42, 28, 14, 0.16); color: #2a1c0e;
+  border: 2px solid rgba(42, 28, 14, 0.55); border-radius: 9px;
+  cursor: pointer; font-family: inherit;
+}
+.nav-burger:hover { background: rgba(42, 28, 14, 0.3); }
+
+.nav-scrim {
+  position: fixed; inset: 0; z-index: 55;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* mobile: a drawer parked off-screen that slides in from the left */
+.nav-menu {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 70;
+  width: min(74vw, 16rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 0.8rem;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #362819 0%, #241a10 100%);
+  border-right: 3px solid var(--frame);
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%);
+  visibility: hidden;                 /* keeps links out of the tab order when shut */
+  transition: transform 0.24s ease, visibility 0.24s;
+}
+.nav-menu.open { transform: none; visibility: visible; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu { transition: none; }
+}
+
+.nav-tail { display: contents; }
+
 .nav-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  padding: 0.55rem 0.9rem;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  padding: 0.55rem 0.8rem;
   border: 2px solid var(--frame);
   border-radius: 10px;
   background: #392a1a;
   color: #b7a276;
   font-family: inherit;
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   font-weight: 700;
+  text-align: left;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
+  width: 100%;
 }
 .nav-item:hover { border-color: var(--gold-bright); }
 .nav-item.active { background: var(--paper); color: var(--ink); border-color: var(--frame); }
-.nav-icon { font-size: 1.1rem; line-height: 1; }
 
-/* mobile / narrow: horizontal bar across the top, equal-width items */
-@media (max-width: 767px) {
-  .nav {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-    width: 100%;
-  }
-  .nav-label { font-size: 0.92rem; }
+/* ---------- Cook sub-tabs ---------- */
+.subtabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;   /* equal widths regardless of label length */
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  max-width: 26rem;
+  margin-bottom: 0.35rem;
 }
+.subtab {
+  display: flex; align-items: center; justify-content: center; gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  border: 2px solid var(--frame-light);
+  border-radius: 9px;
+  background: transparent;
+  color: #b7a276;
+  font-family: inherit; font-size: 0.92rem; font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.subtab:hover { border-color: var(--gold-bright); }
+.subtab.active { background: var(--frame); color: #f0e2c0; border-color: var(--frame); }
 
-/* desktop: vertical rail down the left, labels left-aligned */
+/* desktop: the rail is always open, so the burger has nothing to toggle */
 @media (min-width: 768px) {
   .nav {
-    flex-direction: column;
     width: 12rem;
     align-self: stretch;
   }
-  .nav-item { justify-content: flex-start; }
+  /* the plank and the drawer are phone furniture — desktop gets the plain rail back */
+  .nav-bar {
+    position: static;
+    padding: 0 0 0.5rem 0.15rem;
+    background: none; border: 0; border-radius: 0; box-shadow: none;
+  }
+  .nav-bar .logo-word { color: #e8d9b5; }
+  .nav-bar .logo-mark { color: #d8c091; }
+  .nav-burger, .nav-scrim { display: none; }
+  .nav-menu, .nav-menu.open {
+    position: static;
+    width: auto;
+    padding: 0;
+    overflow: visible;
+    background: none; border: 0; box-shadow: none;
+    transform: none;
+    visibility: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1 1 auto;
+  }
+  .nav-item { font-size: 1.02rem; padding: 0.55rem 0.9rem; }
+  /* contact + language sink to the bottom of the rail, away from the sections */
+  .nav-tail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 2px solid var(--frame);
+  }
 }
 
 /* ---------- parchment panels ---------- */
@@ -375,7 +482,21 @@ body {
 .suggest-name { display: inline-flex; align-items: center; gap: 0.5rem; }
 
 /* ---------- search with clear ---------- */
-.searchbox { position: relative; margin-bottom: 0.6rem; }
+.searchbox { position: relative; margin-bottom: 0.6rem; flex: 1 1 auto; min-width: 0; }
+
+/* search + filter toggle share one row (mobile-first) */
+.picker-toolbar { display: flex; align-items: flex-start; gap: 0.4rem; }
+.filter-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex: 0 0 auto;
+  background: var(--paper-inset); color: var(--ink);
+  border: 2px solid var(--line); border-radius: 8px;
+  cursor: pointer; font-family: inherit;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.25);
+}
+.filter-toggle:hover { border-color: var(--gold-bright); }
+/* a collapsed filter must still announce that it is narrowing the list */
+.filter-toggle.filtered { background: var(--frame); color: #e8d9b5; border-color: var(--frame); }
 .search {
   width: 100%; padding: 0.5rem 2.2rem 0.5rem 0.7rem; border-radius: 8px;
   background: var(--paper-inset); border: 2px solid var(--line); color: var(--ink);
@@ -392,7 +513,13 @@ body {
 .search-clear:hover { background: var(--gold); }
 
 /* ---------- category chips ---------- */
-.cat-filter { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.cat-filter { display: none; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.cat-filter.open { display: flex; }
+/* desktop has the room — chips stay out in the open and the toggle disappears */
+@media (min-width: 768px) {
+  .cat-filter, .cat-filter.open { display: flex; }
+  .filter-toggle { display: none; }
+}
 .cat-chip {
   background: var(--paper-inset); color: var(--ink);
   border: 2px solid var(--line); border-radius: 20px;
@@ -463,7 +590,11 @@ body {
   box-shadow: 0 12px 26px rgba(0,0,0,0.6); max-height: 88vh; overflow-y: auto;
 }
 .dish-title { margin: 0 0 0.6rem; color: var(--ink); font-size: 1.6rem; text-align: center; }
-.close-x { float: right; background: none; border: none; color: var(--ink-dim); font-size: 1.3rem; cursor: pointer; }
+.close-x {
+  float: right; background: none; border: none; color: var(--ink-dim);
+  cursor: pointer; padding: 2px; display: inline-flex; align-items: center;
+}
+.close-x:hover { color: var(--ink); }
 
 .dish-header { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-bottom: 0.4rem; }
 .dish-frame {
@@ -501,6 +632,7 @@ body {
   border-bottom: 1px solid rgba(138, 116, 82, 0.45);
 }
 .flourish span { font-size: 1.05rem; line-height: 1; transform: translateY(-1px); }
+.flourish .icon { flex: 0 0 auto; }
 
 /* divider with ruled lines each side, like the cookbook sections */
 .divider {
@@ -558,6 +690,7 @@ body {
 .cond { margin: 0.35rem 0 0; padding-left: 1.2rem; color: var(--ink); }
 .cond li { margin: 0.18rem 0; }
 .rule-title {
+  display: flex; align-items: center; gap: 0.35rem;
   margin: 0.55rem 0 0.2rem;
   font-size: 1rem;
   font-weight: 800;
@@ -705,6 +838,7 @@ body {
   line-height: 1.5;
 }
 .wip-back {
+  display: inline-flex; align-items: center; gap: 0.3rem;
   color: var(--gold); font-weight: 700; text-decoration: none;
   border-bottom: 2px solid transparent;
 }
@@ -733,7 +867,12 @@ body {
 
 /* Narrow screens: let the four pot slots shrink to fit instead of sitting
    1px inside the panel, which clipped on anything under ~375px. */
+/* the pot is a fixed header above a scrolling list — on a phone it should cost
+   as little vertical space as possible, so the slots shrink rather than fill */
 @media (max-width: 767px) {
-  .pot { width: 100%; }
-  .slot { width: auto; flex: 1 1 0; min-width: 0; max-width: 76px; }
+  .pot { width: 100%; gap: 0.4rem; margin: 0.25rem auto; }
+  .slot { width: auto; flex: 1 1 0; min-width: 0; max-width: 54px; padding: 4px; }
+  /* ItemIcon renders fixed width/height attrs — let the box win on small screens */
+  .slot img { max-width: 100%; height: auto; }
+  .pot-wrap { padding: 0.6rem 0.7rem; }
 }
