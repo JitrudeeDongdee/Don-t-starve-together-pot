@@ -28,7 +28,7 @@ export default function NavBar({ onContact }: Props) {
     <nav className="nav" aria-label="Sections">
       {/* mobile: brand left, burger right. desktop: just the brand, at the top of the rail */}
       <div className="nav-bar">
-        <Logo />
+        <Logo variant={isCookPath(pathname) ? 'cook' : 'farming'} />
         <button
           className="nav-burger"
           onClick={() => setOpen((v) => !v)}
