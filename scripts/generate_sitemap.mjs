@@ -7,9 +7,12 @@
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { ROUTES, canonicalFor } from '../src/routes.ts';
+import { indexableRoutes, canonicalFor } from '../src/routes.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+
+// "coming soon" pages are deliberately absent — see RouteMeta.indexable.
+const ROUTES = indexableRoutes();
 
 const urls = ROUTES.map(
   (route) => `  <url>

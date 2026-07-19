@@ -13,7 +13,17 @@ export interface RouteMeta {
   /** Visible page heading. */
   heading: string;
   headingTh: string;
+  /**
+   * False for pages with no real content yet. They get `noindex` when
+   * prerendered and are left out of the sitemap — announcing an empty page for
+   * crawling is a low-quality signal that drags down the whole domain.
+   * Defaults to true when omitted.
+   */
+  indexable?: boolean;
 }
+
+/** Routes worth putting in front of a crawler. */
+export const indexableRoutes = () => ROUTES.filter((r) => r.indexable !== false);
 
 export const ROUTES: RouteMeta[] = [
   {
@@ -39,6 +49,8 @@ export const ROUTES: RouteMeta[] = [
       "Don't Starve Together farming guide — crops, seasons, soil nutrients and giant crop requirements. Currently in development.",
     heading: "Don't Starve Together Farming Guide",
     headingTh: 'คู่มือปลูกผัก Don’t Starve Together',
+    // Still a "coming soon" stub — flip to true once it has real content.
+    indexable: false,
   },
 ];
 

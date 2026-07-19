@@ -177,6 +177,12 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     if (stored) setLocale(stored);
   }, []);
 
+  // Keep <html lang> honest: index.html ships lang="th" for the default, and
+  // screen readers and translation tools read this attribute, not our context.
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   const set = (l: Locale) => {
     try {
       localStorage.setItem('locale', l);
