@@ -567,6 +567,21 @@ body {
   box-shadow: inset 0 2px 5px rgba(0,0,0,0.18);
 }
 .suggest-item:hover, .recipe-row:hover { border-color: var(--gold-bright); }
+
+/* The row is already full width; what moved was the CONTENT inside it. With
+   space-between alone, the meters sit wherever the dish name happens to end, so
+   they land in a different column on every row ("Trail Mix" vs "Breakfast
+   Skillet"). Giving the name the slack pins the meters to the right edge, and a
+   min-width on each value keeps "+5" and "+12.5" from nudging them further. */
+.suggest-item > .suggest-name, .recipe-row > .suggest-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.suggest-item > .stat-meters, .recipe-row > .stat-meters { flex: 0 0 auto; }
+.suggest-item .meter-mini b, .recipe-row .meter-mini b {
+  min-width: 2.5em;
+  text-align: left;
+}
 .recipe-browser-list {
   flex: 1 1 auto;
   min-height: 0;
