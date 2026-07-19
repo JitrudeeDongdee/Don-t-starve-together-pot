@@ -580,7 +580,11 @@ body {
 }
 
 /* ---------- modal: a cookbook page ---------- */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.62); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 10; }
+/* Stacking order, high to low — keep these the only z-index values in the file:
+   100 modal overlay > 70 nav drawer > 60 nav bar > 55 drawer scrim > page.
+   The modal must clear the mobile nav bar, which is itself raised so the burger
+   stays tappable over the scrim. */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.62); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 100; }
 .modal {
   background:
     radial-gradient(ellipse at 50% 0%, var(--paper-light) 0%, var(--paper) 55%, var(--paper-2) 100%);
