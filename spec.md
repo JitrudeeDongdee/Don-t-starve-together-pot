@@ -557,6 +557,35 @@ write-only ส่วน Data API ที่อ่านตัวเลขได�
 - console แท็บใหม่ → 0 error; `.tile img` ทั้ง 117 รูป `naturalWidth > 0` (ไม่มีรูปแตก)
   — ช่องว่างที่เห็นใน screenshot แรกคือ lazy-load ยังไม่ทันวาด ไม่ใช่ placeholder หาย
 
+### M12 — Example cook สุ่มสดตอน runtime + ปุ่ม Re-roll (2026-07-19)
+
+**สิ่งที่ทำ** — `src/engine/randomExample.ts` (ใหม่, pure, node-testable)
+- เดิม Example cook อ่านจาก `cook_examples.json` ที่ precompute ไว้ → กดกี่ครั้งก็ได้สูตรเดิม
+  ตอนนี้ **สุ่มวัตถุดิบสดทุกครั้ง** แล้วมีปุ่ม `Re-roll` ใน RecipeDetail
+- **หัวใจของอัลกอริทึม: seed จากกฎของสูตรเอง ไม่ใช่สุ่มมั่ว**
+  - สุ่มมั่วล้วนใช้ไม่ได้ — shroomcake มี combo ที่ถูกต้องแค่ **1 ชุดใน ~1.09 ล้าน**
+  - แต่ "หายาก" กับ "ถูกบังคับ" คือเรื่องเดียวกัน: เมนูที่หายากที่สุดคือเมนูที่ `test` ระบุชื่อ
+    วัตถุดิบไว้ตรงๆ → พอ seed จาก `extractVisualRules()` ก่อน เมนูหายากกลายเป็นเคสที่ **ง่ายที่สุด**
+    เหลือแค่เมนูที่เงื่อนไขหลวม (tag-based) ที่ปล่อยสุ่ม ซึ่งสุ่มติดง่ายอยู่แล้ว
+  - ลำดับ: (1) ใส่ชื่อที่ required ตามจำนวนที่บังคับ (2) เลือก 1 ตัวจากแต่ละกลุ่ม oneOf
+    (3) ช่องที่เหลือ **ไล่จ่ายโควตา tag ที่ขาดมากที่สุดก่อน** และเลี่ยงตัวที่จะทำให้ tag ที่มีเพดานเกิน
+  - **ทุก combo ถูกยืนยันด้วย `engine.getCandidates()` จริงก่อนคืนค่า** — กฎแค่ชี้ทาง ไม่ใช่ตัวรับรอง
+- โควตา tag จำเป็นจริง: Bunny Stew ต้อง `frozen >= 2` และ `meat > 0 แต่ < 1` พร้อมกัน
+  รอบแรกที่ยังไม่มี logic นี้ bunnystew พลาด 13/20 รอบ พอใส่แล้วเหลือ 0
+
+**Verified** — `npm run validate-random` (ใหม่: 70 เมนู × 20 รอบ, PRNG มี seed จะได้ reproduce ได้)
+- **4,159 combo → invalid 0** ทุกชุดปรุงออกมาเป็นเมนูนั้นจริง, ไม่มีวัตถุดิบที่ไม่มีอยู่, ไม่ซ้ำในรอบเดียว
+- ทุกเมนูได้อย่างน้อย 1 combo ครบทั้ง 20 รอบ (empty roll = 0)
+- ได้ไม่ครบ 3 อยู่ 2 เมนู: `shroomcake` ได้ 1 ทุกรอบ (**ถูกต้อง — มี combo เดียวจริงๆ**),
+  `beefalotreat` ได้ 2 อยู่ 1 รอบ
+- วัดในเบราว์เซอร์: re-roll เคสแย่สุด (Mushy Cake) **1.2ms/ครั้ง**
+- ตรวจ UI จริง: Asparagus Soup กด Re-roll แล้วได้วัตถุดิบชุดใหม่จริง (asparagus ยังถูกบังคับไว้ทุกชุด),
+  Bunny Stew ได้ `Ice + Ice + <เนื้อครึ่งหน่วย>` ตามโควตา, Mushy Cake กดแล้วได้ชุดเดิมเพราะมีชุดเดียว
+- typecheck + build ผ่าน, console แท็บใหม่ 0 error
+
+**หมายเหตุ** — ยังเก็บ `cook_examples.json` ไว้เป็น fallback กรณี roller คืนค่าว่าง
+(จากผลทดสอบคือไม่เคยเกิด) และเป็น ground truth ของ `npm run validate-examples`
+
 ### ค้างไว้ (ถัดไป)
 - ใส่ GA4 Measurement ID จริงตอน deploy (สร้าง property → ใส่ `VITE_GA_ID` ใน .env.local/hosting)
 - deploy จริง (Netlify/Vercel/GitHub Pages) — ยังไม่เลือก
