@@ -649,6 +649,17 @@ body {
 }
 .divider span { white-space: nowrap; font-size: 1.02rem; }
 
+.cook-example-actions { display: flex; justify-content: center; margin: 0.35rem 0 0.15rem; }
+.reroll-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: var(--paper-inset); color: var(--ink);
+  border: 2px solid var(--line); border-radius: 20px;
+  padding: 0.25rem 0.8rem; cursor: pointer;
+  font-family: inherit; font-size: 0.9rem; font-weight: 700;
+}
+.reroll-btn:hover { border-color: var(--gold-bright); background: var(--paper-light); }
+.reroll-btn:active { transform: translateY(1px); }
+
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem; }
 .col-val { text-align: center; color: var(--ink-dim); font-weight: 700; font-size: 1rem; }
 .col-sub { font-size: 0.8rem; color: var(--ink-dim); font-weight: 400; }

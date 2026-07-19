@@ -1,3 +1,6 @@
+import { useCallback, useEffect, useState } from "react";
+import { db, engine } from "../data";
+import { rollCookExamples } from "../engine/randomExample";
 import type { Recipe } from "../engine/types";
 import { displayName } from "../format";
 import { useLocale } from "../i18n";
@@ -13,6 +16,8 @@ import {
   howToSummary,
   sideEffect,
 } from "./recipe-detail/recipeDetailUtils";
+
+const EXAMPLE_COUNT = 3;
 
 export default function RecipeDetail({
   recipe,
@@ -30,7 +35,19 @@ export default function RecipeDetail({
     rules.forbidden.length > 0 ||
     rules.oneOf.length > 0;
   const summary = howToSummary(recipe, locale);
-  const cookExampleList = cookExamples(recipe);
+
+  // Examples are rolled live against the engine rather than read from a fixed
+  // list, so re-rolling gives genuinely different ingredients. The precomputed
+  // set stays as a fallback for the case the roller comes back empty.
+  const roll = useCallback(
+    () => {
+      const rolled = rollCookExamples(recipe, engine, db, EXAMPLE_COUNT);
+      return rolled.length > 0 ? rolled : cookExamples(recipe);
+    },
+    [recipe],
+  );
+  const [cookExampleList, setCookExampleList] = useState<string[][]>(roll);
+  useEffect(() => setCookExampleList(roll()), [roll]);
 
   return (
     <div className="overlay" onClick={onClose}>
@@ -81,13 +98,6 @@ export default function RecipeDetail({
           </div>
         )}
 
-        {cookExampleList.length > 0 && (
-          <>
-            <SectionDivider label={t.cookExample} />
-            <RecipeCookExamples combos={cookExampleList} locale={locale} />
-          </>
-        )}
-
         {rules.required.length > 0 && (
           <>
             <SectionDivider label={t.requiredIngredients} />
@@ -134,6 +144,23 @@ export default function RecipeDetail({
                 />
               ))}
             </div>
+          </>
+        )}
+
+        {cookExampleList.length > 0 && (
+          <>
+            <SectionDivider label={t.cookExample} />
+            <div className="cook-example-actions">
+              <button
+                className="reroll-btn"
+                onClick={() => setCookExampleList(roll())}
+                title={t.reroll}
+              >
+                <Icon name="shuffle" size={16} />
+                {t.reroll}
+              </button>
+            </div>
+            <RecipeCookExamples combos={cookExampleList} locale={locale} />
           </>
         )}
 
