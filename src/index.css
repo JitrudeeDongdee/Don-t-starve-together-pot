@@ -514,10 +514,12 @@ body {
 /* ---------- category chips ---------- */
 .cat-filter { display: none; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
 .cat-filter.open { display: flex; }
-/* desktop has the room — chips stay out in the open and the toggle disappears */
+/* desktop has the room — chips stay out in the open and their toggle disappears.
+   Scoped to the CATEGORY toggle: other toggles on this row (the favourites star
+   in the recipe browser) have no expanded form to fall back to and must stay. */
 @media (min-width: 768px) {
   .cat-filter, .cat-filter.open { display: flex; }
-  .filter-toggle { display: none; }
+  .filter-toggle-cat { display: none; }
 }
 .cat-chip {
   background: var(--paper-inset); color: var(--ink);
@@ -526,6 +528,43 @@ body {
   font-family: inherit;
 }
 .cat-chip.active { background: var(--frame); color: #e8d9b5; border-color: var(--frame); }
+
+/* ---------- favourites ---------- */
+.fav-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 auto;
+  background: none; border: none; padding: 3px;
+  color: var(--ink-dim); cursor: pointer;
+  opacity: 0.45;
+}
+.fav-btn:hover { color: var(--gold-bright); opacity: 1; }
+.fav-btn.on { color: var(--gold-bright); opacity: 1; }
+
+/* the star sits over the tile, not inside its button (nested buttons are invalid) */
+.tile-wrap { position: relative; aspect-ratio: 1; }
+.tile-wrap > .tile { width: 100%; height: 100%; }
+.fav-on-tile {
+  position: absolute; top: 1px; right: 1px;
+  padding: 2px; border-radius: 6px;
+  background: rgba(58, 44, 28, 0.35);
+}
+.fav-on-tile:not(.on) { opacity: 0; }
+/* keep it reachable without a hover — phones have no hover state */
+.tile-wrap:hover .fav-on-tile, .fav-on-tile:focus-visible { opacity: 1; }
+@media (hover: none) {
+  .fav-on-tile:not(.on) { opacity: 0.5; }
+}
+
+.recipe-row-wrap { display: flex; align-items: center; gap: 0.25rem; }
+.recipe-row-wrap > .recipe-row { flex: 1 1 auto; min-width: 0; }
+/* the row carries the gap between rows, so the star must not stretch it */
+.recipe-row-wrap > .fav-btn { align-self: center; margin-bottom: 0.4rem; }
+
+.cat-chip-fav { display: inline-flex; align-items: center; gap: 0.25rem; }
+.empty-note {
+  margin: 0.4rem 0 0.6rem; color: var(--ink-dim);
+  font-size: 0.92rem; text-align: center;
+}
 
 /* ---------- ingredient grid: square cookbook slots ---------- */
 .grid {

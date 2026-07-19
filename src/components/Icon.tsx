@@ -12,6 +12,7 @@ export type IconName =
   | 'close'
   | 'menu'
   | 'filter'
+  | 'star'
   | 'shuffle'
   | 'flourish'
   | 'arrow-left';
@@ -20,6 +21,8 @@ interface Props {
   name: IconName;
   size?: number;
   className?: string;
+  /** Fill the shape with currentColor — for on/off icons like the star. */
+  filled?: boolean;
 }
 
 const PATHS: Record<IconName, JSX.Element> = {
@@ -69,6 +72,11 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M4 7h16M4 12h16M4 17h16" />
     </>
   ),
+  star: (
+    <>
+      <path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.15 1 5.85L12 16.9l-5.25 2.75 1-5.85L3.5 9.65l5.9-.85z" />
+    </>
+  ),
   // three lines with sliders — still reads as "the burger", but says "filter"
   filter: (
     <>
@@ -101,14 +109,14 @@ const PATHS: Record<IconName, JSX.Element> = {
   ),
 };
 
-export default function Icon({ name, size = 20, className }: Props) {
+export default function Icon({ name, size = 20, className, filled = false }: Props) {
   return (
     <svg
       className={className ? `icon ${className}` : 'icon'}
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={filled ? 'currentColor' : 'none'}
       stroke="currentColor"
       strokeWidth="1.8"
       strokeLinecap="round"

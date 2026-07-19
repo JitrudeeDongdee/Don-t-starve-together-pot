@@ -8,7 +8,9 @@ import {
   filterBucket,
   type Category,
 } from '../format';
+import { useFavorites } from '../favorites';
 import { useLocale } from '../i18n';
+import FavButton from './FavButton';
 import Icon from './Icon';
 import ItemIcon from './ItemIcon';
 import SearchBox from './SearchBox';
@@ -20,26 +22,29 @@ interface Props {
 
 export default function IngredientPicker({ potFull, onAdd }: Props) {
   const { locale, t } = useLocale();
+  const { isFav, count } = useFavorites();
   const [q, setQ] = useState('');
-  const [cat, setCat] = useState<Category | 'all'>('all');
+  const [cat, setCat] = useState<Category | 'all' | 'fav'>('all');
   // phone only: the chip row costs three lines, so it hides behind this toggle
   const [filterOpen, setFilterOpen] = useState(false);
 
   const list = useMemo(() => {
     const query = q.trim().toLowerCase();
     return ingredientNames.filter((n) => {
-      if (cat !== 'all' && filterBucket(n) !== cat) return false;
+      if (cat === 'fav') {
+        if (!isFav('ingredient', n)) return false;
+      } else if (cat !== 'all' && filterBucket(n) !== cat) return false;
       if (!query) return true;
       return n.includes(query) || displayName(n, locale).toLowerCase().includes(query);
     });
-  }, [q, cat, locale]);
+  }, [q, cat, locale, isFav]);
 
   return (
     <div className="panel">
       <div className="picker-toolbar">
         <SearchBox value={q} onChange={setQ} placeholder={t.searchIngredient} />
         <button
-          className={`filter-toggle${cat !== 'all' ? ' filtered' : ''}`}
+          className={`filter-toggle filter-toggle-cat${cat !== 'all' ? ' filtered' : ''}`}
           onClick={() => setFilterOpen((v) => !v)}
           aria-expanded={filterOpen}
           aria-controls="cat-filter"
@@ -56,6 +61,13 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
         >
           {t.all}
         </button>
+        <button
+          className={`cat-chip cat-chip-fav${cat === 'fav' ? ' active' : ''}`}
+          onClick={() => setCat('fav')}
+        >
+          <Icon name="star" size={13} filled={cat === 'fav'} />
+          {t.favoritesOnly} ({count('ingredient')})
+        </button>
         {FILTER_CATEGORIES.map((c) => (
           <button
             key={c}
@@ -67,17 +79,20 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
           </button>
         ))}
       </div>
+      {cat === 'fav' && list.length === 0 && <p className="empty-note">{t.noFavorites}</p>}
       <div className="grid">
         {list.map((n) => (
-          <button
-            key={n}
-            className="tile"
-            disabled={potFull}
-            title={`${displayName(n, locale)} — ${CATEGORY_LABEL[locale][filterBucket(n)]}`}
-            onClick={() => onAdd(n)}
-          >
-            <ItemIcon prefab={n} size={44} fallback="name" variant="bare" />
-          </button>
+          <div className="tile-wrap" key={n}>
+            <button
+              className="tile"
+              disabled={potFull}
+              title={`${displayName(n, locale)} — ${CATEGORY_LABEL[locale][filterBucket(n)]}`}
+              onClick={() => onAdd(n)}
+            >
+              <ItemIcon prefab={n} size={44} fallback="name" variant="bare" />
+            </button>
+            <FavButton kind="ingredient" id={n} size={14} className="fav-on-tile" />
+          </div>
         ))}
       </div>
     </div>

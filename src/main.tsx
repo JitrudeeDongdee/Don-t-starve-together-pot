@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { LocaleProvider } from './i18n';
+import { FavoritesProvider } from './favorites';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -10,7 +11,9 @@ createRoot(document.getElementById('root')!).render(
     {/* basename matches vite's `base` so routes work under the Pages subpath */}
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <LocaleProvider>
-        <App />
+        <FavoritesProvider>
+          <App />
+        </FavoritesProvider>
       </LocaleProvider>
     </BrowserRouter>
   </StrictMode>,
