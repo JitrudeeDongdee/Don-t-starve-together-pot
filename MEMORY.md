@@ -10,6 +10,20 @@
 - fallback เมื่อไม่มีสูตรผ่าน = wetgoop (อยู่ preparednonfoods.lua)
 
 ## Lessons (what happened / root cause / correct behavior)
+- **CI Node 20 รัน `import '../src/routes.ts'` ไม่ได้** — `scripts/generate_sitemap.mjs` และ
+  `prerender.mjs` import ไฟล์ `.ts` ตรงๆ ซึ่งทำงานได้ในเครื่อง (Node 26) แต่ `deploy.yml` pin
+  ไว้ที่ node-version 20. root cause: Node type stripping เพิ่งมาเป็น default ที่ 23.6 (ทดลองที่
+  22.6) — Node 20 ไม่มีเลย ถ้าไม่เจอก่อน การผูก script พวกนี้เข้า `build` จะทำให้ deploy พังเงียบๆ
+  ตอน push เข้า main. correct: ก่อนผูก script ใหม่เข้า `npm run build` **ต้องเช็ค node-version ใน
+  `.github/workflows/deploy.yml` เทียบกับ feature ที่ script ใช้เสมอ** — อย่าเชื่อว่ารันผ่านในเครื่อง
+  แปลว่ารันผ่านใน CI
+- **deploy ค้างเพราะ branch ไม่เคย merge เข้า main** — production เป็นเว็บหน้าเดียวอยู่ 24 commits
+  ทั้งที่งาน routing/SEO เสร็จหมดแล้ว. root cause: `deploy.yml` trigger เฉพาะ push เข้า `main` แต่
+  งานทั้งหมดสะสมบน feature branch. correct: เวลาตรวจว่า "ทำไมของไม่ขึ้นเว็บ" ให้ `curl` production
+  จริงเทียบกับ local build **ก่อน** จะไปไล่แก้ config — และเช็ค `git log origin/main..HEAD`
+- **sitemap ที่ต้องรันมือ = sitemap ที่ค้าง** — `scripts/generate_sitemap.mjs` เขียนคอมเมนต์ว่า
+  "can never drift" แต่ไม่ได้ผูกกับ `build` ทำให้ deployed sitemap มี 1 URL ขณะที่ routes มี 3.
+  correct: generator ที่อ้างว่าเป็น source of truth ต้องอยู่ใน build pipeline ไม่ใช่ script แยก
 - **นับ recipe ผิดด้วย grep** — `grep "^\t...="` ได้ 45 แต่จริงมี 68. root cause: recipe บางตัวใน
   preparedfoods.lua ใช้ space indent ไม่ใช่ tab. correct: อย่านับด้วย indent-based regex ใช้ brace-counting parser.
 - **regex block boundary เปราะ** — non-greedy `{...}` ตัดผิดที่ card_def / ไปจับ table ครอบ.
