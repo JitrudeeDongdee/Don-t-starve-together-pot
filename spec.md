@@ -19,6 +19,41 @@
 | Scope v1 (cooker) | **Crock Pot มาตรฐาน** (`cookpot`, `portablecookpot` base) | ครบคลุมผู้เล่นส่วนใหญ่ก่อน; Warly/Spiced เป็น v2 |
 | ภาษา | **สองภาษา (TH/EN) ตั้งแต่แรก** | โครง i18n ไว้ก่อน เติมคำแปลได้ทีหลัง |
 | Hosting | Static (Netlify/Vercel/GitHub Pages) | ไม่มี backend |
+| Viewport ตั้งต้น | **Mobile-first** | ดูสูตรระหว่างเล่นเกมบนมือถือเป็นหลัก |
+| ไอคอน | **inline SVG เท่านั้น (ห้าม emoji)** | emoji เปลี่ยนหน้าตาตาม OS/ฟอนต์ และคุมสีตามธีมไม่ได้ |
+
+## 2.1 Design rules (บังคับ — ทุก component ใหม่ต้องผ่านข้อนี้)
+
+**1. ห้ามใช้ emoji ใน UI — ใช้ไอคอนแทน**
+- ไอคอนทั้งหมดอยู่ที่ `src/components/Icon.tsx` เป็น inline SVG วาดด้วย `currentColor`
+  (สืบสีจาก parent ได้ → เข้าธีม parchment อัตโนมัติ)
+- เหตุผล: emoji เรนเดอร์ไม่เหมือนกันในแต่ละ OS/ฟอนต์, ระบายสีตามธีมไม่ได้,
+  และบางตัว (❧ ⏳) ฟอนต์ไทยไม่มี glyph
+- เพิ่มไอคอนใหม่ = เพิ่ม key ใน `IconName` + path ใน `PATHS` เท่านั้น ห้ามแปะ emoji ตรงๆ
+
+**2. รูปทุกที่ต้องมี placeholder เสมอ — ครอบ 2 เคส**
+- *ไม่มีรูปตั้งแต่แรก* (ไม่มีใน manifest) → แสดง placeholder
+- *มีรูปแต่โหลดไม่สำเร็จ* (404 / เน็ตพัง / โดนบล็อก) → ดัก `onError` แล้วสลับเป็น placeholder
+- ห้ามปล่อยให้เห็นกล่องรูปแตกของเบราว์เซอร์ และ **ห้ามให้ layout ขยับ** ตอน fallback
+  (placeholder ต้องกินพื้นที่เท่ารูปจริง)
+- ตัวอย่างที่ทำแล้ว: `ItemIcon.tsx` (state `failed`), `Logo.tsx` (fallback เป็น `<Icon name="pot">`),
+  `ContactUsModal.tsx` (avatar → วงกลม placeholder)
+
+**3. ข้อความที่รอ async ต้องมี skeleton loading**
+- ห้ามใช้ spinner หรือหน้าเปล่าแทนข้อความที่กำลังโหลด — ใช้บล็อก `.skeleton` ที่มีรูปทรง
+  ใกล้เคียงของจริง เพื่อไม่ให้ layout กระโดดตอนข้อมูลมา
+- ต้องใส่ `aria-busy="true"` + `aria-label` ที่บอกว่ากำลังโหลดอะไร
+- ตัวอย่างที่ทำแล้ว: `ContactUsModal.tsx`
+
+**4. Mobile-first**
+- เขียน CSS จากจอเล็กขึ้นไป: base = มือถือ, แล้วค่อย `@media (min-width: …)` เพิ่มของ desktop
+  (ห้ามเขียน desktop เป็น base แล้วมา `max-width` ตัดทีหลัง)
+- breakpoint หลัก: `768px` (มือถือ → desktop), `520px` (ซ่อน wordmark ในโลโก้)
+- ทุกฟีเจอร์ต้องใช้งานได้จริงที่ **375px** ก่อนถือว่าเสร็จ
+
+**5. โลโก้**
+- โลโก้หลัก = ไอคอน Crock Pot จากเกม → `public/logo.png` (64×64, จาก dontstarve.wiki.gg)
+- ใช้ผ่าน `<Logo />` เท่านั้น (มี fallback ในตัว) ใช้เป็น favicon + og:image ด้วย
 
 ## 3. แหล่งข้อมูล (Data sources)
 ยึด **game scripts** เป็น source of truth:
@@ -450,6 +485,106 @@ write-only ส่วน Data API ที่อ่านตัวเลขได�
 
 **ข้อควรรู้:** namespace ของ Abacus เป็น public ใครรู้ก็ยิงเพิ่มเลขได้ → ตัวเลขนี้เป็น
 "ตัวนับคร่าวๆ" ไม่ใช่ analytics ที่เชื่อถือได้ 100%; ad blocker บางตัวอาจบล็อก (จะตกไป fallback)
+
+### M10 — Design rules, ไอคอนแทน emoji, nav Cook/Farm, โลโก้ (2026-07-19)
+
+**สิ่งที่ทำ**
+1. **spec §2.1 Design rules** — เพิ่มกฎบังคับ 5 ข้อ (ห้าม emoji / placeholder ทุกรูป /
+   skeleton สำหรับข้อความ async / mobile-first / โลโก้) พร้อม decision 2 บรรทัดในตาราง §2
+2. **`src/components/Icon.tsx`** (ใหม่) — inline SVG 9 ตัว (`pot` `sprout` `book` `globe`
+   `mail` `close` `shuffle` `flourish` `arrow-left`) วาดด้วย `currentColor`
+3. **ลบ emoji ออกจาก UI ทั้งหมด** — App (✉ 🌐), NavBar (🍲 📖 🌱), SearchBox (✕),
+   RecipeBrowser (📖), RecipeDetail (✕ ❧ 🔀), ContactUsModal (✕ ✉), FarmingPage (🌱 ←),
+   i18n (❤️ 🍗 🧠 ⏳ ใน `health/hunger/sanity/perish` — string เหล่านี้ไม่มีที่ใช้แล้ว แต่ล้างไว้กันเผลอ)
+4. **โลโก้** — `public/logo.png` (Crock Pot 64×64 จาก dontstarve.wiki.gg) + `<Logo />`
+   ที่ fallback เป็น `<Icon name="pot">` เมื่อโหลดรูปไม่ได้; ใช้เป็น favicon / apple-touch-icon /
+   og:image / twitter:image ใน `index.html`
+5. **nav 2 ชั้น** — ชั้นบน `Cook | Farm` (`NavBar.tsx`), ชั้นในของ Cook เป็น 2 แท็บ
+   `Kitchen | All Recipes` (`CookTabs.tsx` แสดงเฉพาะ path ของ Cook)
+   - `routes.ts` เพิ่ม `COOK_PATHS` + `isCookPath()` เป็น single source of truth
+     (rail "Cook" ต้องติดสว่างตอนอยู่ `/recipes` ด้วย)
+6. **burger nav บนมือถือ + ยุบทุกอย่างเข้า navbar**
+   - มือถือ: แถบบน = โลโก้ + ชื่อ "Crock Pot" ชิดซ้าย, ปุ่มสามขีดชิดขวา
+     (`.nav-bar`); กดแล้วกางเมนู `.nav-menu.open` ที่มี **Cook / Farming / Contact us /
+     ปุ่มเปลี่ยนภาษา** ครบในที่เดียว — ไอคอนสามขีดสลับเป็นกากบาทตอนเปิด
+   - `App.tsx` ไม่มี `.header-actions` แล้ว (ปุ่ม contact + ภาษาย้ายเข้า NavBar ทั้งคู่)
+     และ `<header>` จะ render เฉพาะหน้า Cook เพราะเหลือแค่ sub-tabs
+   - desktop: ซ่อนปุ่มสามขีด, เมนูกางถาวรเป็น rail และ `.nav-tail` (contact + ภาษา)
+     ถูกดันไปล่างสุดด้วย `margin-top: auto` + เส้นคั่น
+   - ปิดเมนูอัตโนมัติเมื่อ `pathname` เปลี่ยน (`useEffect`) และเมื่อกด Contact us
+     — กันบั๊กเมนูค้างคาทับหน้าใหม่
+7. **CSS เขียนใหม่แบบ mobile-first** — base = แถบ burger, แล้ว `@media (min-width: 768px)`
+   ค่อยเปลี่ยนเป็น rail แนวตั้ง (เดิมเป็น desktop-first แล้วใช้ `max-width: 767px` ตัด)
+
+**Verified**
+- `npm run typecheck` → ผ่าน (ไม่มี error)
+- grep emoji ทั้ง `src/` → เหลือ 0 ตัว
+- console ของเบราว์เซอร์ → ไม่มี error
+- 1280×860: rail ซ้าย (โลโก้ + Cook/Farming ด้านบน, Contact us + ภาษา ด้านล่างสุด), ไม่มีปุ่มสามขีด
+- 375×812: แถบบน โลโก้+"Crock Pot" ซ้าย / สามขีดขวา → กดแล้วกางเมนู 4 รายการครบ
+  → กด "Contact us" แล้ว modal เปิดและเมนูปิดเองจริง (ยืนยันจาก screenshot: ไอคอนกลับเป็นสามขีด)
+- `/farming`: sub-tabs หายไปถูกต้อง (เป็นของ Cook เท่านั้น), rail Farming active, title เปลี่ยนตาม route
+- **ทดสอบ fallback ของโลโก้จริง** — dispatch `error` ใส่ `<img>` แล้ว DOM สลับเป็น `<svg class="icon">` จริง
+  (ก่อนหน้า `naturalWidth = 64` ยืนยันว่ารูปจริงโหลดได้)
+- modal ทั้งสอง (recipe detail / contact) ไอคอนขึ้นครบ, contact โหลด GitHub + visits ได้ปกติ
+
+### M11 — มือถือ: แถบทอง + drawer, ย่อหม้อ, ยุบ filter (2026-07-19)
+
+**สิ่งที่ทำ**
+1. **navbar มือถือเป็นแถบทองด้านบน + drawer เลื่อนออกข้าง**
+   - `.nav-bar` เป็นแถบไล่สี gold มีกรอบไม้ (โลโก้+ชื่อซ้าย, สามขีดขวา), `z-index: 60`
+     เพื่อให้ปุ่มสามขีดยังกดปิดได้ทั้งที่ scrim คลุมหน้าอยู่
+   - `.nav-menu` เปลี่ยนจาก "ยุบ/กาง inline" เป็น **drawer** `position: fixed` ซ้ายจอ
+     กว้าง `min(74vw, 16rem)` จอดนอกจอด้วย `translateX(-100%)` แล้วสไลด์เข้าเมื่อ `.open`
+   - ใช้ `visibility: hidden` ตอนปิดด้วย ไม่ใช่แค่ `transform` — ไม่งั้นลิงก์ที่อยู่นอกจอ
+     ยังโดน tab เข้าไปได้
+   - เพิ่ม `.nav-scrim` (กดพื้นหลังเพื่อปิด) + เคารพ `prefers-reduced-motion`
+   - desktop รีเซ็ตกลับเป็น rail ปกติทั้งหมด (แถบทอง/สามขีด/scrim/drawer ถูก override)
+2. **ย่อหม้อบนมือถือ** — หม้อเป็น header ตายตัวเหนือลิสต์ที่ scroll ได้ ยิ่งกินแนวตั้งยิ่งเสีย
+   → ต่ำกว่า 768px: slot `max-width` 76px → **54px**, ลด gap/padding ของ `.pot-wrap`
+   - เพิ่ม `.slot img { max-width: 100%; height: auto; }` เพราะ `ItemIcon` ใส่ `width/height`
+     เป็น attribute ตายตัว (54) — ถ้าไม่คุมด้วย CSS รูปจะล้นกล่องที่เล็กลง
+3. **ยุบ chip filter เข้าปุ่มบนบรรทัดเดียวกับช่องค้นหา (มือถือ)**
+   - `.picker-toolbar` = SearchBox + `.filter-toggle` (ไอคอน `filter` = สามขีดมีปุ่มปรับ)
+   - `.cat-filter` ซ่อนเป็นค่าเริ่มต้น กางเมื่อ `.open`; **desktop กางถาวรและซ่อนปุ่ม toggle**
+   - ปุ่ม toggle ติดสถานะ `.filtered` เมื่อเลือกหมวดอยู่ — filter ที่ยุบแล้วต้องบอกได้ว่ากำลังกรองอยู่
+
+**Verified**
+- `npm run typecheck` + `npm run build` → ผ่าน
+- 375×812: แถบทองด้านบนถูกต้อง / กดสามขีด → drawer สไลด์ออกซ้ายพร้อม scrim, ปุ่มกลายเป็นกากบาท
+  / กดอีกครั้งปิด / กดปุ่ม filter → chip 10 อันกางออก / หม้อเตี้ยลงจริง เห็นวัตถุดิบเพิ่มอีก 1 แถว
+- 1280×860: ไม่มีแถบทอง ไม่มีสามขีด, chip กางถาวร ไม่มีปุ่ม filter, หม้อขนาดเดิม, rail ปกติ
+- console แท็บใหม่ → 0 error; `.tile img` ทั้ง 117 รูป `naturalWidth > 0` (ไม่มีรูปแตก)
+  — ช่องว่างที่เห็นใน screenshot แรกคือ lazy-load ยังไม่ทันวาด ไม่ใช่ placeholder หาย
+
+### M12 — Example cook สุ่มสดตอน runtime + ปุ่ม Re-roll (2026-07-19)
+
+**สิ่งที่ทำ** — `src/engine/randomExample.ts` (ใหม่, pure, node-testable)
+- เดิม Example cook อ่านจาก `cook_examples.json` ที่ precompute ไว้ → กดกี่ครั้งก็ได้สูตรเดิม
+  ตอนนี้ **สุ่มวัตถุดิบสดทุกครั้ง** แล้วมีปุ่ม `Re-roll` ใน RecipeDetail
+- **หัวใจของอัลกอริทึม: seed จากกฎของสูตรเอง ไม่ใช่สุ่มมั่ว**
+  - สุ่มมั่วล้วนใช้ไม่ได้ — shroomcake มี combo ที่ถูกต้องแค่ **1 ชุดใน ~1.09 ล้าน**
+  - แต่ "หายาก" กับ "ถูกบังคับ" คือเรื่องเดียวกัน: เมนูที่หายากที่สุดคือเมนูที่ `test` ระบุชื่อ
+    วัตถุดิบไว้ตรงๆ → พอ seed จาก `extractVisualRules()` ก่อน เมนูหายากกลายเป็นเคสที่ **ง่ายที่สุด**
+    เหลือแค่เมนูที่เงื่อนไขหลวม (tag-based) ที่ปล่อยสุ่ม ซึ่งสุ่มติดง่ายอยู่แล้ว
+  - ลำดับ: (1) ใส่ชื่อที่ required ตามจำนวนที่บังคับ (2) เลือก 1 ตัวจากแต่ละกลุ่ม oneOf
+    (3) ช่องที่เหลือ **ไล่จ่ายโควตา tag ที่ขาดมากที่สุดก่อน** และเลี่ยงตัวที่จะทำให้ tag ที่มีเพดานเกิน
+  - **ทุก combo ถูกยืนยันด้วย `engine.getCandidates()` จริงก่อนคืนค่า** — กฎแค่ชี้ทาง ไม่ใช่ตัวรับรอง
+- โควตา tag จำเป็นจริง: Bunny Stew ต้อง `frozen >= 2` และ `meat > 0 แต่ < 1` พร้อมกัน
+  รอบแรกที่ยังไม่มี logic นี้ bunnystew พลาด 13/20 รอบ พอใส่แล้วเหลือ 0
+
+**Verified** — `npm run validate-random` (ใหม่: 70 เมนู × 20 รอบ, PRNG มี seed จะได้ reproduce ได้)
+- **4,159 combo → invalid 0** ทุกชุดปรุงออกมาเป็นเมนูนั้นจริง, ไม่มีวัตถุดิบที่ไม่มีอยู่, ไม่ซ้ำในรอบเดียว
+- ทุกเมนูได้อย่างน้อย 1 combo ครบทั้ง 20 รอบ (empty roll = 0)
+- ได้ไม่ครบ 3 อยู่ 2 เมนู: `shroomcake` ได้ 1 ทุกรอบ (**ถูกต้อง — มี combo เดียวจริงๆ**),
+  `beefalotreat` ได้ 2 อยู่ 1 รอบ
+- วัดในเบราว์เซอร์: re-roll เคสแย่สุด (Mushy Cake) **1.2ms/ครั้ง**
+- ตรวจ UI จริง: Asparagus Soup กด Re-roll แล้วได้วัตถุดิบชุดใหม่จริง (asparagus ยังถูกบังคับไว้ทุกชุด),
+  Bunny Stew ได้ `Ice + Ice + <เนื้อครึ่งหน่วย>` ตามโควตา, Mushy Cake กดแล้วได้ชุดเดิมเพราะมีชุดเดียว
+- typecheck + build ผ่าน, console แท็บใหม่ 0 error
+
+**หมายเหตุ** — ยังเก็บ `cook_examples.json` ไว้เป็น fallback กรณี roller คืนค่าว่าง
+(จากผลทดสอบคือไม่เคยเกิด) และเป็น ground truth ของ `npm run validate-examples`
 
 ### ค้างไว้ (ถัดไป)
 - ใส่ GA4 Measurement ID จริงตอน deploy (สร้าง property → ใส่ `VITE_GA_ID` ใน .env.local/hosting)

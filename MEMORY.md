@@ -42,3 +42,8 @@
   (honey_cooked ฯลฯ). correct: ยืนยันการมีอยู่ของไอเทมกับ `prefabs/*.lua` (component `cookable`/
   `dryable` + ชื่อ product + Prefab ที่ register จริง) และทำ **positive control** เสมอ (เช็คว่า
   meats/veggies เจอ cookable จริง) ก่อนสรุปว่า "ไม่เจอ = ไม่มี"
+- **error ใน console ของ Vite dev อาจเป็นซากจากตอน HMR กลางคัน ไม่ใช่บั๊กจริง** — ระหว่างแก้
+  `App.tsx` มีจังหวะที่ลบ `const { t, locale } = useLocale()` ออกไปแล้วแต่ JSX ยังอ้าง `t` อยู่
+  → HMR render พังชั่วคราวและ error ค้างใน console buffer แม้ reload แล้วก็ยังเห็น (buffer ไม่ถูกล้าง).
+  correct: อย่าเพิ่งไล่แก้ตาม error ที่ค้าง — เปิด **แท็บใหม่** แล้วโหลดหน้าเดิม ถ้า console สะอาด
+  แปลว่าเป็นซาก HMR; ดู timestamp ใน stack (`App.tsx?t=...`) ประกอบว่าเป็นเวอร์ชันเก่าหรือไม่.

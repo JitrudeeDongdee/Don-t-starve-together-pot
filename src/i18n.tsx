@@ -1,12 +1,14 @@
 // Tiny i18n: locale context + UI strings (TH default, EN toggle).
 // Item/dish names stay English by decision (see spec.md).
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type Locale = 'th' | 'en';
 
 const STRINGS = {
   th: {
     subtitle: 'จำลองหม้อปรุงอาหาร Don’t Starve Together — ข้อมูลจาก game scripts จริง',
+    menu: 'เมนู',
+    sectionCook: 'ทำอาหาร',
     kitchen: 'ครัว',
     allRecipes: 'เมนูทั้งหมด',
     ingredients: 'วัตถุดิบ',
@@ -21,10 +23,10 @@ const STRINGS = {
     removeHint: 'คลิกเพื่อเอาออก',
     category: 'หมวด',
     all: 'ทั้งหมด',
-    health: '❤️ พลังชีวิต',
-    hunger: '🍗 ความหิว',
-    sanity: '🧠 สติ',
-    perish: '⏳ เก็บได้',
+    health: 'พลังชีวิต',
+    hunger: 'ความหิว',
+    sanity: 'สติ',
+    perish: 'เก็บได้',
     cookTime: 'ปรุง',
     howTo: 'วิธีทำ',
     guaranteed: 'สูตรตัวอย่างที่การันตีได้เมนูนี้:',
@@ -63,9 +65,16 @@ const STRINGS = {
     statusMaster: 'สถานะรวม',
     ingredientsInPot: 'วัตถุดิบในหม้อ',
     cookExample: 'ตัวอย่างการปรุง',
+    reroll: 'สุ่มใหม่',
+    farming: 'ปลูกผัก',
+    comingSoonTitle: 'กำลังพัฒนา',
+    comingSoonBody: 'ระบบปลูกผักยังทำไม่เสร็จ กำลังทยอยเพิ่มข้อมูลพืช ฤดูกาล และธาตุอาหารในดิน',
+    backToKitchen: 'กลับไปหน้าครัว',
   },
   en: {
     subtitle: 'Don’t Starve Together crock pot simulator — data straight from the game scripts',
+    menu: 'Menu',
+    sectionCook: 'Cook',
     kitchen: 'Kitchen',
     allRecipes: 'All Recipes',
     ingredients: 'Ingredients',
@@ -80,10 +89,10 @@ const STRINGS = {
     removeHint: 'Click to remove',
     category: 'Type',
     all: 'All',
-    health: '❤️ Health',
-    hunger: '🍗 Hunger',
-    sanity: '🧠 Sanity',
-    perish: '⏳ Perish',
+    health: 'Health',
+    hunger: 'Hunger',
+    sanity: 'Sanity',
+    perish: 'Perish',
     cookTime: 'Cook',
     howTo: 'How to make',
     guaranteed: 'Guaranteed example recipe:',
@@ -122,6 +131,11 @@ const STRINGS = {
     statusMaster: 'Master status',
     ingredientsInPot: 'Ingredients in pot',
     cookExample: 'Example cook',
+    reroll: 'Re-roll',
+    farming: 'Farming',
+    comingSoonTitle: 'Work in progress',
+    comingSoonBody: 'The farming section is not finished yet. Crops, seasons and soil nutrients are still being added.',
+    backToKitchen: 'Back to the kitchen',
   },
 };
 
@@ -133,12 +147,34 @@ const LocaleCtx = createContext<{ locale: Locale; t: Strings; setLocale: (l: Loc
   setLocale: () => {},
 });
 
+const DEFAULT_LOCALE: Locale = 'en';
+
+/** localStorage is unavailable during prerender and in some privacy modes. */
+function readStoredLocale(): Locale | null {
+  try {
+    const stored = localStorage.getItem('locale');
+    return stored === 'th' || stored === 'en' ? stored : null;
+  } catch {
+    return null;
+  }
+}
+
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>(
-    () => (localStorage.getItem('locale') as Locale) || 'th',
-  );
+  // Start from the default so server-rendered and first client render match,
+  // then adopt the stored preference once mounted.
+  const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
+
+  useEffect(() => {
+    const stored = readStoredLocale();
+    if (stored) setLocale(stored);
+  }, []);
+
   const set = (l: Locale) => {
-    localStorage.setItem('locale', l);
+    try {
+      localStorage.setItem('locale', l);
+    } catch {
+      // preference just won't persist
+    }
     setLocale(l);
   };
   return (

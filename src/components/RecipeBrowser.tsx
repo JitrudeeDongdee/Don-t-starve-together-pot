@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { recipes } from '../data';
 import { displayName } from '../format';
 import { useLocale } from '../i18n';
+import Icon from './Icon';
 import ItemIcon from './ItemIcon';
 import SearchBox from './SearchBox';
 import StatMeters from './StatMeters';
@@ -23,7 +24,7 @@ export default function RecipeBrowser({ onSelect, showBorder = true }: Props) {
 
   return (
     <div className={`panel recipe-browser-panel${showBorder ? '' : ' panel-borderless'}`}>
-      <h2>📖 {t.allRecipes} ({list.length})</h2>
+      <h2><Icon name="book" size={18} /> {t.allRecipes} ({list.length})</h2>
       <SearchBox value={q} onChange={setQ} placeholder={t.searchRecipe} />
       <div className="recipe-browser-list">
         {list.map((r) => (

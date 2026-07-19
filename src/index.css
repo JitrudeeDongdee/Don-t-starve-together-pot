@@ -58,57 +58,192 @@ body {
   flex-direction: column;
   gap: 0.6rem;
 }
-/* Single-column recipe list, so keep the column narrow enough to read in one
-   glance — a full-width row makes the eye sweep from the name to the
-   far-right stats. */
-.app.app-browser {
-  max-width: 860px;
-  width: 100%;
+.app-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
-
-/* ---------- header: tabs (left) + language toggle (right), one row ---------- */
+@media (min-width: 768px) {
+  .app { flex-direction: row; }
+}
+/* ---------- header: Cook sub-tabs (Cook pages only) ---------- */
 .app-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
+  display: flex; align-items: flex-end; justify-content: flex-start;
   gap: 0.5rem;
   flex: 0 0 auto;
 }
 
-.header-actions {
+/* inline SVG icons (emoji are banned — see spec.md) sit on the text baseline */
+.icon { flex: 0 0 auto; vertical-align: -0.15em; }
+
+/* ---------- logo ---------- */
+.logo { display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; }
+.logo-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--logo-size, 34px); height: var(--logo-size, 34px);
+  color: #d8c091;
+}
+.logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+.logo-word {
+  color: #e8d9b5; font-weight: 700; font-size: 1.15rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ---------- nav (mobile-first): brand + burger bar, menu collapses ---------- */
+.nav {
   display: flex;
-  align-items: flex-end;
-  gap: 0.4rem;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  flex: 0 0 auto;
 }
 
-.lang-toggle, .contact-toggle {
-  background: var(--frame); color: #e8d9b5;
-  border: 2px solid var(--frame-light); border-radius: 10px;
-  padding: 0.4rem 0.8rem; cursor: pointer; font-size: 0.95rem; font-weight: 700;
-  font-family: inherit; margin-bottom: 0.35rem;
+/* the gold plank the whole app hangs off of, on phones */
+.nav-bar {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold) 100%);
+  border: 3px solid var(--frame);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
-.lang-toggle:hover, .contact-toggle:hover { border-color: var(--gold-bright); }
+.nav-bar .logo-word { color: #2a1c0e; }
+.nav-bar .logo-mark { color: #2a1c0e; }
 
-/* ---------- book tabs ---------- */
-/* Equal-width tabs regardless of label length or language. Grid (not flex) on
-   purpose: every auto column shares one sizing function, so both tabs resolve
-   to the SAME width — with flex + min-width, a label longer than the floor
-   would grow only its own tab and break the pairing. */
-.tabs {
+.nav-burger {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  background: rgba(42, 28, 14, 0.16); color: #2a1c0e;
+  border: 2px solid rgba(42, 28, 14, 0.55); border-radius: 9px;
+  cursor: pointer; font-family: inherit;
+}
+.nav-burger:hover { background: rgba(42, 28, 14, 0.3); }
+
+.nav-scrim {
+  position: fixed; inset: 0; z-index: 55;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* mobile: a drawer parked off-screen that slides in from the left */
+.nav-menu {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 70;
+  width: min(74vw, 16rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 0.8rem;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #362819 0%, #241a10 100%);
+  border-right: 3px solid var(--frame);
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.5);
+  transform: translateX(-100%);
+  visibility: hidden;                 /* keeps links out of the tab order when shut */
+  transition: transform 0.24s ease, visibility 0.24s;
+}
+.nav-menu.open { transform: none; visibility: visible; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu { transition: none; }
+}
+
+/* contact + language sink to the bottom, away from the sections — the drawer
+   and the rail are both full-height flex columns, so one rule covers both */
+.nav-tail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 2px solid var(--frame-light);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  padding: 0.55rem 0.8rem;
+  border: 2px solid var(--frame);
+  border-radius: 10px;
+  background: #392a1a;
+  color: #b7a276;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 100%;
+}
+.nav-item:hover { border-color: var(--gold-bright); }
+.nav-item.active { background: var(--paper); color: var(--ink); border-color: var(--frame); }
+
+/* ---------- Cook sub-tabs ---------- */
+.subtabs {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(8.5rem, 1fr);
+  grid-auto-columns: 1fr;   /* equal widths regardless of label length */
   gap: 0.35rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  max-width: 26rem;
+  margin-bottom: 0.35rem;
 }
-.tabs .tab {
-  text-align: center;
+.subtab {
+  display: flex; align-items: center; justify-content: center; gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  border: 2px solid var(--frame-light);
+  border-radius: 9px;
+  background: transparent;
+  color: #b7a276;
+  font-family: inherit; font-size: 0.92rem; font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.tab {
-  background: #392a1a; color: #b7a276;
-  border: 2px solid var(--frame); border-bottom: none;
-  border-radius: 12px 12px 0 0;
-  padding: 0.55rem 1.4rem; cursor: pointer; font-size: 1.05rem; font-weight: 700;
-  font-family: inherit;
+.subtab:hover { border-color: var(--gold-bright); }
+.subtab.active { background: var(--frame); color: #f0e2c0; border-color: var(--frame); }
+
+/* desktop: the rail is always open, so the burger has nothing to toggle */
+@media (min-width: 768px) {
+  .nav {
+    width: 12rem;
+    align-self: stretch;
+  }
+  /* the plank and the drawer are phone furniture — desktop gets the plain rail back */
+  .nav-bar {
+    position: static;
+    padding: 0 0 0.5rem 0.15rem;
+    background: none; border: 0; border-radius: 0; box-shadow: none;
+  }
+  .nav-bar .logo-word { color: #e8d9b5; }
+  .nav-bar .logo-mark { color: #d8c091; }
+  .nav-burger, .nav-scrim { display: none; }
+  .nav-menu, .nav-menu.open {
+    position: static;
+    width: auto;
+    padding: 0;
+    overflow: visible;
+    background: none; border: 0; box-shadow: none;
+    transform: none;
+    visibility: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1 1 auto;
+  }
+  .nav-item { font-size: 1.02rem; padding: 0.55rem 0.9rem; }
 }
-.tab.active { background: var(--paper); color: var(--ink); }
 
 /* ---------- parchment panels ---------- */
 .content {
@@ -169,13 +304,20 @@ body {
 .layout > .panel {
   flex: 1 1 0;
   min-height: 0;
+  /* flex items default to min-width:auto, so a wide row (the stat meters are
+     nowrap) pushes the panel past its container instead of compressing. */
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
-.recipe-browser-panel {
-  width: min(100%, 760px);
-  margin-inline: auto;
-}
+/* Single-column recipe list, kept narrow enough to read in one glance — a
+   full-width row makes the eye sweep from the name to the far-right stats.
+   Capping the PANEL (not the app shell) is what keeps the shell the same width
+   on both Cook tabs, so switching tabs no longer resizes the nav and header. */
+/* Fills the content area like every other panel, so both Cook tabs are the same
+   width. The reason it used to be capped — the eye sweeping from the dish name
+   to far-right stats — is handled by pinning the meters to a fixed column
+   instead (see .suggest-item > .suggest-name), which holds at any width. */
 .panel h2 { margin: 0 0 0.75rem; font-size: 1.25rem; color: var(--ink); }
 .panel h3 { margin: 0.5rem 0; font-size: 1.02rem; color: var(--ink-dim); }
 
@@ -339,7 +481,21 @@ body {
 .suggest-name { display: inline-flex; align-items: center; gap: 0.5rem; }
 
 /* ---------- search with clear ---------- */
-.searchbox { position: relative; margin-bottom: 0.6rem; }
+.searchbox { position: relative; margin-bottom: 0.6rem; flex: 1 1 auto; min-width: 0; }
+
+/* search + filter toggle share one row (mobile-first) */
+.picker-toolbar { display: flex; align-items: flex-start; gap: 0.4rem; }
+.filter-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex: 0 0 auto;
+  background: var(--paper-inset); color: var(--ink);
+  border: 2px solid var(--line); border-radius: 8px;
+  cursor: pointer; font-family: inherit;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.25);
+}
+.filter-toggle:hover { border-color: var(--gold-bright); }
+/* a collapsed filter must still announce that it is narrowing the list */
+.filter-toggle.filtered { background: var(--frame); color: #e8d9b5; border-color: var(--frame); }
 .search {
   width: 100%; padding: 0.5rem 2.2rem 0.5rem 0.7rem; border-radius: 8px;
   background: var(--paper-inset); border: 2px solid var(--line); color: var(--ink);
@@ -356,7 +512,13 @@ body {
 .search-clear:hover { background: var(--gold); }
 
 /* ---------- category chips ---------- */
-.cat-filter { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.cat-filter { display: none; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.cat-filter.open { display: flex; }
+/* desktop has the room — chips stay out in the open and the toggle disappears */
+@media (min-width: 768px) {
+  .cat-filter, .cat-filter.open { display: flex; }
+  .filter-toggle { display: none; }
+}
 .cat-chip {
   background: var(--paper-inset); color: var(--ink);
   border: 2px solid var(--line); border-radius: 20px;
@@ -404,6 +566,21 @@ body {
   box-shadow: inset 0 2px 5px rgba(0,0,0,0.18);
 }
 .suggest-item:hover, .recipe-row:hover { border-color: var(--gold-bright); }
+
+/* The row is already full width; what moved was the CONTENT inside it. With
+   space-between alone, the meters sit wherever the dish name happens to end, so
+   they land in a different column on every row ("Trail Mix" vs "Breakfast
+   Skillet"). Giving the name the slack pins the meters to the right edge, and a
+   min-width on each value keeps "+5" and "+12.5" from nudging them further. */
+.suggest-item > .suggest-name, .recipe-row > .suggest-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.suggest-item > .stat-meters, .recipe-row > .stat-meters { flex: 0 0 auto; }
+.suggest-item .meter-mini b, .recipe-row .meter-mini b {
+  min-width: 2.5em;
+  text-align: left;
+}
 .recipe-browser-list {
   flex: 1 1 auto;
   min-height: 0;
@@ -417,7 +594,11 @@ body {
 }
 
 /* ---------- modal: a cookbook page ---------- */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.62); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 10; }
+/* Stacking order, high to low — keep these the only z-index values in the file:
+   100 modal overlay > 70 nav drawer > 60 nav bar > 55 drawer scrim > page.
+   The modal must clear the mobile nav bar, which is itself raised so the burger
+   stays tappable over the scrim. */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.62); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 100; }
 .modal {
   background:
     radial-gradient(ellipse at 50% 0%, var(--paper-light) 0%, var(--paper) 55%, var(--paper-2) 100%);
@@ -427,7 +608,11 @@ body {
   box-shadow: 0 12px 26px rgba(0,0,0,0.6); max-height: 88vh; overflow-y: auto;
 }
 .dish-title { margin: 0 0 0.6rem; color: var(--ink); font-size: 1.6rem; text-align: center; }
-.close-x { float: right; background: none; border: none; color: var(--ink-dim); font-size: 1.3rem; cursor: pointer; }
+.close-x {
+  float: right; background: none; border: none; color: var(--ink-dim);
+  cursor: pointer; padding: 2px; display: inline-flex; align-items: center;
+}
+.close-x:hover { color: var(--ink); }
 
 .dish-header { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-bottom: 0.4rem; }
 .dish-frame {
@@ -465,6 +650,7 @@ body {
   border-bottom: 1px solid rgba(138, 116, 82, 0.45);
 }
 .flourish span { font-size: 1.05rem; line-height: 1; transform: translateY(-1px); }
+.flourish .icon { flex: 0 0 auto; }
 
 /* divider with ruled lines each side, like the cookbook sections */
 .divider {
@@ -476,6 +662,17 @@ body {
   border-top: 2px solid var(--line);
 }
 .divider span { white-space: nowrap; font-size: 1.02rem; }
+
+.cook-example-actions { display: flex; justify-content: center; margin: 0.35rem 0 0.15rem; }
+.reroll-btn {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: var(--paper-inset); color: var(--ink);
+  border: 2px solid var(--line); border-radius: 20px;
+  padding: 0.25rem 0.8rem; cursor: pointer;
+  font-family: inherit; font-size: 0.9rem; font-weight: 700;
+}
+.reroll-btn:hover { border-color: var(--gold-bright); background: var(--paper-light); }
+.reroll-btn:active { transform: translateY(1px); }
 
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem; }
 .col-val { text-align: center; color: var(--ink-dim); font-weight: 700; font-size: 1rem; }
@@ -522,6 +719,7 @@ body {
 .cond { margin: 0.35rem 0 0; padding-left: 1.2rem; color: var(--ink); }
 .cond li { margin: 0.18rem 0; }
 .rule-title {
+  display: flex; align-items: center; gap: 0.35rem;
   margin: 0.55rem 0 0.2rem;
   font-size: 1rem;
   font-weight: 800;
@@ -647,4 +845,63 @@ body {
   font-size: 0.8rem;
   color: var(--ink-dim);
   font-weight: 400;
+}
+
+/* ---------- work-in-progress page ---------- */
+.wip-panel { text-align: center; align-items: center; justify-content: center; }
+.wip-title { font-size: 1.5rem; margin: 0; color: var(--ink); }
+.wip-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: #2a1c0c;
+  border: 2px solid #6f4620;
+  border-radius: 20px;
+  padding: 0.25rem 1rem;
+  font-weight: 800;
+  margin-bottom: 0.6rem;
+}
+.wip-body {
+  max-width: 32rem;
+  margin: 0 auto 1.2rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.wip-back {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  color: var(--gold); font-weight: 700; text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+.wip-back:hover { border-bottom-color: var(--gold); }
+
+/* ---------- skeleton loading (contact modal) ---------- */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.skeleton {
+  background: var(--paper-inset);
+  border-radius: 6px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+.skeleton-avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  margin: 0 auto 0.8rem;
+}
+.skeleton-line { height: 0.95rem; margin: 0 auto 0.55rem; }
+.skeleton-note { height: 2.4rem; border-radius: 10px; margin-bottom: 0.9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
+/* Narrow screens: let the four pot slots shrink to fit instead of sitting
+   1px inside the panel, which clipped on anything under ~375px. */
+/* the pot is a fixed header above a scrolling list — on a phone it should cost
+   as little vertical space as possible, so the slots shrink rather than fill */
+@media (max-width: 767px) {
+  .pot { width: 100%; gap: 0.4rem; margin: 0.25rem auto; }
+  .slot { width: auto; flex: 1 1 0; min-width: 0; max-width: 54px; padding: 4px; }
+  /* ItemIcon renders fixed width/height attrs — let the box win on small screens */
+  .slot img { max-width: 100%; height: auto; }
+  .pot-wrap { padding: 0.6rem 0.7rem; }
 }
