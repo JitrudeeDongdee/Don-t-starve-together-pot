@@ -48,7 +48,7 @@ export default function IngredientPicker({ potFull, onAdd }: Props) {
       <div className="picker-toolbar">
         <SearchBox value={q} onChange={setQ} placeholder={t.searchIngredient} />
         <button
-          className={`filter-toggle filter-toggle-cat${cat !== 'all' ? ' filtered' : ''}`}
+          className={`filter-toggle${cat !== 'all' ? ' filtered' : ''}`}
           onClick={() => setFilterOpen((v) => !v)}
           aria-expanded={filterOpen}
           aria-controls="cat-filter"

@@ -515,15 +515,11 @@ body {
 .search-clear:hover { background: var(--gold); }
 
 /* ---------- category chips ---------- */
+/* Collapsed behind the toggle at every width — desktop used to force the chips
+   open and hide the button, which meant the control behaved differently
+   depending on the window size. */
 .cat-filter { display: none; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
 .cat-filter.open { display: flex; }
-/* desktop has the room — chips stay out in the open and their toggle disappears.
-   Scoped to the CATEGORY toggle: other toggles on this row (the favourites star
-   in the recipe browser) have no expanded form to fall back to and must stay. */
-@media (min-width: 768px) {
-  .cat-filter, .cat-filter.open { display: flex; }
-  .filter-toggle-cat { display: none; }
-}
 .cat-chip {
   background: var(--paper-inset); color: var(--ink);
   border: 2px solid var(--line); border-radius: 20px;
