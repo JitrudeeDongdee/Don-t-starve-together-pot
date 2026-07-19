@@ -28,10 +28,11 @@ export default function App() {
   };
 
   const detailRecipe = detail ? (recipeByName.get(detail) ?? null) : null;
-  const isBrowser = location.pathname.startsWith("/recipes");
 
   return (
-    <div className={`app${isBrowser ? " app-browser" : ""}`}>
+    // One shell width for every route — the recipe list caps its own panel
+    // instead, so switching Cook tabs doesn't resize the nav and header.
+    <div className="app">
       <NavBar onContact={() => setShowContact(true)} />
 
       <div className="app-body">
